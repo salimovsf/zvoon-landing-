@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zvoon — Мгновенные звонки по ссылке</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #fdf6ef;
+  --card: #ffffff;
+  --accent: #e8734a;
+  --secondary: #2d6a4f;
+  --text: #1a1a1a;
+  --muted: #7a7067;
+  --peach: #fff0e6;
+}
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ─── Header ─── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(253, 246, 239, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  transition: box-shadow 0.3s;
+}
+
+.header.scrolled {
+  box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.5px;
+}
+
+.logo svg { flex-shrink: 0; }
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.lang-switch {
+  display: flex;
+  gap: 2px;
+  background: var(--peach);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.lang-switch button {
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.2s;
+}
+
+.lang-switch button.active {
+  background: var(--card);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.header-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 9px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.header-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(232, 115, 74, 0.3);
+}
+
+/* ─── Hero ─── */
+.hero {
+  text-align: center;
+  padding: 100px 24px 80px;
+}
+
+.hero h1 {
+  font-size: clamp(48px, 8vw, 80px);
+  font-weight: 800;
+  letter-spacing: -3px;
+  line-height: 1.05;
+  max-width: 800px;
+  margin: 0 auto 28px;
+}
+
+.hero h1 .gradient {
+  background: linear-gradient(135deg, var(--accent), #d4603a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 520px;
+  margin: 0 auto 40px;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 17px;
+  padding: 18px 40px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(232, 115, 74, 0.35);
+}
+
+.hero-cta svg {
+  transition: transform 0.2s;
+}
+
+.hero-cta:hover svg {
+  transform: translateX(3px);
+}
+
+/* ─── Divider ─── */
+.divider {
+  width: 80px;
+  height: 1px;
+  background: var(--accent);
+  margin: 0 auto;
+  opacity: 0.5;
+}
+
+/* ─── Steps ─── */
+.steps {
+  padding: 80px 24px;
+}
+
+.section-label {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  text-align: center;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  margin-bottom: 56px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.step {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.step-number {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  flex-shrink: 0;
+  min-width: 52px;
+}
+
+.step-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+
+.step-desc {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ─── Pricing ─── */
+.pricing {
+  padding: 80px 24px;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 0;
+}
+
+.pricing-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 36px 28px;
+  border: 1px solid rgba(0,0,0,0.06);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pricing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+}
+
+.pricing-card.featured {
+  border: 2px solid var(--secondary);
+  position: relative;
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--secondary);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 16px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.pricing-name {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.pricing-price {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  margin-bottom: 4px;
+}
+
+.pricing-period {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.pricing-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.pricing-features li {
+  font-size: 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.4;
+}
+
+.pricing-features li::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  background: var(--peach);
+  border-radius: 50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23e8734a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.pricing-card.featured .pricing-features li::before {
+  background-color: #e8f5e9;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232d6a4f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+}
+
+.pricing-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pricing-btn.primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.pricing-btn.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(232, 115, 74, 0.3);
+}
+
+.pricing-btn.secondary {
+  background: var(--secondary);
+  color: #fff;
+}
+
+.pricing-btn.secondary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(45, 106, 79, 0.3);
+}
+
+.pricing-btn.outline {
+  background: transparent;
+  color: var(--text);
+  border: 2px solid rgba(0,0,0,0.1);
+}
+
+.pricing-btn.outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ─── Summary ─── */
+.summary {
+  padding: 80px 24px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.summary-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 32px 28px;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.summary-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+
+.summary-card-desc {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ─── FAQ ─── */
+.faq {
+  padding: 80px 24px;
+}
+
+.faq-list {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.faq-item {
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 20px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--text);
+  letter-spacing: -0.2px;
+}
+
+.faq-question:hover {
+  color: var(--accent);
+}
+
+.faq-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--peach);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.faq-item.open .faq-icon {
+  transform: rotate(45deg);
+  background: var(--accent);
+}
+
+.faq-item.open .faq-icon svg path {
+  stroke: #fff;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+}
+
+.faq-answer-inner {
+  padding: 0 0 20px;
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ─── Footer ─── */
+.footer {
+  padding: 60px 24px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.5px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 28px;
+}
+
+.footer-links a {
+  font-size: 14px;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--text); }
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 12px;
+}
+
+.footer-socials a {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--peach);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.footer-socials a:hover {
+  background: var(--accent);
+  transform: translateY(-2px);
+}
+
+.footer-socials a:hover svg path {
+  fill: #fff;
+}
+
+.footer-copy {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ─── Scroll reveal ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .hero { padding: 72px 24px 60px; }
+  .hero h1 { letter-spacing: -2px; }
+  .hero-subtitle { font-size: 17px; }
+  .hero-cta { padding: 16px 32px; font-size: 16px; }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header-cta { display: none; }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header" id="header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="8" fill="#e8734a"/>
+          <path d="M8 10.5C8 9.67 8.67 9 9.5 9h1C11.33 9 12 9.67 12 10.5v7c0 .83-.67 1.5-1.5 1.5h-1C8.67 19 8 18.33 8 17.5v-7z" fill="#fff"/>
+          <path d="M16 10.5c0-.83.67-1.5 1.5-1.5h1c.83 0 1.5.67 1.5 1.5v7c0 .83-.67 1.5-1.5 1.5h-1c-.83 0-1.5-.67-1.5-1.5v-7z" fill="#fff"/>
+          <path d="M12 14h4" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Zvoon
+      </a>
+      <div class="header-right">
+        <div class="lang-switch">
+          <button class="active">RU</button>
+          <button>EN</button>
+        </div>
+        <a href="#" class="header-cta">
+          Создать звонок
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <h1 class="reveal">Мгновенные звонки <span class="gradient">по одной ссылке</span></h1>
+    <p class="hero-subtitle reveal">Никаких регистраций и приложений. Создайте звонок, отправьте ссылку, получите ИИ-сводку после разговора.</p>
+    <a href="#" class="hero-cta reveal">
+      Создать звонок
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- Divider -->
+<div class="divider"></div>
+
+<!-- Steps -->
+<section class="steps">
+  <div class="container">
+    <p class="section-label reveal">Как это работает</p>
+    <h2 class="section-title reveal">Три шага до звонка</h2>
+    <div class="steps-grid">
+      <div class="step reveal">
+        <div class="step-number">1</div>
+        <div>
+          <div class="step-title">Создайте звонок</div>
+          <p class="step-desc">Нажмите одну кнопку и получите уникальную ссылку. Без регистрации.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-number">2</div>
+        <div>
+          <div class="step-title">Отправьте ссылку</div>
+          <p class="step-desc">Поделитесь ссылкой в любом мессенджере. Собеседнику тоже ничего не нужно устанавливать.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-number">3</div>
+        <div>
+          <div class="step-title">Получите сводку</div>
+          <p class="step-desc">ИИ подготовит краткую сводку разговора: темы, решения и задачи — на ваш email.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="pricing">
+  <div class="container">
+    <p class="section-label reveal">Тарифы</p>
+    <h2 class="section-title reveal">Простые и понятные цены</h2>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <div class="pricing-name">Free</div>
+        <div class="pricing-price">0 &#8381;</div>
+        <div class="pricing-period">навсегда</div>
+        <ul class="pricing-features">
+          <li>1:1 звонки без ограничений</li>
+          <li>Групповые до 30 минут</li>
+          <li>До 4 участников</li>
+          <li>Ссылка без регистрации</li>
+        </ul>
+        <button class="pricing-btn primary">Начать бесплатно</button>
+      </div>
+      <div class="pricing-card featured reveal">
+        <span class="pricing-badge">Популярный</span>
+        <div class="pricing-name">Pro</div>
+        <div class="pricing-price">490 &#8381;</div>
+        <div class="pricing-period">в месяц</div>
+        <ul class="pricing-features">
+          <li>Групповые до 60 минут</li>
+          <li>До 12 участников</li>
+          <li>5 ИИ-сводок в месяц</li>
+          <li>Запись звонков</li>
+          <li>Приоритетная поддержка</li>
+        </ul>
+        <button class="pricing-btn secondary">Выбрать Pro</button>
+      </div>
+      <div class="pricing-card reveal">
+        <div class="pricing-name">Business</div>
+        <div class="pricing-price">1 490 &#8381;</div>
+        <div class="pricing-period">в месяц</div>
+        <ul class="pricing-features">
+          <li>Без ограничений по времени</li>
+          <li>До 50 участников</li>
+          <li>Безлимитные ИИ-сводки</li>
+          <li>Брендированные комнаты</li>
+          <li>API-доступ</li>
+        </ul>
+        <button class="pricing-btn outline">Связаться</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Summary -->
+<section class="summary">
+  <div class="container">
+    <p class="section-label reveal">ИИ-сводка</p>
+    <h2 class="section-title reveal">Что в сводке</h2>
+    <div class="summary-grid">
+      <div class="summary-card reveal">
+        <div class="summary-card-title">Расшифровка</div>
+        <p class="summary-card-desc">Кто что сказал — с именами участников</p>
+      </div>
+      <div class="summary-card reveal">
+        <div class="summary-card-title">Темы</div>
+        <p class="summary-card-desc">Основные темы разговора</p>
+      </div>
+      <div class="summary-card reveal">
+        <div class="summary-card-title">Решения</div>
+        <p class="summary-card-desc">Ключевые договорённости</p>
+      </div>
+      <div class="summary-card reveal">
+        <div class="summary-card-title">Задачи</div>
+        <p class="summary-card-desc">Конкретные action items с ответственными</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="container">
+    <p class="section-label reveal">Вопросы</p>
+    <h2 class="section-title reveal">Частые вопросы</h2>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-question">
+          Нужна ли регистрация?
+          <span class="faq-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Нет. Создайте звонок и отправьте ссылку.</div>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question">
+          Сколько длится звонок?
+          <span class="faq-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">1:1 — без ограничений. Группы — до 30-60 минут на бесплатном тарифе.</div>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question">
+          Кто видит ИИ-сводку?
+          <span class="faq-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Только тот, кто её заказал и оплатил. Результат приходит на email.</div>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question">
+          Как работает оплата?
+          <span class="faq-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Stripe для международных карт, ЮKassa для России.</div>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question">
+          Можно ли использовать без сводки?
+          <span class="faq-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Да. Звонки полностью бесплатны, сводка — по желанию.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="8" fill="#e8734a"/>
+          <path d="M8 10.5C8 9.67 8.67 9 9.5 9h1C11.33 9 12 9.67 12 10.5v7c0 .83-.67 1.5-1.5 1.5h-1C8.67 19 8 18.33 8 17.5v-7z" fill="#fff"/>
+          <path d="M16 10.5c0-.83.67-1.5 1.5-1.5h1c.83 0 1.5.67 1.5 1.5v7c0 .83-.67 1.5-1.5 1.5h-1c-.83 0-1.5-.67-1.5-1.5v-7z" fill="#fff"/>
+          <path d="M12 14h4" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Zvoon
+      </div>
+      <div class="footer-links">
+        <a href="#">Тарифы</a>
+        <a href="#">Политика</a>
+        <a href="#">Поддержка</a>
+      </div>
+      <div class="footer-right">
+        <div class="footer-socials">
+          <!-- VK -->
+          <a href="#" aria-label="VK">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12.78 18.14h1.12s.34-.04.51-.22c.16-.17.15-.48.15-.48s-.02-1.47.66-1.69c.67-.21 1.54 1.4 2.45 2.02.69.47 1.21.37 1.21.37l2.44-.03s1.28-.08.67-1.09c-.05-.08-.36-.74-1.83-2.1-1.54-1.42-1.34-1.19.52-3.65.83-1.34 1.49-2.6 1.36-3.02-.12-.4-.88-.3-.88-.3l-2.75.02s-.2-.03-.36.06c-.15.1-.24.31-.24.31s-.44 1.17-1.03 2.17c-1.24 2.1-1.74 2.21-1.94 2.08-.47-.31-.35-1.24-.35-1.9 0-2.06.31-2.92-.61-3.14-.31-.07-.53-.12-1.31-.13-.99-.01-1.83 0-2.31.24-.32.16-.56.5-.41.52.19.02.62.12.84.42.29.4.28 1.28.28 1.28s.17 2.43-.39 2.73c-.38.2-.91-.21-2.04-2.1-.58-.97-1.01-2.04-1.01-2.04s-.08-.2-.23-.31c-.18-.13-.44-.17-.44-.17l-2.61.02s-.39.01-.53.18c-.13.15-.01.47-.01.47s2.07 4.84 4.41 7.28c2.15 2.24 4.59 2.09 4.59 2.09z" fill="#7a7067"/></svg>
+          </a>
+          <!-- Telegram -->
+          <a href="#" aria-label="Telegram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20.67 3.95L2.93 10.9s-1.25.43-1.15 1.24c.1.81.56 1.01 1.13 1.24l4.54 1.49 1.75 5.57s.3.87.56.9c.26.03.43-.1.6-.28l2.59-2.5 4.5 3.42s.93.58 1.56.15c.63-.43.82-1.12.82-1.12L22.13 5.58s.38-1.44-1.46-.63zM9.5 14.09l-.45 4.01-1.5-4.68 9.6-6.67-7.65 7.34z" fill="#7a7067"/></svg>
+          </a>
+        </div>
+        <span class="footer-copy">&copy; 2026 Zvoon</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Header shadow on scroll
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+
+// IntersectionObserver scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// FAQ accordion
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const answer = item.querySelector('.faq-answer');
+    const isOpen = item.classList.contains('open');
+
+    // Close all
+    document.querySelectorAll('.faq-item.open').forEach(openItem => {
+      openItem.classList.remove('open');
+      openItem.querySelector('.faq-answer').style.maxHeight = '0';
+    });
+
+    // Toggle clicked
+    if (!isOpen) {
+      item.classList.add('open');
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+    }
+  });
+});
+
+// Lang switch
+document.querySelectorAll('.lang-switch button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
