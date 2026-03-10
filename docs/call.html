@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Zvoon — Звонок</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0a;
+  --surface: #161616;
+  --surface2: #222;
+  --accent: #e8734a;
+  --green: #22c55e;
+  --red: #ef4444;
+  --text: #f5f5f5;
+  --muted: #888;
+}
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* ─── Join screen ─── */
+.join-screen {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.join-box {
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+}
+
+.join-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 22px;
+  margin-bottom: 40px;
+  letter-spacing: -0.5px;
+}
+
+.join-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.join-subtitle {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.join-input {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid #333;
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 14px;
+}
+
+.join-input:focus { border-color: var(--accent); }
+
+.join-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.join-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.join-btn:not(:disabled):hover { opacity: 0.9; }
+
+.join-error {
+  color: var(--red);
+  font-size: 13px;
+  margin-top: 12px;
+  display: none;
+}
+
+/* ─── Call screen ─── */
+.call-screen {
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.call-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+}
+
+.call-timer {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.call-count {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.call-participants {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.participants-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  max-width: 500px;
+}
+
+.participant {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.participant-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.participant-avatar.speaking {
+  background: var(--green);
+  box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.15);
+  transform: scale(1.08);
+}
+
+.participant-avatar .muted-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.participant-name {
+  font-size: 12px;
+  color: var(--muted);
+  max-width: 80px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.call-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px 20px 40px;
+}
+
+.ctrl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  gap: 6px;
+}
+
+.ctrl-round {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.ctrl-pill {
+  padding: 12px 20px;
+  border-radius: 14px;
+}
+
+.ctrl-mute {
+  background: var(--surface2);
+  color: var(--text);
+}
+.ctrl-mute.muted {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--red);
+}
+
+.ctrl-copy {
+  background: var(--surface2);
+  color: var(--muted);
+}
+.ctrl-copy.copied { color: var(--green); }
+
+.ctrl-leave {
+  background: var(--red);
+  color: #fff;
+}
+
+.ctrl-btn:hover { opacity: 0.85; }
+
+/* ─── Connecting overlay ─── */
+.connecting {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 100;
+}
+
+.connecting.show { display: flex; }
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #333;
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.connecting-text {
+  font-size: 15px;
+  color: var(--muted);
+}
+
+/* ─── Share toast ─── */
+.share-toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--surface2);
+  color: var(--text);
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.3s;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.share-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- Connecting overlay -->
+<div class="connecting" id="connecting">
+  <div class="spinner"></div>
+  <div class="connecting-text">Подключение...</div>
+</div>
+
+<!-- Join screen -->
+<div class="join-screen" id="joinScreen">
+  <div class="join-box">
+    <div class="join-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="#e8734a"/>
+        <path d="M8 10.5C8 9.67 8.67 9 9.5 9h1C11.33 9 12 9.67 12 10.5v7c0 .83-.67 1.5-1.5 1.5h-1C8.67 19 8 18.33 8 17.5v-7z" fill="#fff"/>
+        <path d="M16 10.5c0-.83.67-1.5 1.5-1.5h1c.83 0 1.5.67 1.5 1.5v7c0 .83-.67 1.5-1.5 1.5h-1c-.83 0-1.5-.67-1.5-1.5v-7z" fill="#fff"/>
+        <path d="M12 14h4" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      Zvoon
+    </div>
+    <h1 class="join-title" id="joinTitle">Введите имя</h1>
+    <p class="join-subtitle" id="joinSubtitle">Вы присоединитесь к звонку</p>
+    <input class="join-input" id="nameInput" type="text" placeholder="Ваше имя" maxlength="30" autofocus>
+    <button class="join-btn" id="joinBtn" disabled>Войти</button>
+    <div class="join-error" id="joinError"></div>
+  </div>
+</div>
+
+<!-- Call screen -->
+<div class="call-screen" id="callScreen">
+  <div class="call-header">
+    <div class="call-timer" id="timer">00:00</div>
+    <div class="call-count" id="participantCount"></div>
+  </div>
+  <div class="call-participants">
+    <div class="participants-grid" id="participantsGrid"></div>
+  </div>
+  <div class="call-controls">
+    <button class="ctrl-btn ctrl-pill ctrl-copy" id="copyBtn" onclick="copyLink()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <span id="copyText">Скопировать</span>
+    </button>
+    <button class="ctrl-btn ctrl-round ctrl-mute" id="muteBtn" onclick="toggleMute()">
+      <svg id="micOn" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="1" width="6" height="12" rx="3"/>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+        <line x1="12" y1="19" x2="12" y2="23"/>
+        <line x1="8" y1="23" x2="16" y2="23"/>
+      </svg>
+      <svg id="micOff" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+        <line x1="1" y1="1" x2="23" y2="23"/>
+        <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/>
+        <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2c0 .76-.13 1.49-.35 2.17"/>
+        <line x1="12" y1="19" x2="12" y2="23"/>
+        <line x1="8" y1="23" x2="16" y2="23"/>
+      </svg>
+    </button>
+    <button class="ctrl-btn ctrl-pill ctrl-leave" id="leaveBtn" onclick="leaveCall()">
+      Выйти
+    </button>
+  </div>
+</div>
+
+<div class="share-toast" id="shareToast">Ссылка скопирована</div>
+
+<!-- LiveKit SDK -->
+<script src="https://unpkg.com/livekit-client@2.17.2/dist/livekit-client.umd.js"></script>
+
+<script>
+const API_URL = 'https://zvoon.kotik.space';
+const LIVEKIT_URL = 'wss://livekit.kotik.space';
+
+// Parse URL params
+const params = new URLSearchParams(window.location.search);
+const roomSlug = params.get('room');
+const isHost = params.get('host') === '1';
+
+// State
+let room = null;
+let isMuted = false;
+let timerSeconds = 0;
+let timerInterval = null;
+
+// Elements
+const joinScreen = document.getElementById('joinScreen');
+const callScreen = document.getElementById('callScreen');
+const connectingOverlay = document.getElementById('connecting');
+const nameInput = document.getElementById('nameInput');
+const joinBtn = document.getElementById('joinBtn');
+const joinError = document.getElementById('joinError');
+const joinTitle = document.getElementById('joinTitle');
+const joinSubtitle = document.getElementById('joinSubtitle');
+
+// If no room param and not host, show error
+if (!roomSlug && !isHost) {
+  joinTitle.textContent = 'Нет комнаты';
+  joinSubtitle.textContent = 'Перейдите на главную страницу, чтобы создать звонок';
+  nameInput.style.display = 'none';
+  joinBtn.style.display = 'none';
+}
+
+// Enable join button on input
+nameInput.addEventListener('input', () => {
+  joinBtn.disabled = !nameInput.value.trim();
+});
+
+nameInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && nameInput.value.trim()) joinBtn.click();
+});
+
+// Join / Create
+joinBtn.addEventListener('click', async () => {
+  const name = nameInput.value.trim();
+  if (!name) return;
+
+  joinBtn.disabled = true;
+  joinError.style.display = 'none';
+  connectingOverlay.classList.add('show');
+
+  try {
+    let token, slug;
+
+    if (isHost) {
+      // Create new room
+      const res = await fetch(`${API_URL}/rooms`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ hostName: name }),
+      });
+      if (!res.ok) throw new Error('Не удалось создать комнату');
+      const data = await res.json();
+      token = data.token;
+      slug = data.slug;
+      // Update URL without reload
+      history.replaceState(null, '', `?room=${slug}`);
+    } else {
+      // Join existing room
+      const res = await fetch(`${API_URL}/rooms/${roomSlug}/token`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name }),
+      });
+      if (!res.ok) throw new Error('Не удалось присоединиться');
+      const data = await res.json();
+      token = data.token;
+      slug = roomSlug;
+    }
+
+    await connectToRoom(token, slug);
+  } catch (err) {
+    connectingOverlay.classList.remove('show');
+    joinError.textContent = err.message;
+    joinError.style.display = 'block';
+    joinBtn.disabled = false;
+  }
+});
+
+async function connectToRoom(token, slug) {
+  const { Room, RoomEvent } = LivekitClient;
+
+  room = new Room({
+    adaptiveStream: true,
+    dynacast: true,
+  });
+
+  room.on(RoomEvent.ParticipantConnected, () => updateParticipants());
+  room.on(RoomEvent.ParticipantDisconnected, () => updateParticipants());
+  room.on(RoomEvent.ActiveSpeakersChanged, (speakers) => updateSpeakers(speakers));
+  room.on(RoomEvent.TrackMuted, () => updateParticipants());
+  room.on(RoomEvent.TrackUnmuted, () => updateParticipants());
+  room.on(RoomEvent.Disconnected, () => {
+    stopTimer();
+    callScreen.style.display = 'none';
+    joinScreen.style.display = 'flex';
+    joinTitle.textContent = 'Звонок завершён';
+    joinSubtitle.textContent = 'Вы можете закрыть эту страницу';
+    nameInput.style.display = 'none';
+    joinBtn.style.display = 'none';
+  });
+
+  await room.connect(LIVEKIT_URL, token);
+  await room.localParticipant.setMicrophoneEnabled(true);
+
+  connectingOverlay.classList.remove('show');
+  joinScreen.style.display = 'none';
+  callScreen.style.display = 'flex';
+
+  updateParticipants();
+  startTimer();
+}
+
+function updateParticipants() {
+  if (!room) return;
+  const grid = document.getElementById('participantsGrid');
+  const count = document.getElementById('participantCount');
+  const all = [room.localParticipant, ...room.remoteParticipants.values()];
+
+  count.textContent = `${all.length} ${all.length === 1 ? 'участник' : all.length < 5 ? 'участника' : 'участников'}`;
+
+  grid.innerHTML = all.map(p => {
+    const name = p.identity || 'Гость';
+    const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    const micOff = !p.isMicrophoneEnabled;
+    const speaking = p.isSpeaking;
+    const isLocal = p === room.localParticipant;
+
+    return `
+      <div class="participant" data-sid="${p.sid}">
+        <div class="participant-avatar ${speaking ? 'speaking' : ''}">
+          ${initials}
+          ${micOff ? `<div class="muted-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round">
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          </div>` : ''}
+        </div>
+        <div class="participant-name">${name}${isLocal ? ' (вы)' : ''}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateSpeakers(speakers) {
+  if (!room) return;
+  document.querySelectorAll('.participant-avatar').forEach(el => el.classList.remove('speaking'));
+  const speakerSids = new Set(speakers.map(s => s.sid));
+  document.querySelectorAll('.participant').forEach(el => {
+    if (speakerSids.has(el.dataset.sid)) {
+      el.querySelector('.participant-avatar').classList.add('speaking');
+    }
+  });
+}
+
+function toggleMute() {
+  if (!room) return;
+  isMuted = !isMuted;
+  room.localParticipant.setMicrophoneEnabled(!isMuted);
+
+  const btn = document.getElementById('muteBtn');
+  const micOn = document.getElementById('micOn');
+  const micOff = document.getElementById('micOff');
+
+  btn.classList.toggle('muted', isMuted);
+  micOn.style.display = isMuted ? 'none' : 'block';
+  micOff.style.display = isMuted ? 'block' : 'none';
+
+  updateParticipants();
+}
+
+function copyLink() {
+  const slug = new URLSearchParams(window.location.search).get('room');
+  if (!slug) return;
+
+  const base = window.location.origin + window.location.pathname;
+  const link = `${base}?room=${slug}`;
+
+  navigator.clipboard.writeText(link).then(() => {
+    const toast = document.getElementById('shareToast');
+    toast.classList.add('show');
+    document.getElementById('copyText').textContent = 'Скопировано!';
+    setTimeout(() => {
+      toast.classList.remove('show');
+      document.getElementById('copyText').textContent = 'Скопировать';
+    }, 2000);
+  });
+}
+
+function leaveCall() {
+  if (room) room.disconnect();
+}
+
+function startTimer() {
+  timerSeconds = 0;
+  timerInterval = setInterval(() => {
+    timerSeconds++;
+    const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+    const s = (timerSeconds % 60).toString().padStart(2, '0');
+    document.getElementById('timer').textContent = `${m}:${s}`;
+  }, 1000);
+}
+
+function stopTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+}
+</script>
+
+</body>
+</html>
