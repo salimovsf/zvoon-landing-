@@ -473,11 +473,27 @@ joinBtn.addEventListener('click', async () => {
 });
 
 async function connectToRoom(token, slug) {
-  const { Room, RoomEvent } = LivekitClient;
+  const { Room, RoomEvent, Track } = LivekitClient;
 
   room = new Room({
     adaptiveStream: true,
     dynacast: true,
+  });
+
+  // Attach remote audio tracks so we can hear other participants
+  room.on(RoomEvent.TrackSubscribed, (track, publication, participant) => {
+    if (track.kind === Track.Kind.Audio) {
+      const el = track.attach();
+      el.id = `audio-${participant.sid}`;
+      document.body.appendChild(el);
+    }
+  });
+
+  // Detach when unsubscribed
+  room.on(RoomEvent.TrackUnsubscribed, (track, publication, participant) => {
+    track.detach().forEach(el => el.remove());
+    const leftover = document.getElementById(`audio-${participant.sid}`);
+    if (leftover) leftover.remove();
   });
 
   room.on(RoomEvent.ParticipantConnected, () => updateParticipants());
