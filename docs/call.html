@@ -496,11 +496,21 @@ async function connectToRoom(token, slug) {
   });
 
   await room.connect(LIVEKIT_URL, token);
-  await room.localParticipant.setMicrophoneEnabled(true);
 
   connectingOverlay.classList.remove('show');
   joinScreen.style.display = 'none';
   callScreen.style.display = 'flex';
+
+  // Try enabling mic after UI is shown — don't block on failure
+  try {
+    await room.localParticipant.setMicrophoneEnabled(true);
+  } catch (e) {
+    console.warn('Mic not available:', e.message);
+    isMuted = true;
+    document.getElementById('muteBtn').classList.add('muted');
+    document.getElementById('micOn').style.display = 'none';
+    document.getElementById('micOff').style.display = 'block';
+  }
 
   updateParticipants();
   startTimer();
