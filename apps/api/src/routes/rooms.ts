@@ -32,17 +32,20 @@ roomsRouter.post("/", rateLimiter({ windowMs: 60 * 60 * 1000, max: 5 }), async (
     return c.json({ error: "Failed to create room" }, 500);
   }
 
+  const hasEmail = !!(email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+
   // Initialize room data for summary tracking
   roomStore.set(slug, {
     emails: new Map(),
     egressIds: [],
     lang: lang || "ru",
+    recording: hasEmail,
     createdAt: Date.now(),
   });
 
   // Register host email if provided
-  if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    roomStore.get(slug)!.emails.set(hostName.trim(), email);
+  if (hasEmail) {
+    roomStore.get(slug)!.emails.set(hostName.trim(), email!);
   }
 
   // Generate token for the host
@@ -51,11 +54,16 @@ roomsRouter.post("/", rateLimiter({ windowMs: 60 * 60 * 1000, max: 5 }), async (
   return c.json({ slug, token }, 201);
 });
 
-// Get room info
+// Get room info — guest checks this before joining
 roomsRouter.get("/:slug", async (c) => {
   const slug = c.req.param("slug");
-  // For MVP: just confirm the room exists by slug format
-  return c.json({ slug, status: "active" });
+  const roomData = roomStore.get(slug);
+
+  if (!roomData) {
+    return c.json({ slug, status: "not_found", recording: false }, 404);
+  }
+
+  return c.json({ slug, status: "active", recording: roomData.recording });
 });
 
 // Generate token — max 20 per hour per IP

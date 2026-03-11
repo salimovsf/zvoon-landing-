@@ -183,6 +183,30 @@ body {
   color: var(--red);
 }
 
+/* ─── Recording indicator ─── */
+.rec-banner {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(239, 68, 68, 0.08);
+  font-size: 12px;
+  color: var(--muted);
+}
+.rec-banner.active { display: flex; }
+.rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  animation: rec-pulse 1.5s ease-in-out infinite;
+}
+@keyframes rec-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
 /* ─── Call screen ─── */
 .call-screen {
   flex: 1;
@@ -383,9 +407,16 @@ body {
     </div>
     <h1 class="screen-title" id="nameTitle">Введите имя</h1>
     <p class="screen-subtitle" id="nameSubtitle">Вы присоединитесь к звонку</p>
+    <!-- Recording notice for guests (shown when host enabled recording) -->
+    <div id="recNotice" style="display:none;background:rgba(239,68,68,0.08);border-radius:12px;padding:12px 16px;margin-bottom:16px;text-align:left;font-size:13px;color:var(--muted);line-height:1.5;">
+      <span style="color:var(--red);font-weight:600;" id="recNoticeTitle">Звонок записывается</span><br>
+      <span id="recNoticeText">Организатор включил запись для создания ИИ-сводки</span>
+    </div>
     <input class="input" id="nameInput" type="text" placeholder="Ваше имя" maxlength="30" autofocus>
-    <input class="input" id="emailInput" type="email" placeholder="Email — для получения сводки звонка" style="margin-bottom:4px;">
-    <p class="email-hint" id="emailHint" style="font-size:12px;color:#666;margin-bottom:14px;line-height:1.4;text-align:left;">Укажите email, чтобы получить ИИ-сводку после звонка. Без email звонок не записывается.</p>
+    <div id="emailBlock">
+      <input class="input" id="emailInput" type="email" placeholder="Email — для получения сводки звонка" style="margin-bottom:4px;">
+      <p class="email-hint" id="emailHint" style="font-size:12px;color:#666;margin-bottom:14px;line-height:1.4;text-align:left;">Укажите email, чтобы получить ИИ-сводку после звонка. Без email звонок не записывается.</p>
+    </div>
     <button class="btn" id="nameBtn" disabled>Далее</button>
     <div class="error-text" id="nameError"></div>
   </div>
@@ -420,6 +451,10 @@ body {
 <!-- SCREEN 3: Call -->
 <div class="call-screen" id="screenCall">
   <div class="mic-banner" id="micBanner"></div>
+  <div class="rec-banner" id="recBanner">
+    <div class="rec-dot"></div>
+    <span id="recText">Звонок записывается для создания сводки</span>
+  </div>
   <div class="call-header">
     <div class="call-timer" id="timer">00:00</div>
     <div class="call-count" id="participantCount"></div>
@@ -493,6 +528,7 @@ let userName = '';
 let userEmail = '';
 let userToken = '';
 let userSlug = '';
+let roomRecording = false; // whether host enabled recording
 
 // ─── Screens ───
 function showScreen(id) {
@@ -574,12 +610,48 @@ function unlockAudioPlayback() {
   } catch (e) {}
 }
 
-// ─── No room check ───
-if (!roomSlug && !isHost) {
-  document.getElementById('nameTitle').textContent = t('no_room_title');
-  document.getElementById('nameSubtitle').textContent = t('no_room_subtitle');
-  document.getElementById('nameInput').style.display = 'none';
-  document.getElementById('nameBtn').style.display = 'none';
+// ─── Setup screen based on role — called after i18n is ready ───
+function setupScreenForRole() {
+  if (!roomSlug && !isHost) {
+    // No room param and not a host — dead link
+    document.getElementById('nameTitle').textContent = t('no_room_title');
+    document.getElementById('nameSubtitle').textContent = t('no_room_subtitle');
+    document.getElementById('nameInput').style.display = 'none';
+    document.getElementById('emailBlock').style.display = 'none';
+    document.getElementById('nameBtn').style.display = 'none';
+  } else if (isHost) {
+    // Host creating a new call
+    document.getElementById('nameTitle').textContent = t('host_title');
+    document.getElementById('nameSubtitle').textContent = t('host_subtitle');
+    document.getElementById('emailHint').textContent = t('host_email_hint');
+    document.getElementById('emailInput').placeholder = t('host_email_placeholder');
+    document.getElementById('nameBtn').textContent = t('host_btn');
+  } else {
+    // Guest joining — set titles immediately, hide email until we know recording status
+    document.getElementById('nameTitle').textContent = t('guest_title');
+    document.getElementById('nameSubtitle').textContent = t('guest_subtitle');
+    document.getElementById('nameBtn').textContent = t('name_btn');
+    document.getElementById('emailBlock').style.display = 'none'; // hidden by default for guest
+
+    // Fetch room info to check if host enabled recording
+    (async () => {
+      try {
+        const data = await apiCall(`${API_URL}/rooms/${roomSlug}`, { method: 'GET' });
+        roomRecording = data.recording;
+      } catch (e) {
+        roomRecording = false;
+      }
+      if (roomRecording) {
+        // Host enabled recording — show notice and email field
+        document.getElementById('recNotice').style.display = 'block';
+        document.getElementById('recNoticeTitle').textContent = t('rec_notice_title');
+        document.getElementById('recNoticeText').textContent = t('rec_notice_text');
+        document.getElementById('emailBlock').style.display = 'block';
+        document.getElementById('emailInput').placeholder = t('guest_email_placeholder');
+        document.getElementById('emailHint').textContent = t('guest_email_hint');
+      }
+    })();
+  }
 }
 
 // ─── SCREEN 1: Name ───
@@ -623,6 +695,7 @@ nameBtn.addEventListener('click', async () => {
       });
       userToken = data.token;
       userSlug = data.slug;
+      roomRecording = !!userEmail;
       history.replaceState(null, '', `?room=${userSlug}&lang=${lang}`);
     } else {
       const payload = { name: userName };
@@ -678,26 +751,8 @@ micRequestBtn.addEventListener('click', async () => {
   micRequestBtn.disabled = true;
   micError.style.display = 'none';
 
-  // Debug: check what's available
-  const debugInfo = [];
-  debugInfo.push('secure: ' + window.isSecureContext);
-  debugInfo.push('mediaDevices: ' + !!navigator.mediaDevices);
-  debugInfo.push('getUserMedia: ' + !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia));
-
-  // Check for devices first
-  if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
-    try {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const audioInputs = devices.filter(d => d.kind === 'audioinput');
-      debugInfo.push('audio devices: ' + audioInputs.length);
-      audioInputs.forEach((d, i) => debugInfo.push(`  mic${i}: ${d.label || '(no label)'} [${d.deviceId.slice(0,8)}]`));
-    } catch (e) {
-      debugInfo.push('enumerate error: ' + e.message);
-    }
-  }
-
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    micError.textContent = t('mic_not_supported') + ' ' + debugInfo.join(' | ');
+    micError.textContent = t('mic_not_supported');
     micError.style.display = 'block';
     micRequestBtn.disabled = false;
     return;
@@ -711,36 +766,23 @@ micRequestBtn.addEventListener('click', async () => {
 
   for (let i = 0; i < constraintSets.length; i++) {
     try {
-      debugInfo.push(`trying constraints ${i}...`);
       const stream = await navigator.mediaDevices.getUserMedia(constraintSets[i]);
-      // Success!
-      const tracks = stream.getAudioTracks();
-      debugInfo.push(`got ${tracks.length} tracks: ${tracks.map(t => t.label).join(', ')}`);
       stream.getTracks().forEach(t => t.stop());
       await startCall(true);
       return;
     } catch (e) {
-      debugInfo.push(`fail ${i}: ${e.name}: ${e.message}`);
-
       if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
-        // Don't try more constraints — user denied
         showMicDeniedUI();
         micRequestBtn.disabled = false;
         return;
       }
-      // Try next constraint set
     }
   }
 
   // All constraint sets failed
   micRequestBtn.disabled = false;
-  const lastDebug = debugInfo.join('\n');
-  console.error('All getUserMedia attempts failed:', lastDebug);
-
-  // Show debug info temporarily to help diagnose
-  micError.textContent = t('mic_error_access') + '\n' + debugInfo.filter(d => d.startsWith('fail') || d.startsWith('audio')).join(' | ');
+  micError.textContent = t('mic_error_access');
   micError.style.display = 'block';
-  micError.style.whiteSpace = 'pre-wrap';
 
   document.getElementById('micTitle').textContent = t('mic_not_found_title');
   document.getElementById('micSubtitle').textContent = t('mic_not_found_subtitle');
@@ -857,6 +899,9 @@ async function connectToRoom(token, slug, withMic) {
 
   updateParticipants();
   startTimer();
+
+  // Show recording indicator — check if anyone registered email for this room
+  checkRecordingStatus();
 }
 
 function showMicBanner(type, text) {
@@ -959,6 +1004,15 @@ function copyLink() {
   });
 }
 
+function checkRecordingStatus() {
+  // Show recording banner if host enabled recording (or current user is host with email)
+  if (roomRecording || (isHost && userEmail)) {
+    const banner = document.getElementById('recBanner');
+    banner.classList.add('active');
+    document.getElementById('recText').textContent = t('rec_recording');
+  }
+}
+
 function leaveCall() { if (room) room.disconnect(); }
 
 function startTimer() {
@@ -976,6 +1030,17 @@ function stopTimer() { if (timerInterval) clearInterval(timerInterval); }
 // ─── i18n ───
 const callI18n = {
   en: {
+    host_title: 'Create a call',
+    host_subtitle: 'Enter your name to start',
+    host_btn: 'Create',
+    host_email_placeholder: 'Your email — to receive AI summary',
+    host_email_hint: 'Leave your email to record the call and get an AI summary. Without email the call is not recorded.',
+    guest_title: 'Join the call',
+    guest_subtitle: 'Enter your name to join',
+    guest_email_placeholder: 'Your email — to also get the summary',
+    guest_email_hint: 'Enter your email to receive the AI summary too.',
+    rec_notice_title: 'Call is being recorded',
+    rec_notice_text: 'The host enabled recording for an AI summary',
     name_title: 'Enter your name',
     name_subtitle: 'You will join the call',
     name_placeholder: 'Your name',
@@ -1015,6 +1080,7 @@ const callI18n = {
     end_home_btn: 'Go to main page',
     end_summary_title: 'Summary will be sent',
     end_summary_text: 'AI summary will be sent to {email} within a few minutes.',
+    rec_recording: 'Call is being recorded for summary',
     // Browser instructions
     safari_mobile: '<ol><li>Open <b>Settings</b> → <b>Safari</b></li><li>Scroll to <b>Microphone</b> → <b>Allow</b></li><li>Come back and refresh the page</li></ol>',
     mobile_default: '<ol><li>Tap the <b>lock</b> 🔒 icon left of the address bar</li><li>Find <b>Microphone</b> → switch to <b>Allow</b></li><li>Refresh the page</li></ol>',
@@ -1025,6 +1091,17 @@ const callI18n = {
     mic_hint_title: 'Microphone blocked',
   },
   ru: {
+    host_title: 'Создать звонок',
+    host_subtitle: 'Введите имя, чтобы начать',
+    host_btn: 'Создать',
+    host_email_placeholder: 'Ваш email — для получения ИИ-сводки',
+    host_email_hint: 'Укажите email, чтобы записать звонок и получить ИИ-сводку. Без email звонок не записывается.',
+    guest_title: 'Присоединиться к звонку',
+    guest_subtitle: 'Введите имя, чтобы войти',
+    guest_email_placeholder: 'Ваш email — тоже получить сводку',
+    guest_email_hint: 'Укажите email, чтобы тоже получить ИИ-сводку.',
+    rec_notice_title: 'Звонок записывается',
+    rec_notice_text: 'Организатор включил запись для создания ИИ-сводки',
     name_title: 'Введите имя',
     name_subtitle: 'Вы присоединитесь к звонку',
     name_placeholder: 'Ваше имя',
@@ -1064,6 +1141,7 @@ const callI18n = {
     end_home_btn: 'На главную',
     end_summary_title: 'Сводка будет отправлена',
     end_summary_text: 'ИИ-сводка будет отправлена на {email} в течение нескольких минут.',
+    rec_recording: 'Звонок записывается для создания сводки',
     safari_mobile: '<ol><li>Откройте <b>Настройки</b> → <b>Safari</b></li><li>Прокрутите до <b>Микрофон</b> → <b>Разрешить</b></li><li>Вернитесь и обновите страницу</li></ol>',
     mobile_default: '<ol><li>Нажмите на <b>замок</b> 🔒 слева от адресной строки</li><li>Найдите <b>Микрофон</b> → переключите на <b>Разрешить</b></li><li>Обновите страницу</li></ol>',
     safari_desktop: '<ol><li>В меню <b>Safari</b> → <b>Настройки для этого сайта...</b></li><li>Рядом с <b>Микрофон</b> выберите <b>Разрешить</b></li><li>Обновите страницу</li></ol>',
@@ -1079,12 +1157,7 @@ const lang = (urlLang === 'en' || urlLang === 'ru') ? urlLang : (localStorage.ge
 function t(key) { return (callI18n[lang] && callI18n[lang][key]) || callI18n.ru[key] || key; }
 
 // Apply initial translations to static elements
-document.getElementById('nameTitle').textContent = t('name_title');
-document.getElementById('nameSubtitle').textContent = t('name_subtitle');
 document.getElementById('nameInput').placeholder = t('name_placeholder');
-document.getElementById('emailInput').placeholder = t('email_placeholder');
-document.getElementById('emailHint').textContent = t('email_hint');
-document.getElementById('nameBtn').textContent = t('name_btn');
 document.getElementById('micTitle').textContent = t('mic_title');
 document.getElementById('micSubtitle').innerHTML = t('mic_subtitle');
 document.getElementById('micRequestBtn').textContent = t('mic_request_btn');
@@ -1093,6 +1166,9 @@ document.getElementById('copyText').textContent = t('invite_btn');
 document.getElementById('leaveBtn').textContent = t('leave_btn');
 document.getElementById('shareToast').textContent = t('toast_copied');
 document.querySelector('.mic-hint-title').textContent = t('mic_hint_title');
+
+// Setup name screen based on host/guest role
+setupScreenForRole();
 </script>
 
 </body>

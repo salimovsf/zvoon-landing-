@@ -13,6 +13,7 @@ interface RoomData {
   emails: Map<string, string>; // participantName -> email
   egressIds: string[];
   lang: string;
+  recording: boolean; // true if host provided email
   createdAt: number;
 }
 
@@ -43,6 +44,7 @@ summaryRouter.post("/register-email", async (c) => {
       emails: new Map(),
       egressIds: [],
       lang: "ru",
+      recording: true,
       createdAt: Date.now(),
     });
   }
@@ -67,7 +69,7 @@ export async function processRoomSummary(roomSlug: string) {
   }
 
   const recordingsDir = path.join(
-    process.env.RECORDINGS_DIR || "/recordings",
+    process.env.RECORDINGS_DIR || "/srv/livekit/recordings",
     roomSlug
   );
 
