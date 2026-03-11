@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zvoon — Аудио звонки по ссылке с ИИ-сводкой</title>
+<title>Zvoon — Аудио звонки с ИИ сводкой</title>
 <meta name="description" content="Создайте аудиозвонок за секунду, отправьте ссылку — без регистрации и приложений. После разговора получите ИИ-расшифровку, сводку и задачи на email.">
 <meta name="keywords" content="звонки по ссылке, онлайн звонки без регистрации, аудиозвонки, ИИ сводка звонка, расшифровка разговора, call by link, audio call no registration, AI meeting summary">
 <meta name="robots" content="index, follow">
@@ -60,15 +60,12 @@ body {
 a { color: inherit; text-decoration: none; }
 .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 
-/* ─── Global SVG patterns (full page) ─── */
+/* ─── Global SVG patterns (full viewport, always visible) ─── */
 .page-patterns {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 100%;
-  min-height: 4000px;
+  position: fixed;
+  inset: 0;
   pointer-events: none;
   z-index: 0;
-  overflow: hidden;
 }
 .page-patterns svg { position: absolute; }
 
@@ -362,91 +359,111 @@ section { position: relative; z-index: 1; }
 </head>
 <body>
 
-<!-- Global background patterns — chaotic, covering entire page -->
+<!-- Global background patterns — fixed to viewport, covers everything -->
 <div class="page-patterns" aria-hidden="true">
-  <!-- Concentric circles top right -->
-  <svg width="400" height="400" viewBox="0 0 400 400" style="top:-80px;right:-60px;opacity:0.08">
-    <circle cx="200" cy="200" r="60" fill="none" stroke="#e8734a" stroke-width="1.5"/>
-    <circle cx="200" cy="200" r="100" fill="none" stroke="#e8734a" stroke-width="1.2"/>
-    <circle cx="200" cy="200" r="150" fill="none" stroke="#e8734a" stroke-width="0.8"/>
-    <circle cx="200" cy="200" r="190" fill="none" stroke="#e8734a" stroke-width="0.5"/>
+  <!-- Full-viewport dot grid, faint -->
+  <svg width="100%" height="100%" style="inset:0;opacity:0.045">
+    <pattern id="dotgrid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.6" fill="#e8734a"/></pattern>
+    <rect width="100%" height="100%" fill="url(#dotgrid)"/>
   </svg>
-  <!-- Dot grid left -->
-  <svg width="220" height="400" viewBox="0 0 220 400" style="top:8%;left:-10px;opacity:0.07">
-    <pattern id="dots1" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.8" fill="#e8734a"/></pattern>
-    <rect width="220" height="400" fill="url(#dots1)"/>
+
+  <!-- Concentric circles — top right -->
+  <svg width="420" height="420" viewBox="0 0 420 420" style="top:-50px;right:-80px;opacity:0.09">
+    <circle cx="210" cy="210" r="60" fill="none" stroke="#e8734a" stroke-width="1.5"/>
+    <circle cx="210" cy="210" r="110" fill="none" stroke="#e8734a" stroke-width="1.2"/>
+    <circle cx="210" cy="210" r="160" fill="none" stroke="#e8734a" stroke-width="0.8"/>
+    <circle cx="210" cy="210" r="200" fill="none" stroke="#e8734a" stroke-width="0.5"/>
   </svg>
-  <!-- Wavy lines right, hero area -->
-  <svg width="500" height="120" viewBox="0 0 500 120" style="top:22%;right:0;opacity:0.06">
-    <path d="M0 40Q40 10,80 40T160 40T240 40T320 40T400 40T500 40" fill="none" stroke="#e8734a" stroke-width="1.8"/>
-    <path d="M0 70Q40 40,80 70T160 70T240 70T320 70T400 70T500 70" fill="none" stroke="#e8734a" stroke-width="1.2"/>
-    <path d="M0 100Q40 70,80 100T160 100T240 100T320 100T400 100T500 100" fill="none" stroke="#e8734a" stroke-width="0.8"/>
+
+  <!-- Wavy lines — top area, right -->
+  <svg width="50vw" height="100" viewBox="0 0 500 100" style="top:12%;right:0;opacity:0.07" preserveAspectRatio="none">
+    <path d="M0 35Q40 5,80 35T160 35T240 35T320 35T400 35T500 35" fill="none" stroke="#e8734a" stroke-width="1.8"/>
+    <path d="M0 65Q40 35,80 65T160 65T240 65T320 65T400 65T500 65" fill="none" stroke="#e8734a" stroke-width="1.2"/>
   </svg>
-  <!-- Big squiggle arc mid-left -->
-  <svg width="300" height="300" viewBox="0 0 300 300" style="top:35%;left:2%;opacity:0.09">
-    <path d="M30 250C30 120 120 30 250 30" fill="none" stroke="#e8734a" stroke-width="1.8"/>
-    <circle cx="30" cy="250" r="5" fill="#e8734a" opacity="0.4"/>
-    <circle cx="250" cy="30" r="5" fill="#e8734a" opacity="0.4"/>
+
+  <!-- Big arc — left side -->
+  <svg width="300" height="300" viewBox="0 0 300 300" style="top:20%;left:-20px;opacity:0.1">
+    <path d="M20 270C20 130 130 20 270 20" fill="none" stroke="#e8734a" stroke-width="2"/>
+    <circle cx="20" cy="270" r="5" fill="#e8734a" opacity="0.5"/>
+    <circle cx="270" cy="20" r="5" fill="#e8734a" opacity="0.5"/>
   </svg>
-  <!-- Scattered circles mid-right -->
-  <svg width="300" height="300" viewBox="0 0 300 300" style="top:40%;right:3%;opacity:0.07">
-    <circle cx="50" cy="60" r="12" fill="none" stroke="#e8734a" stroke-width="1.2"/>
-    <circle cx="160" cy="120" r="30" fill="none" stroke="#e8734a" stroke-width="0.8"/>
-    <circle cx="250" cy="50" r="6" fill="#e8734a" opacity="0.2"/>
-    <circle cx="280" cy="200" r="18" fill="none" stroke="#e8734a" stroke-width="0.6"/>
-    <circle cx="80" cy="230" r="4" fill="#e8734a" opacity="0.3"/>
-    <circle cx="200" cy="260" r="10" fill="none" stroke="#e8734a" stroke-width="1"/>
+
+  <!-- Scattered shapes — center-right -->
+  <svg width="280" height="280" viewBox="0 0 280 280" style="top:30%;right:5%;opacity:0.08">
+    <circle cx="40" cy="50" r="14" fill="none" stroke="#e8734a" stroke-width="1.2"/>
+    <circle cx="150" cy="100" r="28" fill="none" stroke="#e8734a" stroke-width="0.8"/>
+    <circle cx="230" cy="40" r="5" fill="#e8734a" opacity="0.25"/>
+    <circle cx="260" cy="180" r="16" fill="none" stroke="#e8734a" stroke-width="0.7"/>
+    <circle cx="70" cy="210" r="4" fill="#e8734a" opacity="0.35"/>
+    <rect x="180" y="220" width="14" height="14" fill="none" stroke="#e8734a" stroke-width="0.8" transform="rotate(30 187 227)"/>
   </svg>
-  <!-- Cross hatch pricing area -->
-  <svg width="200" height="200" viewBox="0 0 200 200" style="top:52%;right:6%;opacity:0.06">
-    <line x1="0" y1="0" x2="200" y2="200" stroke="#e8734a" stroke-width="1"/>
-    <line x1="50" y1="0" x2="200" y2="150" stroke="#e8734a" stroke-width="0.7"/>
-    <line x1="0" y1="50" x2="150" y2="200" stroke="#e8734a" stroke-width="0.7"/>
-    <line x1="200" y1="0" x2="0" y2="200" stroke="#e8734a" stroke-width="1"/>
-    <line x1="100" y1="0" x2="200" y2="100" stroke="#e8734a" stroke-width="0.5"/>
+
+  <!-- Cross hatch — mid-left -->
+  <svg width="180" height="180" viewBox="0 0 180 180" style="top:45%;left:3%;opacity:0.07">
+    <line x1="0" y1="0" x2="180" y2="180" stroke="#e8734a" stroke-width="1"/>
+    <line x1="45" y1="0" x2="180" y2="135" stroke="#e8734a" stroke-width="0.7"/>
+    <line x1="0" y1="45" x2="135" y2="180" stroke="#e8734a" stroke-width="0.7"/>
+    <line x1="180" y1="0" x2="0" y2="180" stroke="#e8734a" stroke-width="1"/>
+    <line x1="90" y1="0" x2="180" y2="90" stroke="#e8734a" stroke-width="0.5"/>
   </svg>
-  <!-- Dashed arcs left -->
-  <svg width="350" height="250" viewBox="0 0 350 250" style="top:58%;left:0;opacity:0.06">
-    <path d="M-20 220Q175-30,340 220" fill="none" stroke="#e8734a" stroke-width="1.5" stroke-dasharray="10 8"/>
-    <path d="M20 250Q175 20,310 250" fill="none" stroke="#e8734a" stroke-width="0.8" stroke-dasharray="6 6"/>
+
+  <!-- Plus signs — mid-right, scattered -->
+  <svg width="220" height="260" viewBox="0 0 220 260" style="top:42%;right:8%;opacity:0.09">
+    <line x1="35" y1="25" x2="35" y2="45" stroke="#e8734a" stroke-width="2"/><line x1="25" y1="35" x2="45" y2="35" stroke="#e8734a" stroke-width="2"/>
+    <line x1="120" y1="75" x2="120" y2="95" stroke="#e8734a" stroke-width="2"/><line x1="110" y1="85" x2="130" y2="85" stroke="#e8734a" stroke-width="2"/>
+    <line x1="180" y1="150" x2="180" y2="170" stroke="#e8734a" stroke-width="2"/><line x1="170" y1="160" x2="190" y2="160" stroke="#e8734a" stroke-width="2"/>
+    <line x1="50" y1="190" x2="50" y2="210" stroke="#e8734a" stroke-width="2"/><line x1="40" y1="200" x2="60" y2="200" stroke="#e8734a" stroke-width="2"/>
+    <line x1="160" y1="235" x2="160" y2="255" stroke="#e8734a" stroke-width="2"/><line x1="150" y1="245" x2="170" y2="245" stroke="#e8734a" stroke-width="2"/>
   </svg>
-  <!-- Plus signs scattered -->
-  <svg width="260" height="300" viewBox="0 0 260 300" style="top:65%;right:10%;opacity:0.08">
-    <line x1="40" y1="30" x2="40" y2="50" stroke="#e8734a" stroke-width="2"/><line x1="30" y1="40" x2="50" y2="40" stroke="#e8734a" stroke-width="2"/>
-    <line x1="130" y1="80" x2="130" y2="100" stroke="#e8734a" stroke-width="2"/><line x1="120" y1="90" x2="140" y2="90" stroke="#e8734a" stroke-width="2"/>
-    <line x1="200" y1="160" x2="200" y2="180" stroke="#e8734a" stroke-width="2"/><line x1="190" y1="170" x2="210" y2="170" stroke="#e8734a" stroke-width="2"/>
-    <line x1="60" y1="200" x2="60" y2="220" stroke="#e8734a" stroke-width="2"/><line x1="50" y1="210" x2="70" y2="210" stroke="#e8734a" stroke-width="2"/>
-    <line x1="180" y1="260" x2="180" y2="280" stroke="#e8734a" stroke-width="2"/><line x1="170" y1="270" x2="190" y2="270" stroke="#e8734a" stroke-width="2"/>
+
+  <!-- Dashed arcs — center -->
+  <svg width="400" height="200" viewBox="0 0 400 200" style="top:55%;left:10%;opacity:0.07">
+    <path d="M0 180Q200-20,400 180" fill="none" stroke="#e8734a" stroke-width="1.5" stroke-dasharray="10 8"/>
+    <path d="M30 200Q200 20,370 200" fill="none" stroke="#e8734a" stroke-width="0.8" stroke-dasharray="6 6"/>
   </svg>
-  <!-- Zigzag bottom left -->
-  <svg width="300" height="80" viewBox="0 0 300 80" style="bottom:18%;left:3%;opacity:0.07">
-    <polyline points="0,60 30,20 60,60 90,20 120,60 150,20 180,60 210,20 240,60 270,20 300,60" fill="none" stroke="#e8734a" stroke-width="1.5"/>
+
+  <!-- Zigzag — bottom-left -->
+  <svg width="320" height="60" viewBox="0 0 320 60" style="bottom:25%;left:2%;opacity:0.08">
+    <polyline points="0,45 30,15 60,45 90,15 120,45 150,15 180,45 210,15 240,45 270,15 300,45 320,25" fill="none" stroke="#e8734a" stroke-width="1.5"/>
   </svg>
-  <!-- Small dots right bottom -->
-  <svg width="180" height="300" viewBox="0 0 180 300" style="bottom:5%;right:-10px;opacity:0.06">
-    <pattern id="dots2" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="#e8734a"/></pattern>
-    <rect width="180" height="300" fill="url(#dots2)"/>
+
+  <!-- Concentric circles — bottom-right -->
+  <svg width="320" height="320" viewBox="0 0 320 320" style="bottom:-40px;right:-30px;opacity:0.07">
+    <circle cx="160" cy="160" r="45" fill="none" stroke="#e8734a" stroke-width="1.2"/>
+    <circle cx="160" cy="160" r="90" fill="none" stroke="#e8734a" stroke-width="0.8"/>
+    <circle cx="160" cy="160" r="140" fill="none" stroke="#e8734a" stroke-width="0.5"/>
   </svg>
-  <!-- Spiral mid -->
-  <svg width="200" height="200" viewBox="0 0 200 200" style="top:75%;left:15%;opacity:0.06">
-    <path d="M100 100 C100 80, 120 60, 140 60 C160 60, 180 80, 180 100 C180 120, 160 140, 140 140 C120 140, 80 120, 80 100 C80 70, 110 40, 150 40" fill="none" stroke="#e8734a" stroke-width="1.2"/>
+
+  <!-- Wavy lines — bottom area -->
+  <svg width="60vw" height="80" viewBox="0 0 600 80" style="bottom:10%;left:20%;opacity:0.06" preserveAspectRatio="none">
+    <path d="M0 40Q50 10,100 40T200 40T300 40T400 40T500 40T600 40" fill="none" stroke="#e8734a" stroke-width="1.4"/>
   </svg>
-  <!-- Concentric circles bottom center -->
-  <svg width="300" height="300" viewBox="0 0 300 300" style="bottom:3%;left:40%;opacity:0.05">
-    <circle cx="150" cy="150" r="40" fill="none" stroke="#e8734a" stroke-width="1"/>
-    <circle cx="150" cy="150" r="80" fill="none" stroke="#e8734a" stroke-width="0.7"/>
-    <circle cx="150" cy="150" r="120" fill="none" stroke="#e8734a" stroke-width="0.5"/>
+
+  <!-- Dot cluster bottom-left -->
+  <svg width="200" height="200" viewBox="0 0 200 200" style="bottom:5%;left:5%;opacity:0.06">
+    <pattern id="dotcl" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.4" fill="#e8734a"/></pattern>
+    <rect width="200" height="200" fill="url(#dotcl)"/>
   </svg>
-  <!-- Wavy lines bottom -->
-  <svg width="600" height="80" viewBox="0 0 600 80" style="bottom:12%;left:0;opacity:0.05">
-    <path d="M0 40Q50 10,100 40T200 40T300 40T400 40T500 40T600 40" fill="none" stroke="#e8734a" stroke-width="1.2"/>
+
+  <!-- Spiral — bottom center-left -->
+  <svg width="200" height="200" viewBox="0 0 200 200" style="bottom:15%;left:30%;opacity:0.06">
+    <path d="M100 100C100 80,120 60,140 60C160 60,180 80,180 100C180 120,160 140,140 140C120 140,80 120,80 100C80 70,110 40,150 40" fill="none" stroke="#e8734a" stroke-width="1.2"/>
   </svg>
-  <!-- Random small shapes top-left -->
-  <svg width="200" height="200" viewBox="0 0 200 200" style="top:3%;left:20%;opacity:0.06">
+
+  <!-- Small rotated squares + triangle — top-left -->
+  <svg width="180" height="180" viewBox="0 0 180 180" style="top:5%;left:15%;opacity:0.07">
     <rect x="20" y="30" width="16" height="16" fill="none" stroke="#e8734a" stroke-width="1" transform="rotate(25 28 38)"/>
-    <polygon points="100,20 110,45 85,45" fill="none" stroke="#e8734a" stroke-width="1"/>
-    <circle cx="160" cy="60" r="3" fill="#e8734a" opacity="0.35"/>
-    <rect x="140" y="120" width="12" height="12" fill="none" stroke="#e8734a" stroke-width="0.8" transform="rotate(45 146 126)"/>
+    <polygon points="90,15 103,42 77,42" fill="none" stroke="#e8734a" stroke-width="1"/>
+    <circle cx="145" cy="55" r="3.5" fill="#e8734a" opacity="0.35"/>
+    <rect x="130" y="110" width="14" height="14" fill="none" stroke="#e8734a" stroke-width="0.8" transform="rotate(45 137 117)"/>
+  </svg>
+
+  <!-- Small shapes mid-bottom-right -->
+  <svg width="160" height="160" viewBox="0 0 160 160" style="bottom:30%;right:3%;opacity:0.07">
+    <polygon points="40,10 55,40 25,40" fill="none" stroke="#e8734a" stroke-width="1"/>
+    <rect x="90" y="50" width="18" height="18" fill="none" stroke="#e8734a" stroke-width="0.8" transform="rotate(15 99 59)"/>
+    <circle cx="130" cy="120" r="8" fill="none" stroke="#e8734a" stroke-width="1"/>
+    <circle cx="30" cy="130" r="3" fill="#e8734a" opacity="0.3"/>
   </svg>
 </div>
 
@@ -484,7 +501,7 @@ section { position: relative; z-index: 1; }
 <main>
 <section class="hero">
   <div class="container">
-    <h1 class="reveal" data-i18n-html="hero_title">Аудио звонки по ссылке <span class="line2"><span class="gradient">с ИИ-сводкой</span></span></h1>
+    <h1 class="reveal" data-i18n-html="hero_title">Аудио звонки <span class="line2"><span class="gradient">с ИИ сводкой</span></span></h1>
     <div class="hero-offers reveal">
       <span class="hero-offer" data-i18n="ho_1">Без регистрации</span>
       <span class="hero-offer" data-i18n="ho_2">До 10 человек бесплатно</span>
@@ -716,7 +733,7 @@ document.querySelectorAll('.faq-question').forEach(btn => {
 
 const i18n = {
   en: {
-    header_cta:'Start a call', hero_title:'Audio calls via link <span class="line2"><span class="gradient">with AI summary</span></span>',
+    header_cta:'Start a call', hero_title:'Audio calls <span class="line2"><span class="gradient">with AI summary</span></span>',
     hero_cta:'Start a call', ho_1:'No registration', ho_2:'Up to 10 people free', ho_3:'Crystal-clear audio', ho_4:'Summary to email',
     steps_label:'How it works', steps_title:'Three steps to a call',
     step1_title:'Create a call', step1_desc:'Press one button and get a unique link. No registration.',
@@ -737,7 +754,7 @@ const i18n = {
     footer_pricing:'Pricing', footer_policy:'Policy', footer_support:'Support',
   },
   ru: {
-    header_cta:'Создать звонок', hero_title:'Аудио звонки по ссылке <span class="line2"><span class="gradient">с ИИ-сводкой</span></span>',
+    header_cta:'Создать звонок', hero_title:'Аудио звонки <span class="line2"><span class="gradient">с ИИ сводкой</span></span>',
     hero_cta:'Создать звонок', ho_1:'Без регистрации', ho_2:'До 10 человек бесплатно', ho_3:'Идеальный звук', ho_4:'Сводка на почту',
     steps_label:'Как это работает', steps_title:'Три шага до звонка',
     step1_title:'Создайте звонок', step1_desc:'Нажмите одну кнопку и получите уникальную ссылку. Без регистрации.',
