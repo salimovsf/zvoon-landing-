@@ -685,28 +685,73 @@ micRequestBtn.addEventListener('click', async () => {
   micRequestBtn.disabled = true;
   micError.style.display = 'none';
 
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
-    });
-    // Got it! Stop preview tracks and proceed
-    stream.getTracks().forEach(t => t.stop());
-    await startCall(true);
-  } catch (e) {
-    console.warn('getUserMedia error:', e.name, e.message);
-    micRequestBtn.disabled = false;
+  // Debug: check what's available
+  const debugInfo = [];
+  debugInfo.push('secure: ' + window.isSecureContext);
+  debugInfo.push('mediaDevices: ' + !!navigator.mediaDevices);
+  debugInfo.push('getUserMedia: ' + !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia));
 
-    if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
-      showMicDeniedUI();
-    } else if (e.name === 'NotFoundError' || e.name === 'DevicesNotFoundError') {
-      document.getElementById('micTitle').textContent = 'Микрофон не найден';
-      document.getElementById('micSubtitle').textContent = 'Подключите микрофон или наушники с микрофоном и попробуйте снова.';
-      document.getElementById('micIconBig').classList.remove('pulsing');
-    } else {
-      micError.textContent = `Ошибка: ${e.message}`;
-      micError.style.display = 'block';
+  // Check for devices first
+  if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const audioInputs = devices.filter(d => d.kind === 'audioinput');
+      debugInfo.push('audio devices: ' + audioInputs.length);
+      audioInputs.forEach((d, i) => debugInfo.push(`  mic${i}: ${d.label || '(no label)'} [${d.deviceId.slice(0,8)}]`));
+    } catch (e) {
+      debugInfo.push('enumerate error: ' + e.message);
     }
   }
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    micError.textContent = 'Браузер не поддерживает доступ к микрофону. ' + debugInfo.join(' | ');
+    micError.style.display = 'block';
+    micRequestBtn.disabled = false;
+    return;
+  }
+
+  // Try getUserMedia with multiple constraint sets
+  const constraintSets = [
+    { audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } },
+    { audio: true },
+  ];
+
+  for (let i = 0; i < constraintSets.length; i++) {
+    try {
+      debugInfo.push(`trying constraints ${i}...`);
+      const stream = await navigator.mediaDevices.getUserMedia(constraintSets[i]);
+      // Success!
+      const tracks = stream.getAudioTracks();
+      debugInfo.push(`got ${tracks.length} tracks: ${tracks.map(t => t.label).join(', ')}`);
+      stream.getTracks().forEach(t => t.stop());
+      await startCall(true);
+      return;
+    } catch (e) {
+      debugInfo.push(`fail ${i}: ${e.name}: ${e.message}`);
+
+      if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
+        // Don't try more constraints — user denied
+        showMicDeniedUI();
+        micRequestBtn.disabled = false;
+        return;
+      }
+      // Try next constraint set
+    }
+  }
+
+  // All constraint sets failed
+  micRequestBtn.disabled = false;
+  const lastDebug = debugInfo.join('\n');
+  console.error('All getUserMedia attempts failed:', lastDebug);
+
+  // Show debug info temporarily to help diagnose
+  micError.textContent = 'Не удалось получить доступ к микрофону.\n' + debugInfo.filter(d => d.startsWith('fail') || d.startsWith('audio')).join(' | ');
+  micError.style.display = 'block';
+  micError.style.whiteSpace = 'pre-wrap';
+
+  document.getElementById('micTitle').textContent = 'Микрофон не найден';
+  document.getElementById('micSubtitle').textContent = 'Подключите микрофон или наушники с микрофоном и попробуйте снова.';
+  document.getElementById('micIconBig').classList.remove('pulsing');
 });
 
 micSkipBtn.addEventListener('click', () => {
