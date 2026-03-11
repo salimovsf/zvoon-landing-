@@ -9,10 +9,8 @@
 <meta name="robots" content="index, follow">
 <meta name="author" content="Zvoon">
 <link rel="canonical" href="https://zvoon.ai/">
-
-<!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Zvoon — Мгновенные звонки по ссылке">
+<meta property="og:title" content="Zvoon — Аудио звонки по ссылке">
 <meta property="og:description" content="Без регистрации и приложений. Создайте звонок, отправьте ссылку, получите ИИ-сводку после разговора.">
 <meta property="og:url" content="https://zvoon.ai/">
 <meta property="og:site_name" content="Zvoon">
@@ -21,99 +19,14 @@
 <meta property="og:image" content="https://zvoon.ai/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-
-<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Zvoon — Мгновенные звонки по ссылке">
+<meta name="twitter:title" content="Zvoon — Аудио звонки по ссылке">
 <meta name="twitter:description" content="Без регистрации. Создайте звонок, отправьте ссылку, получите ИИ-сводку.">
 <meta name="twitter:image" content="https://zvoon.ai/og-image.png">
-
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
-<!-- Structured Data: SoftwareApplication -->
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Zvoon",
-  "description": "Мгновенные аудиозвонки по ссылке без регистрации с опциональной ИИ-сводкой разговора",
-  "url": "https://zvoon.ai",
-  "applicationCategory": "CommunicationApplication",
-  "operatingSystem": "Web",
-  "offers": [
-    {
-      "@type": "Offer",
-      "name": "Бесплатный тариф",
-      "price": "0",
-      "priceCurrency": "USD",
-      "description": "1:1 без ограничений, до 5 человек — 60 мин, до 10 — 30 мин"
-    },
-    {
-      "@type": "Offer",
-      "name": "Платный хост",
-      "price": "5.00",
-      "priceCurrency": "USD",
-      "description": "До 10 участников без ограничения по времени"
-    },
-    {
-      "@type": "Offer",
-      "name": "ИИ-кредиты",
-      "price": "3.00",
-      "priceCurrency": "USD",
-      "description": "120 участнико-минут: расшифровка, сводка, темы, задачи"
-    }
-  ]
-}
-</script>
-
-<!-- Structured Data: FAQ -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Нужна ли регистрация для звонка?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Нет. Создайте звонок и отправьте ссылку. Участники заходят без регистрации."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Сколько длится звонок?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "1:1 — без ограничений по времени. Группы до 5 человек — 60 минут, до 10 человек — 30 минут на бесплатном тарифе. Платный хост ($5/мес) снимает все лимиты."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Кто видит ИИ-сводку?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Только тот, кто её заказал и оплатил. Результат приходит на указанный email."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Как работает оплата?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Stripe для международных карт, ЮKassa для России. Определяется автоматически."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Можно ли использовать без ИИ-сводки?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Да. Аудиозвонки полностью бесплатны. ИИ-сводка подключается отдельно по желанию за кредиты."
-      }
-    }
-  ]
-}
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Zvoon","description":"Аудиозвонки по ссылке без регистрации с ИИ-сводкой","url":"https://zvoon.ai","applicationCategory":"CommunicationApplication","operatingSystem":"Web","offers":[{"@type":"Offer","name":"Бесплатно","price":"0","priceCurrency":"USD"},{"@type":"Offer","name":"Pro","price":"5.00","priceCurrency":"USD"},{"@type":"Offer","name":"Business","price":"25.00","priceCurrency":"USD"}]}
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -126,7 +39,10 @@
   --bg: #fdf6ef;
   --card: #ffffff;
   --accent: #e8734a;
-  --secondary: #2d6a4f;
+  --accent2: #c74f2e;
+  --biz: #1e40af;
+  --biz2: #1d4ed8;
+  --green: #2d6a4f;
   --text: #1a1a1a;
   --muted: #7a7067;
   --peach: #fff0e6;
@@ -138,15 +54,21 @@ body {
   color: var(--text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  position: relative;
 }
 
 a { color: inherit; text-decoration: none; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 24px;
+/* ─── Global SVG patterns (full page) ─── */
+.page-patterns {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
 }
+.page-patterns svg { position: absolute; }
 
 /* ─── Logo vibrate ─── */
 @keyframes zvibe {
@@ -165,654 +87,324 @@ a { color: inherit; text-decoration: none; }
   animation: zvibe 2s ease-in-out infinite, zglow 3s ease-in-out infinite;
 }
 
-/* ─── Header ─── */
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(253, 246, 239, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-  transition: box-shadow 0.3s;
-}
-
-.header.scrolled {
-  box-shadow: 0 2px 20px rgba(0,0,0,0.06);
-}
-
-.header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: -0.5px;
-}
-
-.logo svg { flex-shrink: 0; }
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.lang-switch {
-  display: flex;
-  gap: 2px;
-  background: var(--peach);
-  border-radius: 8px;
-  padding: 3px;
-}
-
-.lang-switch button {
-  border: none;
-  background: transparent;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  color: var(--muted);
-  transition: all 0.2s;
-}
-
-.lang-switch button.active {
-  background: var(--card);
-  color: var(--text);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-}
-
-.header-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: linear-gradient(135deg, #e8734a, #d4603a, #c74f2e);
-  background-size: 200% 200%;
-  animation: gradientShift 3s ease infinite;
-  color: #fff;
-  font-weight: 700;
-  font-size: 14px;
-  padding: 10px 22px;
-  border-radius: 50px;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 12px rgba(232, 115, 74, 0.25);
-}
-
-.header-cta:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(232, 115, 74, 0.45);
-}
-
 @keyframes gradientShift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }
 
+/* ─── Header ─── */
+.header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(253, 246, 239, 0.92);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  transition: box-shadow 0.3s;
+}
+.header.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; letter-spacing: -0.5px; }
+.logo svg { flex-shrink: 0; }
+.header-right { display: flex; align-items: center; gap: 24px; }
+.lang-switch { display: flex; gap: 2px; background: var(--peach); border-radius: 8px; padding: 3px; }
+.lang-switch button { border: none; background: transparent; font-family: inherit; font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 6px; cursor: pointer; color: var(--muted); transition: all 0.2s; }
+.lang-switch button.active { background: var(--card); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.header-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, #e8734a, #d4603a, #c74f2e);
+  background-size: 200% 200%; animation: gradientShift 3s ease infinite;
+  color: #fff; font-weight: 700; font-size: 14px; padding: 10px 22px;
+  border-radius: 50px; border: none; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(232, 115, 74, 0.25);
+}
+.header-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(232, 115, 74, 0.45); }
+
 /* ─── Hero ─── */
-.hero {
-  text-align: center;
-  padding: 120px 24px 100px;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.hero-bg svg {
-  position: absolute;
-  opacity: 0.06;
-}
-
-.hero .container {
-  position: relative;
-  z-index: 1;
-}
+.hero { text-align: center; padding: 120px 24px 100px; position: relative; z-index: 1; }
 
 .hero h1 {
-  font-size: clamp(44px, 7vw, 72px);
-  font-weight: 800;
-  letter-spacing: -2.5px;
-  line-height: 1.1;
-  max-width: 700px;
-  margin: 0 auto 24px;
+  font-size: clamp(40px, 7vw, 72px);
+  font-weight: 800; letter-spacing: -2.5px; line-height: 1.1;
+  max-width: 750px; margin: 0 auto 28px;
 }
-
 .hero h1 .gradient {
   background: linear-gradient(135deg, var(--accent), #d4603a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
+.hero h1 .line2 { display: block; }
 
 .hero-offers {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px 20px;
-  margin: 0 auto 40px;
-  max-width: 600px;
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 8px 20px; margin: 0 auto 44px; max-width: 600px;
 }
-
 .hero-offer {
-  font-size: 15px;
-  color: var(--muted);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  line-height: 1.5;
+  font-size: 15px; color: var(--muted);
+  display: flex; align-items: center; gap: 6px; line-height: 1.5;
 }
-
 .hero-offer::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex-shrink: 0;
-  opacity: 0.6;
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); flex-shrink: 0; opacity: 0.6;
 }
 
+/* CTA with phone cord */
+.hero-cta-wrap { position: relative; display: inline-block; }
 .hero-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+  display: inline-flex; align-items: center; gap: 10px;
   background: linear-gradient(135deg, #e8734a, #d4603a, #c74f2e);
-  background-size: 200% 200%;
-  animation: gradientShift 3s ease infinite;
-  color: #fff;
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 17px;
-  padding: 18px 44px;
-  border-radius: 50px;
-  border: none;
-  cursor: pointer;
+  background-size: 200% 200%; animation: gradientShift 3s ease infinite;
+  color: #fff; font-family: inherit; font-weight: 700; font-size: 17px;
+  padding: 18px 44px; border-radius: 50px; border: none; cursor: pointer;
   transition: transform 0.25s, box-shadow 0.25s;
   box-shadow: 0 4px 20px rgba(232, 115, 74, 0.3);
-  position: relative;
+  position: relative; z-index: 2;
 }
+.hero-cta:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 32px rgba(232, 115, 74, 0.45); }
 
-.hero-cta::after {
-  content: '';
+.phone-cord {
   position: absolute;
-  inset: -3px;
-  border-radius: 54px;
-  background: linear-gradient(135deg, rgba(232,115,74,0.4), rgba(212,96,58,0.1));
-  z-index: -1;
-  filter: blur(12px);
-  opacity: 0;
-  transition: opacity 0.3s;
+  top: 50%; right: -200vw; width: 200vw; height: 40px;
+  transform: translateY(-50%);
+  pointer-events: none; z-index: 1;
 }
-
-.hero-cta:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 32px rgba(232, 115, 74, 0.45);
-}
-
-.hero-cta:hover::after {
-  opacity: 1;
-}
-
-.hero-cta svg {
-  transition: transform 0.25s;
-}
-
-.hero-cta:hover svg {
-  transform: translateX(4px);
+.phone-cord path {
+  fill: none; stroke: var(--accent); stroke-width: 2.5;
+  stroke-linecap: round; opacity: 0.25;
 }
 
 /* ─── Divider ─── */
-.divider {
-  width: 80px;
-  height: 1px;
-  background: var(--accent);
-  margin: 0 auto;
-  opacity: 0.5;
-}
+.divider { width: 80px; height: 1px; background: var(--accent); margin: 0 auto; opacity: 0.5; }
+
+/* ─── Sections ─── */
+section { position: relative; z-index: 1; }
+.section-label { text-align: center; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 12px; }
+.section-title { text-align: center; font-size: clamp(28px, 4vw, 40px); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 56px; }
 
 /* ─── Steps ─── */
-.steps {
-  padding: 80px 24px;
-}
-
-.section-label {
-  text-align: center;
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--accent);
-  margin-bottom: 12px;
-}
-
-.section-title {
-  text-align: center;
-  font-size: clamp(28px, 4vw, 40px);
-  font-weight: 800;
-  letter-spacing: -1.5px;
-  margin-bottom: 56px;
-}
-
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-}
-
-.step {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-}
-
-.step-number {
-  font-size: 48px;
-  font-weight: 800;
-  color: var(--accent);
-  line-height: 1;
-  flex-shrink: 0;
-  min-width: 52px;
-}
-
-.step-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 6px;
-  letter-spacing: -0.3px;
-}
-
-.step-desc {
-  font-size: 15px;
-  color: var(--muted);
-  line-height: 1.5;
-}
+.steps { padding: 80px 24px; }
+.steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.step { display: flex; gap: 20px; align-items: flex-start; }
+.step-icon { width: 52px; height: 52px; border-radius: 14px; background: var(--peach); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 24px; height: 24px; stroke: var(--accent); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.step-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+.step-desc { font-size: 15px; color: var(--muted); line-height: 1.5; }
 
 /* ─── Pricing ─── */
-.pricing {
-  padding: 80px 24px;
-}
-
-.pricing-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 0;
-}
-
+.pricing { padding: 80px 24px; }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .pricing-card {
-  background: var(--card);
-  border-radius: 20px;
-  padding: 36px 28px;
+  background: var(--card); border-radius: 20px; padding: 36px 28px;
   border: 1px solid rgba(0,0,0,0.06);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s; position: relative;
 }
+.pricing-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
 
-.pricing-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
-}
-
-.pricing-card.featured {
-  border: 2px solid var(--secondary);
-  position: relative;
-}
+.pricing-card.featured { border: 2px solid var(--green); }
+.pricing-card.business { border: 2px solid var(--biz); background: linear-gradient(180deg, #f0f4ff 0%, #fff 40%); }
 
 .pricing-badge {
-  position: absolute;
-  top: -13px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--secondary);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 5px 16px;
-  border-radius: 20px;
-  white-space: nowrap;
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  color: #fff; font-size: 12px; font-weight: 700; padding: 5px 16px;
+  border-radius: 20px; white-space: nowrap;
 }
+.pricing-card.featured .pricing-badge { background: var(--green); }
+.pricing-card.business .pricing-badge { background: linear-gradient(135deg, var(--biz), var(--biz2)); }
 
-.pricing-name {
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--muted);
-  margin-bottom: 12px;
-}
+.pricing-emoji { font-size: 32px; margin-bottom: 16px; }
+.pricing-name { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 12px; }
+.pricing-card.business .pricing-name { color: var(--biz); }
+.pricing-price { font-size: 40px; font-weight: 800; letter-spacing: -2px; margin-bottom: 4px; }
+.pricing-card.business .pricing-price { color: var(--biz); }
+.pricing-period { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
 
-.pricing-price {
-  font-size: 40px;
-  font-weight: 800;
-  letter-spacing: -2px;
-  margin-bottom: 4px;
-}
-
-.pricing-period {
-  font-size: 14px;
-  color: var(--muted);
-  margin-bottom: 24px;
-}
-
-.pricing-features {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 28px;
-}
-
-.pricing-features li {
-  font-size: 15px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  line-height: 1.4;
-}
-
-.pricing-features li::before {
-  content: '';
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  margin-top: 1px;
-  background: var(--peach);
-  border-radius: 50%;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23e8734a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.pricing-card.featured .pricing-features li::before {
-  background-color: #e8f5e9;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232d6a4f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
-}
+.pricing-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+.pricing-features li { font-size: 15px; display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
+.pricing-features li .li-icon { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.pricing-features li .li-icon svg { width: 12px; height: 12px; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+.pricing-card:first-child .li-icon { background: var(--peach); }
+.pricing-card:first-child .li-icon svg { stroke: var(--accent); }
+.pricing-card.featured .li-icon { background: #e8f5e9; }
+.pricing-card.featured .li-icon svg { stroke: var(--green); }
+.pricing-card.business .li-icon { background: #dbeafe; }
+.pricing-card.business .li-icon svg { stroke: var(--biz); }
 
 .pricing-btn {
-  display: block;
-  width: 100%;
-  text-align: center;
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 15px;
-  padding: 14px 24px;
-  border-radius: 50px;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  display: block; width: 100%; text-align: center; font-family: inherit;
+  font-weight: 700; font-size: 15px; padding: 14px 24px; border-radius: 50px;
+  border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
 }
-
 .pricing-btn.primary {
   background: linear-gradient(135deg, #e8734a, #d4603a, #c74f2e);
-  background-size: 200% 200%;
-  animation: gradientShift 3s ease infinite;
-  color: #fff;
-  box-shadow: 0 2px 12px rgba(232, 115, 74, 0.25);
+  background-size: 200% 200%; animation: gradientShift 3s ease infinite;
+  color: #fff; box-shadow: 0 2px 12px rgba(232, 115, 74, 0.25);
 }
+.pricing-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(232, 115, 74, 0.4); }
+.pricing-btn.secondary { background: var(--green); color: #fff; }
+.pricing-btn.secondary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(45, 106, 79, 0.3); }
+.pricing-btn.business-btn { background: linear-gradient(135deg, var(--biz), var(--biz2)); color: #fff; box-shadow: 0 2px 12px rgba(30, 64, 175, 0.25); }
+.pricing-btn.business-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(30, 64, 175, 0.4); }
+.pricing-btn.outline { background: transparent; color: var(--text); border: 1.5px solid rgba(0,0,0,0.12); }
+.pricing-btn.outline:hover { border-color: var(--accent); color: var(--accent); }
 
-.pricing-btn.primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(232, 115, 74, 0.4);
+/* ─── Summary infographic ─── */
+.summary { padding: 80px 24px; }
+.summary-flow {
+  display: flex; align-items: stretch; gap: 0; max-width: 900px; margin: 0 auto;
+  position: relative;
 }
-
-.pricing-btn.secondary {
-  background: var(--secondary);
-  color: #fff;
+.summary-flow::before {
+  content: ''; position: absolute; top: 50%; left: 40px; right: 40px;
+  height: 2px; background: linear-gradient(90deg, var(--accent), var(--peach), var(--accent));
+  opacity: 0.3; z-index: 0;
 }
-
-.pricing-btn.secondary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(45, 106, 79, 0.3);
+.summary-step {
+  flex: 1; text-align: center; padding: 24px 16px;
+  position: relative; z-index: 1;
 }
-
-.pricing-btn.outline {
-  background: transparent;
-  color: var(--text);
-  border: 1.5px solid rgba(0,0,0,0.12);
+.summary-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--card); border: 2px solid var(--peach);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px; font-size: 28px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
-
-.pricing-btn.outline:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-/* ─── Summary ─── */
-.summary {
-  padding: 80px 24px;
-}
-
-.summary-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-}
-
-.summary-card {
-  background: var(--card);
-  border-radius: 20px;
-  padding: 32px 28px;
-  border: 1px solid rgba(0,0,0,0.06);
-}
-
-.summary-card-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  letter-spacing: -0.3px;
-}
-
-.summary-card-desc {
-  font-size: 15px;
-  color: var(--muted);
-  line-height: 1.5;
-}
+.summary-step:hover .summary-icon { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(232,115,74,0.12); }
+.summary-step-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.summary-step-desc { font-size: 13px; color: var(--muted); line-height: 1.4; }
+.summary-arrow { display: flex; align-items: center; justify-content: center; padding: 0 4px; color: var(--accent); opacity: 0.4; z-index: 1; }
 
 /* ─── FAQ ─── */
-.faq {
-  padding: 80px 24px;
-}
-
-.faq-list {
-  max-width: 700px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.faq-item {
-  border-bottom: 1px solid rgba(0,0,0,0.07);
-}
-
+.faq { padding: 80px 24px; }
+.faq-list { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
+.faq-item { border-bottom: 1px solid rgba(0,0,0,0.07); }
 .faq-question {
-  width: 100%;
-  background: none;
-  border: none;
-  text-align: left;
-  font-family: inherit;
-  font-size: 17px;
-  font-weight: 600;
-  padding: 20px 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  color: var(--text);
-  letter-spacing: -0.2px;
+  width: 100%; background: none; border: none; text-align: left;
+  font-family: inherit; font-size: 17px; font-weight: 600; padding: 20px 0;
+  cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; color: var(--text); letter-spacing: -0.2px;
 }
-
-.faq-question:hover {
-  color: var(--accent);
-}
-
+.faq-question:hover { color: var(--accent); }
 .faq-icon {
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--peach);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%;
+  background: var(--peach); display: flex; align-items: center; justify-content: center;
   transition: transform 0.3s, background 0.3s;
 }
-
-.faq-item.open .faq-icon {
-  transform: rotate(45deg);
-  background: var(--accent);
-}
-
-.faq-item.open .faq-icon svg path {
-  stroke: #fff;
-}
-
-.faq-answer {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.35s ease, padding 0.35s ease;
-}
-
-.faq-answer-inner {
-  padding: 0 0 20px;
-  font-size: 15px;
-  color: var(--muted);
-  line-height: 1.6;
-}
+.faq-item.open .faq-icon { transform: rotate(45deg); background: var(--accent); }
+.faq-item.open .faq-icon svg path { stroke: #fff; }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.faq-answer-inner { padding: 0 0 20px; font-size: 15px; color: var(--muted); line-height: 1.6; }
 
 /* ─── Footer ─── */
-.footer {
-  padding: 60px 24px;
-  border-top: 1px solid rgba(0,0,0,0.06);
-}
-
-.footer-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 24px;
-}
-
-.footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 800;
-  font-size: 18px;
-  letter-spacing: -0.5px;
-}
-
-.footer-links {
-  display: flex;
-  gap: 28px;
-}
-
-.footer-links a {
-  font-size: 14px;
-  color: var(--muted);
-  transition: color 0.2s;
-}
-
+.footer { padding: 60px 24px; border-top: 1px solid rgba(0,0,0,0.06); position: relative; z-index: 1; }
+.footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+.footer-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 18px; letter-spacing: -0.5px; }
+.footer-links { display: flex; gap: 28px; }
+.footer-links a { font-size: 14px; color: var(--muted); transition: color 0.2s; }
 .footer-links a:hover { color: var(--text); }
-
-.footer-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.footer-socials {
-  display: flex;
-  gap: 12px;
-}
-
+.footer-right { display: flex; align-items: center; gap: 20px; }
+.footer-socials { display: flex; gap: 12px; }
 .footer-socials a {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: var(--peach);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 36px; height: 36px; border-radius: 10px; background: var(--peach);
+  display: flex; align-items: center; justify-content: center;
   transition: background 0.2s, transform 0.2s;
 }
-
-.footer-socials a:hover {
-  background: var(--accent);
-  transform: translateY(-2px);
-}
-
-.footer-socials a:hover svg path {
-  fill: #fff;
-}
-
-.footer-copy {
-  font-size: 13px;
-  color: var(--muted);
-}
+.footer-socials a:hover { background: var(--accent); transform: translateY(-2px); }
+.footer-socials a:hover svg path { fill: #fff; }
+.footer-copy { font-size: 13px; color: var(--muted); }
 
 /* ─── Scroll reveal ─── */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
 /* ─── Responsive ─── */
 @media (max-width: 768px) {
   .hero { padding: 80px 24px 64px; }
   .hero h1 { letter-spacing: -2px; }
+  .hero h1 .line2 { display: inline; }
   .hero-cta { padding: 16px 32px; font-size: 16px; }
   .hero-offers { gap: 6px 16px; }
   .hero-offer { font-size: 14px; }
+  .phone-cord { display: none; }
 
-  .steps-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
+  .steps-grid { grid-template-columns: 1fr; gap: 32px; }
 
   .pricing-grid {
-    grid-template-columns: 1fr;
-    max-width: 400px;
-    margin: 0 auto;
+    grid-template-columns: repeat(3, 85vw);
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px; padding-bottom: 8px;
+    margin: 0 -24px; padding-left: 24px; padding-right: 24px;
   }
+  .pricing-card { scroll-snap-align: center; flex-shrink: 0; }
 
-  .summary-grid {
-    grid-template-columns: 1fr;
-  }
+  .summary-flow { flex-direction: column; gap: 0; }
+  .summary-flow::before { display: none; }
+  .summary-arrow { transform: rotate(90deg); padding: 4px 0; }
 
   .header-cta { display: none; }
-
-  .footer-inner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  .footer-inner { flex-direction: column; align-items: flex-start; }
 }
+
+/* ─── Lucide icon base ─── */
+.lucide { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.lucide-sm { width: 16px; height: 16px; }
 </style>
 </head>
 <body>
+
+<!-- Global background patterns -->
+<div class="page-patterns" aria-hidden="true">
+  <!-- Top right: concentric circles -->
+  <svg width="300" height="300" viewBox="0 0 300 300" style="top:-60px;right:-40px;opacity:0.04">
+    <circle cx="150" cy="150" r="50" fill="none" stroke="#e8734a" stroke-width="1.5"/>
+    <circle cx="150" cy="150" r="90" fill="none" stroke="#e8734a" stroke-width="1"/>
+    <circle cx="150" cy="150" r="130" fill="none" stroke="#e8734a" stroke-width="0.7"/>
+  </svg>
+  <!-- Left: dot grid -->
+  <svg width="180" height="260" viewBox="0 0 180 260" style="top:15%;left:-20px;opacity:0.035">
+    <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="#e8734a"/></pattern>
+    <rect width="180" height="260" fill="url(#dots)"/>
+  </svg>
+  <!-- Mid right: wavy lines -->
+  <svg width="400" height="100" viewBox="0 0 400 100" style="top:35%;right:0;opacity:0.03">
+    <path d="M0 50Q50 10,100 50T200 50T300 50T400 50" fill="none" stroke="#e8734a" stroke-width="1.5"/>
+    <path d="M0 70Q50 30,100 70T200 70T300 70T400 70" fill="none" stroke="#e8734a" stroke-width="1"/>
+  </svg>
+  <!-- Mid left: abstract squiggle -->
+  <svg width="200" height="200" viewBox="0 0 200 200" style="top:50%;left:3%;opacity:0.05">
+    <path d="M20 100C20 60 60 20 100 20S180 60 180 100" fill="none" stroke="#e8734a" stroke-width="1.5"/>
+    <circle cx="20" cy="100" r="4" fill="#e8734a" opacity="0.5"/>
+    <circle cx="180" cy="100" r="4" fill="#e8734a" opacity="0.5"/>
+  </svg>
+  <!-- Bottom right: cross hatch -->
+  <svg width="120" height="120" viewBox="0 0 120 120" style="top:65%;right:8%;opacity:0.03">
+    <line x1="0" y1="0" x2="120" y2="120" stroke="#e8734a" stroke-width="1"/>
+    <line x1="40" y1="0" x2="120" y2="80" stroke="#e8734a" stroke-width="0.7"/>
+    <line x1="0" y1="40" x2="80" y2="120" stroke="#e8734a" stroke-width="0.7"/>
+    <line x1="120" y1="0" x2="0" y2="120" stroke="#e8734a" stroke-width="1"/>
+  </svg>
+  <!-- Bottom left: scattered circles -->
+  <svg width="240" height="200" viewBox="0 0 240 200" style="bottom:10%;left:5%;opacity:0.04">
+    <circle cx="30" cy="40" r="8" fill="none" stroke="#e8734a" stroke-width="1"/>
+    <circle cx="100" cy="80" r="20" fill="none" stroke="#e8734a" stroke-width="0.8"/>
+    <circle cx="180" cy="30" r="4" fill="#e8734a" opacity="0.3"/>
+    <circle cx="200" cy="140" r="12" fill="none" stroke="#e8734a" stroke-width="0.6"/>
+    <circle cx="60" cy="160" r="3" fill="#e8734a" opacity="0.4"/>
+  </svg>
+  <!-- Pricing area: dashed arcs -->
+  <svg width="300" height="200" viewBox="0 0 300 200" style="top:55%;right:2%;opacity:0.025">
+    <path d="M10 180Q150-20,290 180" fill="none" stroke="#e8734a" stroke-width="1.2" stroke-dasharray="8 6"/>
+  </svg>
+  <!-- FAQ area: tiny plus signs -->
+  <svg width="160" height="160" viewBox="0 0 160 160" style="bottom:20%;right:12%;opacity:0.04">
+    <line x1="30" y1="25" x2="30" y2="35" stroke="#e8734a" stroke-width="1.5"/>
+    <line x1="25" y1="30" x2="35" y2="30" stroke="#e8734a" stroke-width="1.5"/>
+    <line x1="90" y1="70" x2="90" y2="80" stroke="#e8734a" stroke-width="1.5"/>
+    <line x1="85" y1="75" x2="95" y2="75" stroke="#e8734a" stroke-width="1.5"/>
+    <line x1="130" y1="120" x2="130" y2="130" stroke="#e8734a" stroke-width="1.5"/>
+    <line x1="125" y1="125" x2="135" y2="125" stroke="#e8734a" stroke-width="1.5"/>
+  </svg>
+</div>
 
 <!-- Header -->
 <header class="header" id="header">
@@ -837,7 +429,7 @@ a { color: inherit; text-decoration: none; }
         </div>
         <a href="call.html?host=1" class="header-cta">
           <span data-i18n="header_cta">Создать звонок</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <svg class="lucide lucide-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
     </div>
@@ -846,54 +438,29 @@ a { color: inherit; text-decoration: none; }
 
 <!-- Hero -->
 <main>
-<section class="hero" aria-label="Главный экран">
-  <!-- SVG background patterns -->
-  <div class="hero-bg" aria-hidden="true">
-    <!-- Sound waves -->
-    <svg width="320" height="320" viewBox="0 0 320 320" style="top:-40px;right:-60px">
-      <circle cx="160" cy="160" r="60" fill="none" stroke="#e8734a" stroke-width="1.5"/>
-      <circle cx="160" cy="160" r="100" fill="none" stroke="#e8734a" stroke-width="1"/>
-      <circle cx="160" cy="160" r="140" fill="none" stroke="#e8734a" stroke-width="0.7"/>
-    </svg>
-    <!-- Dots grid -->
-    <svg width="200" height="200" viewBox="0 0 200 200" style="bottom:20px;left:-30px">
-      <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
-        <circle cx="2" cy="2" r="1.5" fill="#e8734a"/>
-      </pattern>
-      <rect width="200" height="200" fill="url(#dots)"/>
-    </svg>
-    <!-- Z letter -->
-    <svg width="280" height="280" viewBox="0 0 280 280" style="top:50%;left:5%;transform:translateY(-50%)">
-      <path d="M60 60h160l-160 160h160" fill="none" stroke="#e8734a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <!-- Wave lines -->
-    <svg width="400" height="120" viewBox="0 0 400 120" style="bottom:-10px;right:10%">
-      <path d="M0 60 Q50 20, 100 60 T200 60 T300 60 T400 60" fill="none" stroke="#e8734a" stroke-width="1.2"/>
-      <path d="M0 80 Q50 40, 100 80 T200 80 T300 80 T400 80" fill="none" stroke="#e8734a" stroke-width="0.8"/>
-    </svg>
-    <!-- Corner circles -->
-    <svg width="160" height="160" viewBox="0 0 160 160" style="top:10%;right:15%">
-      <circle cx="80" cy="80" r="3" fill="#e8734a"/>
-      <circle cx="80" cy="80" r="20" fill="none" stroke="#e8734a" stroke-width="0.8"/>
-      <circle cx="80" cy="80" r="40" fill="none" stroke="#e8734a" stroke-width="0.5"/>
-    </svg>
-  </div>
+<section class="hero">
   <div class="container">
-    <h1 class="reveal" data-i18n-html="hero_title">Аудио звонки по ссылке<br><span class="gradient">с ИИ-сводкой</span></h1>
+    <h1 class="reveal" data-i18n-html="hero_title">Аудио звонки по ссылке <span class="line2"><span class="gradient">с ИИ-сводкой</span></span></h1>
     <div class="hero-offers reveal">
       <span class="hero-offer" data-i18n="ho_1">Без регистрации</span>
-      <span class="hero-offer" data-i18n="ho_2">До 5 человек бесплатно</span>
+      <span class="hero-offer" data-i18n="ho_2">До 10 человек бесплатно</span>
       <span class="hero-offer" data-i18n="ho_3">Идеальный звук</span>
       <span class="hero-offer" data-i18n="ho_4">Сводка на почту</span>
     </div>
-    <a href="call.html?host=1" class="hero-cta reveal">
-      <span data-i18n="hero_cta">Создать звонок</span>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
+    <div class="hero-cta-wrap reveal">
+      <a href="call.html?host=1" class="hero-cta">
+        <svg class="lucide" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span data-i18n="hero_cta">Создать звонок</span>
+        <svg class="lucide lucide-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <!-- Phone cord trailing off screen -->
+      <svg class="phone-cord" viewBox="0 0 2000 40" preserveAspectRatio="none">
+        <path d="M0 20 Q25 5, 50 20 T100 20 T150 20 T200 20 T250 20 T300 20 T350 20 T400 20 T450 20 T500 20 T600 20 T700 20 T800 20 T1000 20 T1200 20 T1500 20 T2000 20"/>
+      </svg>
+    </div>
   </div>
 </section>
 
-<!-- Divider -->
 <div class="divider"></div>
 
 <!-- Steps -->
@@ -903,24 +470,30 @@ a { color: inherit; text-decoration: none; }
     <h2 class="section-title reveal" data-i18n="steps_title">Три шага до звонка</h2>
     <div class="steps-grid">
       <div class="step reveal">
-        <div class="step-number">1</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+        </div>
         <div>
           <div class="step-title" data-i18n="step1_title">Создайте звонок</div>
           <p class="step-desc" data-i18n="step1_desc">Нажмите одну кнопку и получите уникальную ссылку. Без регистрации.</p>
         </div>
       </div>
       <div class="step reveal">
-        <div class="step-number">2</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        </div>
         <div>
           <div class="step-title" data-i18n="step2_title">Отправьте ссылку</div>
-          <p class="step-desc" data-i18n="step2_desc">Поделитесь ссылкой в любом мессенджере. Собеседнику тоже ничего не нужно устанавливать.</p>
+          <p class="step-desc" data-i18n="step2_desc">Поделитесь в любом мессенджере. Собеседнику ничего не нужно устанавливать.</p>
         </div>
       </div>
       <div class="step reveal">
-        <div class="step-number">3</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
         <div>
           <div class="step-title" data-i18n="step3_title">Получите сводку</div>
-          <p class="step-desc" data-i18n="step3_desc">ИИ подготовит краткую сводку разговора: темы, решения и задачи — на ваш email.</p>
+          <p class="step-desc" data-i18n="step3_desc">ИИ подготовит сводку: темы, решения, задачи — на email.</p>
         </div>
       </div>
     </div>
@@ -933,68 +506,87 @@ a { color: inherit; text-decoration: none; }
     <p class="section-label reveal" data-i18n="pricing_label">Тарифы</p>
     <h2 class="section-title reveal" data-i18n="pricing_title">Простые и понятные цены</h2>
     <div class="pricing-grid">
+      <!-- Free -->
       <div class="pricing-card reveal">
+        <div class="pricing-emoji">🎧</div>
         <div class="pricing-name" data-i18n="plan_free">Бесплатно</div>
         <div class="pricing-price">$0</div>
         <div class="pricing-period" data-i18n="period_free">навсегда</div>
         <ul class="pricing-features">
-          <li data-i18n="free_f1">1:1 без ограничений по времени</li>
-          <li data-i18n="free_f2">До 5 человек — 60 минут</li>
-          <li data-i18n="free_f3">До 10 человек — 30 минут</li>
-          <li data-i18n="free_f4">Без регистрации</li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="free_f1">До 10 участников</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="free_f2">60 минут на звонок</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="free_f3">Без регистрации</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="free_f4">Базовая текстовая сводка</span></li>
         </ul>
-        <a href="call.html?host=1" class="pricing-btn primary" style="display:block;text-decoration:none" data-i18n="free_btn">Начать бесплатно</a>
+        <a href="call.html?host=1" class="pricing-btn outline" style="display:block;text-decoration:none;text-align:center" data-i18n="free_btn">Начать бесплатно</a>
       </div>
+
+      <!-- Pro $5 -->
       <div class="pricing-card featured reveal">
-        <span class="pricing-badge" data-i18n="badge_popular">Популярный</span>
-        <div class="pricing-name" data-i18n="plan_host">Хост</div>
+        <span class="pricing-badge" data-i18n="badge_popular">⭐ Популярный</span>
+        <div class="pricing-emoji">🚀</div>
+        <div class="pricing-name" data-i18n="plan_pro">Pro</div>
         <div class="pricing-price">$5</div>
-        <div class="pricing-period" data-i18n="period_host">в месяц</div>
+        <div class="pricing-period" data-i18n="period_pro">в месяц</div>
         <ul class="pricing-features">
-          <li data-i18n="host_f1">До 10 участников</li>
-          <li data-i18n="host_f2">Без лимита по времени</li>
-          <li data-i18n="host_f3">Гости ничего не платят</li>
-          <li data-i18n="host_f4">Приоритетное качество связи</li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="pro_f1">До 25 участников</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="pro_f2">Без лимита по времени</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="pro_f3">Детальная ИИ-сводка</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="pro_f4">Расшифровка с именами</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="pro_f5">Приоритетное качество связи</span></li>
         </ul>
-        <button class="pricing-btn secondary" data-i18n="host_btn">Подключить</button>
+        <button class="pricing-btn secondary" data-i18n="pro_btn">Подключить Pro</button>
       </div>
-      <div class="pricing-card reveal">
-        <div class="pricing-name" data-i18n="plan_ai">ИИ-кредиты</div>
-        <div class="pricing-price">$3</div>
-        <div class="pricing-period" data-i18n="period_ai">за пакет</div>
+
+      <!-- Business $25 -->
+      <div class="pricing-card business reveal">
+        <span class="pricing-badge" data-i18n="badge_biz">🏢 Business</span>
+        <div class="pricing-emoji">🏢</div>
+        <div class="pricing-name" data-i18n="plan_biz">Business</div>
+        <div class="pricing-price">$25</div>
+        <div class="pricing-period" data-i18n="period_biz">в месяц</div>
         <ul class="pricing-features">
-          <li data-i18n="ai_f1">120 участнико-минут</li>
-          <li data-i18n="ai_f2">Расшифровка с именами</li>
-          <li data-i18n="ai_f3">Сводка, темы, решения</li>
-          <li data-i18n="ai_f4">Action items на email</li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f1">До 1000 участников</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f2">Выделенный сервер</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f3">ИИ-ассистент в звонке</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f4">Режим трансляции</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f5">Сводка с инфографикой и PDF</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f6">Поддержка 24/7</span></li>
         </ul>
-        <button class="pricing-btn outline" data-i18n="ai_btn">Купить кредиты</button>
+        <button class="pricing-btn business-btn" data-i18n="biz_btn">Подключить Business</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Summary -->
+<!-- Summary infographic -->
 <section class="summary">
   <div class="container">
     <p class="section-label reveal" data-i18n="summary_label">ИИ-сводка</p>
-    <h2 class="section-title reveal" data-i18n="summary_title">Что в сводке</h2>
-    <div class="summary-grid">
-      <div class="summary-card reveal">
-        <div class="summary-card-title" data-i18n="sum1_title">Расшифровка</div>
-        <p class="summary-card-desc" data-i18n="sum1_desc">Кто что сказал — с именами участников</p>
+    <h2 class="section-title reveal" data-i18n="summary_title">Что вы получите после звонка</h2>
+    <div class="summary-flow reveal">
+      <div class="summary-step">
+        <div class="summary-icon">🎙️</div>
+        <div class="summary-step-title" data-i18n="sum1_title">Запись</div>
+        <div class="summary-step-desc" data-i18n="sum1_desc">Аудио каждого участника</div>
       </div>
-      <div class="summary-card reveal">
-        <div class="summary-card-title" data-i18n="sum2_title">Темы</div>
-        <p class="summary-card-desc" data-i18n="sum2_desc">Основные темы разговора</p>
+      <div class="summary-arrow"><svg class="lucide" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      <div class="summary-step">
+        <div class="summary-icon">📝</div>
+        <div class="summary-step-title" data-i18n="sum2_title">Расшифровка</div>
+        <div class="summary-step-desc" data-i18n="sum2_desc">Кто что сказал</div>
       </div>
-      <div class="summary-card reveal">
-        <div class="summary-card-title" data-i18n="sum3_title">Решения</div>
-        <p class="summary-card-desc" data-i18n="sum3_desc">Ключевые договорённости</p>
+      <div class="summary-arrow"><svg class="lucide" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      <div class="summary-step">
+        <div class="summary-icon">💡</div>
+        <div class="summary-step-title" data-i18n="sum3_title">Темы и решения</div>
+        <div class="summary-step-desc" data-i18n="sum3_desc">Ключевые договорённости</div>
       </div>
-      <div class="summary-card reveal">
-        <div class="summary-card-title" data-i18n="sum4_title">Задачи</div>
-        <p class="summary-card-desc" data-i18n="sum4_desc">Конкретные action items с ответственными</p>
+      <div class="summary-arrow"><svg class="lucide" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      <div class="summary-step">
+        <div class="summary-icon">✅</div>
+        <div class="summary-step-title" data-i18n="sum4_title">Задачи</div>
+        <div class="summary-step-desc" data-i18n="sum4_desc">Action items на email</div>
       </div>
     </div>
   </div>
@@ -1007,64 +599,28 @@ a { color: inherit; text-decoration: none; }
     <h2 class="section-title reveal" data-i18n="faq_title">Частые вопросы</h2>
     <div class="faq-list">
       <div class="faq-item reveal">
-        <button class="faq-question">
-          <span data-i18n="faq1_q">Нужна ли регистрация?</span>
-          <span class="faq-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner" data-i18n="faq1_a">Нет. Создайте звонок и отправьте ссылку.</div>
-        </div>
+        <button class="faq-question"><span data-i18n="faq1_q">Нужна ли регистрация?</span><span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faq1_a">Нет. Создайте звонок и отправьте ссылку.</div></div>
       </div>
       <div class="faq-item reveal">
-        <button class="faq-question">
-          <span data-i18n="faq2_q">Сколько длится звонок?</span>
-          <span class="faq-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner" data-i18n="faq2_a">1:1 — без ограничений. Группы — до 30-60 минут на бесплатном тарифе.</div>
-        </div>
+        <button class="faq-question"><span data-i18n="faq2_q">Чем Business отличается от Pro?</span><span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faq2_a">Business — выделенный сервер, до 1000 участников, режим трансляции, ИИ-ассистент в реальном времени и PDF-отчёт с инфографикой.</div></div>
       </div>
       <div class="faq-item reveal">
-        <button class="faq-question">
-          <span data-i18n="faq3_q">Кто видит ИИ-сводку?</span>
-          <span class="faq-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner" data-i18n="faq3_a">Только тот, кто её заказал и оплатил. Результат приходит на email.</div>
-        </div>
+        <button class="faq-question"><span data-i18n="faq3_q">Сколько длится звонок?</span><span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faq3_a">Бесплатно — до 60 минут. Pro и Business — без ограничений.</div></div>
       </div>
       <div class="faq-item reveal">
-        <button class="faq-question">
-          <span data-i18n="faq4_q">Как работает оплата?</span>
-          <span class="faq-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner" data-i18n="faq4_a">Stripe для международных карт, ЮKassa для России.</div>
-        </div>
+        <button class="faq-question"><span data-i18n="faq4_q">Как работает оплата?</span><span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faq4_a">Stripe для международных карт, ЮKassa для России.</div></div>
       </div>
       <div class="faq-item reveal">
-        <button class="faq-question">
-          <span data-i18n="faq5_q">Можно ли использовать без сводки?</span>
-          <span class="faq-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner" data-i18n="faq5_a">Да. Звонки полностью бесплатны, сводка — по желанию.</div>
-        </div>
+        <button class="faq-question"><span data-i18n="faq5_q">Можно ли без сводки?</span><span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faq5_a">Да. Звонки полностью бесплатны, сводка по желанию.</div></div>
       </div>
     </div>
   </div>
 </section>
-
 </main>
 
 <!-- Footer -->
@@ -1077,7 +633,6 @@ a { color: inherit; text-decoration: none; }
             <defs><linearGradient id="logoGf" x1="0" y1="0" x2="512" y2="512"><stop stop-color="#e8734a"/><stop offset="1" stop-color="#c74f2e"/></linearGradient></defs>
             <rect width="512" height="512" rx="112" fill="url(#logoGf)"/>
             <path d="M152 148h208l-208 216h208" fill="none" stroke="#fff" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M388 200q32 56 0 112" fill="none" stroke="#fff" stroke-width="28" stroke-linecap="round" opacity="0.6"/>
           </svg>
         </span>
         Zvoon
@@ -1089,14 +644,8 @@ a { color: inherit; text-decoration: none; }
       </div>
       <div class="footer-right">
         <div class="footer-socials">
-          <!-- VK -->
-          <a href="#" aria-label="VK">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12.78 18.14h1.12s.34-.04.51-.22c.16-.17.15-.48.15-.48s-.02-1.47.66-1.69c.67-.21 1.54 1.4 2.45 2.02.69.47 1.21.37 1.21.37l2.44-.03s1.28-.08.67-1.09c-.05-.08-.36-.74-1.83-2.1-1.54-1.42-1.34-1.19.52-3.65.83-1.34 1.49-2.6 1.36-3.02-.12-.4-.88-.3-.88-.3l-2.75.02s-.2-.03-.36.06c-.15.1-.24.31-.24.31s-.44 1.17-1.03 2.17c-1.24 2.1-1.74 2.21-1.94 2.08-.47-.31-.35-1.24-.35-1.9 0-2.06.31-2.92-.61-3.14-.31-.07-.53-.12-1.31-.13-.99-.01-1.83 0-2.31.24-.32.16-.56.5-.41.52.19.02.62.12.84.42.29.4.28 1.28.28 1.28s.17 2.43-.39 2.73c-.38.2-.91-.21-2.04-2.1-.58-.97-1.01-2.04-1.01-2.04s-.08-.2-.23-.31c-.18-.13-.44-.17-.44-.17l-2.61.02s-.39.01-.53.18c-.13.15-.01.47-.01.47s2.07 4.84 4.41 7.28c2.15 2.24 4.59 2.09 4.59 2.09z" fill="#7a7067"/></svg>
-          </a>
-          <!-- Telegram -->
-          <a href="#" aria-label="Telegram">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20.67 3.95L2.93 10.9s-1.25.43-1.15 1.24c.1.81.56 1.01 1.13 1.24l4.54 1.49 1.75 5.57s.3.87.56.9c.26.03.43-.1.6-.28l2.59-2.5 4.5 3.42s.93.58 1.56.15c.63-.43.82-1.12.82-1.12L22.13 5.58s.38-1.44-1.46-.63zM9.5 14.09l-.45 4.01-1.5-4.68 9.6-6.67-7.65 7.34z" fill="#7a7067"/></svg>
-          </a>
+          <a href="#" aria-label="VK"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12.78 18.14h1.12s.34-.04.51-.22c.16-.17.15-.48.15-.48s-.02-1.47.66-1.69c.67-.21 1.54 1.4 2.45 2.02.69.47 1.21.37 1.21.37l2.44-.03s1.28-.08.67-1.09c-.05-.08-.36-.74-1.83-2.1-1.54-1.42-1.34-1.19.52-3.65.83-1.34 1.49-2.6 1.36-3.02-.12-.4-.88-.3-.88-.3l-2.75.02s-.2-.03-.36.06c-.15.1-.24.31-.24.31s-.44 1.17-1.03 2.17c-1.24 2.1-1.74 2.21-1.94 2.08-.47-.31-.35-1.24-.35-1.9 0-2.06.31-2.92-.61-3.14-.31-.07-.53-.12-1.31-.13-.99-.01-1.83 0-2.31.24-.32.16-.56.5-.41.52.19.02.62.12.84.42.29.4.28 1.28.28 1.28s.17 2.43-.39 2.73c-.38.2-.91-.21-2.04-2.1-.58-.97-1.01-2.04-1.01-2.04s-.08-.2-.23-.31c-.18-.13-.44-.17-.44-.17l-2.61.02s-.39.01-.53.18c-.13.15-.01.47-.01.47s2.07 4.84 4.41 7.28c2.15 2.24 4.59 2.09 4.59 2.09z" fill="#7a7067"/></svg></a>
+          <a href="#" aria-label="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20.67 3.95L2.93 10.9s-1.25.43-1.15 1.24c.1.81.56 1.01 1.13 1.24l4.54 1.49 1.75 5.57s.3.87.56.9c.26.03.43-.1.6-.28l2.59-2.5 4.5 3.42s.93.58 1.56.15c.63-.43.82-1.12.82-1.12L22.13 5.58s.38-1.44-1.46-.63zM9.5 14.09l-.45 4.01-1.5-4.68 9.6-6.67-7.65 7.34z" fill="#7a7067"/></svg></a>
         </div>
         <span class="footer-copy">&copy; 2026 Zvoon</span>
       </div>
@@ -1105,225 +654,79 @@ a { color: inherit; text-decoration: none; }
 </footer>
 
 <script>
-// Header shadow on scroll
 const header = document.getElementById('header');
-window.addEventListener('scroll', () => {
-  header.classList.toggle('scrolled', window.scrollY > 10);
-}, { passive: true });
+window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 10); }, { passive: true });
 
-// IntersectionObserver scroll reveal
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    }
-  });
+  entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
 }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// FAQ accordion
 document.querySelectorAll('.faq-question').forEach(btn => {
   btn.addEventListener('click', () => {
-    const item = btn.parentElement;
-    const answer = item.querySelector('.faq-answer');
-    const isOpen = item.classList.contains('open');
-
-    // Close all
-    document.querySelectorAll('.faq-item.open').forEach(openItem => {
-      openItem.classList.remove('open');
-      openItem.querySelector('.faq-answer').style.maxHeight = '0';
-    });
-
-    // Toggle clicked
-    if (!isOpen) {
-      item.classList.add('open');
-      answer.style.maxHeight = answer.scrollHeight + 'px';
-    }
+    const item = btn.parentElement, answer = item.querySelector('.faq-answer'), isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(o => { o.classList.remove('open'); o.querySelector('.faq-answer').style.maxHeight = '0'; });
+    if (!isOpen) { item.classList.add('open'); answer.style.maxHeight = answer.scrollHeight + 'px'; }
   });
 });
 
-// ─── i18n ───
 const i18n = {
   en: {
-    header_cta: 'Start a call',
-    hero_title: 'Audio calls via link<br><span class="gradient">with AI summary</span>',
-    hero_cta: 'Start a call',
-    ho_1: 'No registration',
-    ho_2: 'Up to 5 people free',
-    ho_3: 'Crystal-clear audio',
-    ho_4: 'Summary to email',
-    steps_label: 'How it works',
-    steps_title: 'Three steps to a call',
-    step1_title: 'Create a call',
-    step1_desc: 'Press one button and get a unique link. No registration needed.',
-    step2_title: 'Share the link',
-    step2_desc: 'Send the link via any messenger. Your guests don\'t need to install anything.',
-    step3_title: 'Get the summary',
-    step3_desc: 'AI will prepare a concise call summary: topics, decisions and action items — to your email.',
-    pricing_label: 'Pricing',
-    pricing_title: 'Simple and transparent pricing',
-    plan_free: 'Free',
-    period_free: 'forever',
-    free_f1: '1:1 calls — unlimited time',
-    free_f2: 'Up to 5 people — 60 minutes',
-    free_f3: 'Up to 10 people — 30 minutes',
-    free_f4: 'No registration',
-    free_btn: 'Start for free',
-    badge_popular: 'Popular',
-    plan_host: 'Host',
-    period_host: 'per month',
-    host_f1: 'Up to 10 participants',
-    host_f2: 'No time limits',
-    host_f3: 'Guests join for free',
-    host_f4: 'Priority call quality',
-    host_btn: 'Subscribe',
-    plan_ai: 'AI Credits',
-    period_ai: 'per pack',
-    ai_f1: '120 participant-minutes',
-    ai_f2: 'Transcript with names',
-    ai_f3: 'Summary, topics, decisions',
-    ai_f4: 'Action items via email',
-    ai_btn: 'Buy credits',
-    summary_label: 'AI Summary',
-    summary_title: 'What\'s in the summary',
-    sum1_title: 'Transcript',
-    sum1_desc: 'Who said what — with participant names',
-    sum2_title: 'Topics',
-    sum2_desc: 'Key topics of the conversation',
-    sum3_title: 'Decisions',
-    sum3_desc: 'Key agreements and outcomes',
-    sum4_title: 'Tasks',
-    sum4_desc: 'Specific action items with assignees',
-    faq_label: 'Questions',
-    faq_title: 'Frequently asked questions',
-    faq1_q: 'Do I need to register?',
-    faq1_a: 'No. Just create a call and share the link.',
-    faq2_q: 'How long can a call last?',
-    faq2_a: '1:1 — unlimited. Groups — up to 30-60 minutes on the free plan.',
-    faq3_q: 'Who can see the AI summary?',
-    faq3_a: 'Only the person who ordered and paid for it. The result is sent to their email.',
-    faq4_q: 'How does payment work?',
-    faq4_a: 'Stripe for international cards, YooKassa for Russia.',
-    faq5_q: 'Can I use it without the summary?',
-    faq5_a: 'Yes. Calls are completely free, the summary is optional.',
-    footer_pricing: 'Pricing',
-    footer_policy: 'Policy',
-    footer_support: 'Support',
+    header_cta:'Start a call', hero_title:'Audio calls via link <span class="line2"><span class="gradient">with AI summary</span></span>',
+    hero_cta:'Start a call', ho_1:'No registration', ho_2:'Up to 10 people free', ho_3:'Crystal-clear audio', ho_4:'Summary to email',
+    steps_label:'How it works', steps_title:'Three steps to a call',
+    step1_title:'Create a call', step1_desc:'Press one button and get a unique link. No registration.',
+    step2_title:'Share the link', step2_desc:'Send via any messenger. Guests don\'t need to install anything.',
+    step3_title:'Get the summary', step3_desc:'AI prepares a summary: topics, decisions, tasks — to your email.',
+    pricing_label:'Pricing', pricing_title:'Simple and transparent',
+    plan_free:'Free', period_free:'forever', free_f1:'Up to 10 participants', free_f2:'60 min per call', free_f3:'No registration', free_f4:'Basic text summary', free_btn:'Start for free',
+    badge_popular:'\u2b50 Popular', plan_pro:'Pro', period_pro:'per month', pro_f1:'Up to 25 participants', pro_f2:'No time limits', pro_f3:'Detailed AI summary', pro_f4:'Transcript with names', pro_f5:'Priority call quality', pro_btn:'Get Pro',
+    badge_biz:'\ud83c\udfe2 Business', plan_biz:'Business', period_biz:'per month', biz_f1:'Up to 1000 participants', biz_f2:'Dedicated server', biz_f3:'AI assistant in call', biz_f4:'Broadcast mode', biz_f5:'Summary with infographics & PDF', biz_f6:'24/7 support', biz_btn:'Get Business',
+    summary_label:'AI Summary', summary_title:'What you get after the call',
+    sum1_title:'Recording', sum1_desc:'Audio from each participant', sum2_title:'Transcript', sum2_desc:'Who said what', sum3_title:'Topics & decisions', sum3_desc:'Key agreements', sum4_title:'Tasks', sum4_desc:'Action items to email',
+    faq_label:'Questions', faq_title:'FAQ',
+    faq1_q:'Do I need to register?', faq1_a:'No. Create a call and share the link.',
+    faq2_q:'Business vs Pro?', faq2_a:'Business: dedicated server, up to 1000 participants, broadcast mode, real-time AI assistant, PDF report with infographics.',
+    faq3_q:'How long is a call?', faq3_a:'Free: up to 60 min. Pro & Business: unlimited.',
+    faq4_q:'How does payment work?', faq4_a:'Stripe for international cards, YooKassa for Russia.',
+    faq5_q:'Can I skip the summary?', faq5_a:'Yes. Calls are free, summary is optional.',
+    footer_pricing:'Pricing', footer_policy:'Policy', footer_support:'Support',
   },
   ru: {
-    header_cta: 'Создать звонок',
-    hero_title: 'Аудио звонки по ссылке<br><span class="gradient">с ИИ-сводкой</span>',
-    hero_cta: 'Создать звонок',
-    ho_1: 'Без регистрации',
-    ho_2: 'До 5 человек бесплатно',
-    ho_3: 'Идеальный звук',
-    ho_4: 'Сводка на почту',
-    steps_label: 'Как это работает',
-    steps_title: 'Три шага до звонка',
-    step1_title: 'Создайте звонок',
-    step1_desc: 'Нажмите одну кнопку и получите уникальную ссылку. Без регистрации.',
-    step2_title: 'Отправьте ссылку',
-    step2_desc: 'Поделитесь ссылкой в любом мессенджере. Собеседнику тоже ничего не нужно устанавливать.',
-    step3_title: 'Получите сводку',
-    step3_desc: 'ИИ подготовит краткую сводку разговора: темы, решения и задачи — на ваш email.',
-    pricing_label: 'Тарифы',
-    pricing_title: 'Простые и понятные цены',
-    plan_free: 'Бесплатно',
-    period_free: 'навсегда',
-    free_f1: '1:1 без ограничений по времени',
-    free_f2: 'До 5 человек — 60 минут',
-    free_f3: 'До 10 человек — 30 минут',
-    free_f4: 'Без регистрации',
-    free_btn: 'Начать бесплатно',
-    badge_popular: 'Популярный',
-    plan_host: 'Хост',
-    period_host: 'в месяц',
-    host_f1: 'До 10 участников',
-    host_f2: 'Без лимита по времени',
-    host_f3: 'Гости ничего не платят',
-    host_f4: 'Приоритетное качество связи',
-    host_btn: 'Подключить',
-    plan_ai: 'ИИ-кредиты',
-    period_ai: 'за пакет',
-    ai_f1: '120 участнико-минут',
-    ai_f2: 'Расшифровка с именами',
-    ai_f3: 'Сводка, темы, решения',
-    ai_f4: 'Action items на email',
-    ai_btn: 'Купить кредиты',
-    summary_label: 'ИИ-сводка',
-    summary_title: 'Что в сводке',
-    sum1_title: 'Расшифровка',
-    sum1_desc: 'Кто что сказал — с именами участников',
-    sum2_title: 'Темы',
-    sum2_desc: 'Основные темы разговора',
-    sum3_title: 'Решения',
-    sum3_desc: 'Ключевые договорённости',
-    sum4_title: 'Задачи',
-    sum4_desc: 'Конкретные action items с ответственными',
-    faq_label: 'Вопросы',
-    faq_title: 'Частые вопросы',
-    faq1_q: 'Нужна ли регистрация?',
-    faq1_a: 'Нет. Создайте звонок и отправьте ссылку.',
-    faq2_q: 'Сколько длится звонок?',
-    faq2_a: '1:1 — без ограничений. Группы — до 30-60 минут на бесплатном тарифе.',
-    faq3_q: 'Кто видит ИИ-сводку?',
-    faq3_a: 'Только тот, кто её заказал и оплатил. Результат приходит на email.',
-    faq4_q: 'Как работает оплата?',
-    faq4_a: 'Stripe для международных карт, ЮKassa для России.',
-    faq5_q: 'Можно ли использовать без сводки?',
-    faq5_a: 'Да. Звонки полностью бесплатны, сводка — по желанию.',
-    footer_pricing: 'Тарифы',
-    footer_policy: 'Политика',
-    footer_support: 'Поддержка',
+    header_cta:'Создать звонок', hero_title:'Аудио звонки по ссылке <span class="line2"><span class="gradient">с ИИ-сводкой</span></span>',
+    hero_cta:'Создать звонок', ho_1:'Без регистрации', ho_2:'До 10 человек бесплатно', ho_3:'Идеальный звук', ho_4:'Сводка на почту',
+    steps_label:'Как это работает', steps_title:'Три шага до звонка',
+    step1_title:'Создайте звонок', step1_desc:'Нажмите одну кнопку и получите уникальную ссылку. Без регистрации.',
+    step2_title:'Отправьте ссылку', step2_desc:'Поделитесь в любом мессенджере. Собеседнику ничего не нужно устанавливать.',
+    step3_title:'Получите сводку', step3_desc:'ИИ подготовит сводку: темы, решения, задачи — на email.',
+    pricing_label:'Тарифы', pricing_title:'Простые и понятные цены',
+    plan_free:'Бесплатно', period_free:'навсегда', free_f1:'До 10 участников', free_f2:'60 минут на звонок', free_f3:'Без регистрации', free_f4:'Базовая текстовая сводка', free_btn:'Начать бесплатно',
+    badge_popular:'⭐ Популярный', plan_pro:'Pro', period_pro:'в месяц', pro_f1:'До 25 участников', pro_f2:'Без лимита по времени', pro_f3:'Детальная ИИ-сводка', pro_f4:'Расшифровка с именами', pro_f5:'Приоритетное качество связи', pro_btn:'Подключить Pro',
+    badge_biz:'🏢 Business', plan_biz:'Business', period_biz:'в месяц', biz_f1:'До 1000 участников', biz_f2:'Выделенный сервер', biz_f3:'ИИ-ассистент в звонке', biz_f4:'Режим трансляции', biz_f5:'Сводка с инфографикой и PDF', biz_f6:'Поддержка 24/7', biz_btn:'Подключить Business',
+    summary_label:'ИИ-сводка', summary_title:'Что вы получите после звонка',
+    sum1_title:'Запись', sum1_desc:'Аудио каждого участника', sum2_title:'Расшифровка', sum2_desc:'Кто что сказал', sum3_title:'Темы и решения', sum3_desc:'Ключевые договорённости', sum4_title:'Задачи', sum4_desc:'Action items на email',
+    faq_label:'Вопросы', faq_title:'Частые вопросы',
+    faq1_q:'Нужна ли регистрация?', faq1_a:'Нет. Создайте звонок и отправьте ссылку.',
+    faq2_q:'Чем Business отличается от Pro?', faq2_a:'Business — выделенный сервер, до 1000 участников, режим трансляции, ИИ-ассистент в реальном времени и PDF-отчёт с инфографикой.',
+    faq3_q:'Сколько длится звонок?', faq3_a:'Бесплатно — до 60 минут. Pro и Business — без ограничений.',
+    faq4_q:'Как работает оплата?', faq4_a:'Stripe для международных карт, ЮKassa для России.',
+    faq5_q:'Можно ли без сводки?', faq5_a:'Да. Звонки полностью бесплатны, сводка по желанию.',
+    footer_pricing:'Тарифы', footer_policy:'Политика', footer_support:'Поддержка',
   }
 };
 
 let currentLang = 'ru';
-
 function setLang(lang) {
-  currentLang = lang;
-  document.documentElement.lang = lang;
-  const t = i18n[lang];
-
-  // Text elements
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (t[key]) el.textContent = t[key];
-  });
-
-  // HTML elements (with inner tags like <span>)
-  document.querySelectorAll('[data-i18n-html]').forEach(el => {
-    const key = el.getAttribute('data-i18n-html');
-    if (t[key]) el.innerHTML = t[key];
-  });
-
-  // Update button states
-  document.querySelectorAll('.lang-switch button').forEach(b => {
-    b.classList.toggle('active', b.textContent === lang.toUpperCase());
-  });
-
-  // Close open FAQ
-  document.querySelectorAll('.faq-item.open').forEach(item => {
-    item.classList.remove('open');
-    item.querySelector('.faq-answer').style.maxHeight = '0';
-  });
-
+  currentLang = lang; document.documentElement.lang = lang; const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => { const k = el.getAttribute('data-i18n'); if (t[k]) el.textContent = t[k]; });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => { const k = el.getAttribute('data-i18n-html'); if (t[k]) el.innerHTML = t[k]; });
+  document.querySelectorAll('.lang-switch button').forEach(b => { b.classList.toggle('active', b.textContent === lang.toUpperCase()); });
+  document.querySelectorAll('.faq-item.open').forEach(item => { item.classList.remove('open'); item.querySelector('.faq-answer').style.maxHeight = '0'; });
   localStorage.setItem('zvoon-lang', lang);
 }
-
-// Lang switch buttons
-document.querySelectorAll('.lang-switch button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    setLang(btn.textContent.trim().toLowerCase());
-  });
-});
-
-// Restore saved language
+document.querySelectorAll('.lang-switch button').forEach(btn => { btn.addEventListener('click', () => { setLang(btn.textContent.trim().toLowerCase()); }); });
 const savedLang = localStorage.getItem('zvoon-lang');
 if (savedLang && savedLang !== 'ru') setLang(savedLang);
 </script>
-
 </body>
 </html>
