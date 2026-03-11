@@ -498,48 +498,13 @@ function getMicBlockedInstructions() {
   const mobile = isMobile();
 
   if (mobile) {
-    if (browser === 'safari') {
-      return `<ol>
-        <li>Откройте <b>Настройки</b> → <b>Safari</b></li>
-        <li>Прокрутите до <b>Микрофон</b> → <b>Разрешить</b></li>
-        <li>Вернитесь и обновите страницу</li>
-      </ol>`;
-    }
-    return `<ol>
-      <li>Нажмите на <b>замок</b> 🔒 слева от адресной строки</li>
-      <li>Найдите <b>Микрофон</b> → переключите на <b>Разрешить</b></li>
-      <li>Обновите страницу</li>
-    </ol>`;
+    if (browser === 'safari') return t('safari_mobile');
+    return t('mobile_default');
   }
-
-  if (browser === 'safari') {
-    return `<ol>
-      <li>В меню <b>Safari</b> → <b>Настройки для этого сайта...</b></li>
-      <li>Рядом с <b>Микрофон</b> выберите <b>Разрешить</b></li>
-      <li>Обновите страницу</li>
-    </ol>`;
-  }
-  if (browser === 'firefox') {
-    return `<ol>
-      <li>Нажмите на <b>замок</b> 🔒 слева от адресной строки</li>
-      <li>Рядом с <b>Использовать микрофон</b> нажмите <b>✕</b> чтобы сбросить</li>
-      <li>Обновите страницу и нажмите <b>Разрешить</b></li>
-    </ol>`;
-  }
-  if (browser === 'opera') {
-    return `<ol>
-      <li>Нажмите на <b>замок</b> 🔒 слева от адресной строки</li>
-      <li>Нажмите <b>Настройки сайтов</b></li>
-      <li>Рядом с <b>Микрофон</b> выберите <b>Разрешить</b></li>
-      <li>Обновите страницу</li>
-    </ol>`;
-  }
-  // Chrome / Edge / default
-  return `<ol>
-    <li>Нажмите на <b>замок</b> 🔒 (или значок настроек) слева от адресной строки</li>
-    <li>Найдите <b>Микрофон</b> → переключите на <b>Разрешить</b></li>
-    <li>Обновите страницу</li>
-  </ol>`;
+  if (browser === 'safari') return t('safari_desktop');
+  if (browser === 'firefox') return t('firefox');
+  if (browser === 'opera') return t('opera');
+  return t('chrome_default');
 }
 
 // ─── Check permission status via Permissions API ───
@@ -562,7 +527,7 @@ async function apiCall(url, options, retries = 2) {
       const res = await fetch(url, options);
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || `Ошибка сервера (${res.status})`);
+        throw new Error(data.error || `Server error (${res.status})`);
       }
       return await res.json();
     } catch (e) {
@@ -590,8 +555,8 @@ function unlockAudioPlayback() {
 
 // ─── No room check ───
 if (!roomSlug && !isHost) {
-  document.getElementById('nameTitle').textContent = 'Нет комнаты';
-  document.getElementById('nameSubtitle').textContent = 'Перейдите на главную страницу, чтобы создать звонок';
+  document.getElementById('nameTitle').textContent = t('no_room_title');
+  document.getElementById('nameSubtitle').textContent = t('no_room_subtitle');
   document.getElementById('nameInput').style.display = 'none';
   document.getElementById('nameBtn').style.display = 'none';
 }
@@ -621,7 +586,7 @@ nameBtn.addEventListener('click', async () => {
   // Get token first
   const connecting = document.getElementById('connecting');
   const connectingText = document.getElementById('connectingText');
-  connectingText.textContent = 'Подключение...';
+  connectingText.textContent = t('connecting');
   connecting.classList.add('show');
 
   try {
@@ -661,7 +626,7 @@ nameBtn.addEventListener('click', async () => {
     }
   } catch (err) {
     connecting.classList.remove('show');
-    nameError.textContent = err.message || 'Не удалось подключиться. Попробуйте ещё раз.';
+    nameError.textContent = err.message || t('connect_error');
     nameError.style.display = 'block';
     nameBtn.disabled = false;
   }
@@ -674,11 +639,11 @@ const micHint = document.getElementById('micHint');
 const micError = document.getElementById('micError');
 
 function showMicDeniedUI() {
-  document.getElementById('micTitle').textContent = 'Микрофон заблокирован';
-  document.getElementById('micSubtitle').textContent = 'Браузер запомнил, что вы отказали в доступе. Разблокируйте его вручную:';
+  document.getElementById('micTitle').textContent = t('mic_blocked_title');
+  document.getElementById('micSubtitle').textContent = t('mic_blocked_subtitle');
   document.getElementById('micHintContent').innerHTML = getMicBlockedInstructions();
   micHint.classList.add('show');
-  micRequestBtn.textContent = 'Попробовать снова';
+  micRequestBtn.textContent = t('mic_try_again');
   document.getElementById('micIconBig').classList.remove('pulsing');
 }
 
@@ -705,7 +670,7 @@ micRequestBtn.addEventListener('click', async () => {
   }
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    micError.textContent = 'Браузер не поддерживает доступ к микрофону. ' + debugInfo.join(' | ');
+    micError.textContent = t('mic_not_supported') + ' ' + debugInfo.join(' | ');
     micError.style.display = 'block';
     micRequestBtn.disabled = false;
     return;
@@ -746,12 +711,12 @@ micRequestBtn.addEventListener('click', async () => {
   console.error('All getUserMedia attempts failed:', lastDebug);
 
   // Show debug info temporarily to help diagnose
-  micError.textContent = 'Не удалось получить доступ к микрофону.\n' + debugInfo.filter(d => d.startsWith('fail') || d.startsWith('audio')).join(' | ');
+  micError.textContent = t('mic_error_access') + '\n' + debugInfo.filter(d => d.startsWith('fail') || d.startsWith('audio')).join(' | ');
   micError.style.display = 'block';
   micError.style.whiteSpace = 'pre-wrap';
 
-  document.getElementById('micTitle').textContent = 'Микрофон не найден';
-  document.getElementById('micSubtitle').textContent = 'Подключите микрофон или наушники с микрофоном и попробуйте снова.';
+  document.getElementById('micTitle').textContent = t('mic_not_found_title');
+  document.getElementById('micSubtitle').textContent = t('mic_not_found_subtitle');
   document.getElementById('micIconBig').classList.remove('pulsing');
 });
 
@@ -763,14 +728,14 @@ micSkipBtn.addEventListener('click', () => {
 async function startCall(withMic) {
   const connecting = document.getElementById('connecting');
   connecting.classList.add('show');
-  document.getElementById('connectingText').textContent = 'Подключение к звонку...';
+  document.getElementById('connectingText').textContent = t('connecting_call');
 
   try {
     await connectToRoom(userToken, userSlug, withMic);
   } catch (err) {
     connecting.classList.remove('show');
     showScreen('screenMic');
-    micError.textContent = 'Не удалось подключиться к звонку. Попробуйте ещё раз.';
+    micError.textContent = t('connect_error');
     micError.style.display = 'block';
   }
 }
@@ -817,15 +782,15 @@ async function connectToRoom(token, slug, withMic) {
     stopTimer();
     document.querySelectorAll('.screen, .call-screen').forEach(s => s.classList.remove('active'));
     showScreen('screenName');
-    document.getElementById('nameTitle').textContent = 'Звонок завершён';
-    document.getElementById('nameSubtitle').textContent = 'Вы можете закрыть эту страницу';
+    document.getElementById('nameTitle').textContent = t('call_ended_title');
+    document.getElementById('nameSubtitle').textContent = t('call_ended_subtitle');
     document.getElementById('nameInput').style.display = 'none';
     document.getElementById('nameBtn').style.display = 'none';
   });
 
   room.on(RoomEvent.MediaDevicesError, (e) => {
     console.error('MediaDevicesError:', e);
-    showMicBanner('error', 'Микрофон недоступен. Вас не слышно.');
+    showMicBanner('error', t('mic_unavailable'));
     setMicUI(true, false);
   });
 
@@ -846,13 +811,13 @@ async function connectToRoom(token, slug, withMic) {
       console.error('Mic enable failed in call:', e.name, e.message);
       micAvailable = false;
       isMuted = true;
-      showMicBanner('warning', 'Не удалось включить микрофон. Вас не слышно.');
+      showMicBanner('warning', t('mic_enable_failed'));
       setMicUI(true, false);
     }
   } else {
     micAvailable = false;
     isMuted = true;
-    showMicBanner('warning', 'Вы вошли без микрофона. Вас не слышно.');
+    showMicBanner('warning', t('mic_no_mic_warning'));
     setMicUI(true, false);
   }
 
@@ -881,10 +846,10 @@ function updateParticipants() {
   const count = document.getElementById('participantCount');
   const all = [room.localParticipant, ...room.remoteParticipants.values()];
 
-  count.textContent = `${all.length} ${all.length === 1 ? 'участник' : all.length < 5 ? 'участника' : 'участников'}`;
+  count.textContent = `${all.length} ${all.length === 1 ? t('participant_1') : all.length < 5 ? t('participant_2_4') : t('participant_5')}`;
 
   grid.innerHTML = all.map(p => {
-    const name = p.identity || 'Гость';
+    const name = p.identity || t('guest');
     const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
     const micOff = !p.isMicrophoneEnabled;
     const speaking = p.isSpeaking;
@@ -900,7 +865,7 @@ function updateParticipants() {
             </svg>
           </div>` : ''}
         </div>
-        <div class="participant-name">${name}${isLocal ? ' (вы)' : ''}</div>
+        <div class="participant-name">${name}${isLocal ? ` (${t('you')})` : ''}</div>
       </div>
     `;
   }).join('');
@@ -952,10 +917,10 @@ function copyLink() {
   const link = `${window.location.origin}${window.location.pathname}?room=${slug}`;
   navigator.clipboard.writeText(link).then(() => {
     document.getElementById('shareToast').classList.add('show');
-    document.getElementById('copyText').textContent = 'Скопировано!';
+    document.getElementById('copyText').textContent = t('copied');
     setTimeout(() => {
       document.getElementById('shareToast').classList.remove('show');
-      document.getElementById('copyText').textContent = 'Пригласить';
+      document.getElementById('copyText').textContent = t('invite_btn');
     }, 2000);
   });
 }
@@ -973,6 +938,114 @@ function startTimer() {
 }
 
 function stopTimer() { if (timerInterval) clearInterval(timerInterval); }
+
+// ─── i18n ───
+const callI18n = {
+  en: {
+    name_title: 'Enter your name',
+    name_subtitle: 'You will join the call',
+    name_placeholder: 'Your name',
+    name_btn: 'Next',
+    no_room_title: 'No room found',
+    no_room_subtitle: 'Go to the main page to create a call',
+    connecting: 'Connecting...',
+    connecting_call: 'Connecting to call...',
+    connect_error: 'Failed to connect. Please try again.',
+    mic_title: 'Allow microphone',
+    mic_subtitle: 'Click <strong>"Allow"</strong> in the browser popup so others can hear you',
+    mic_blocked_title: 'Microphone blocked',
+    mic_blocked_subtitle: 'The browser remembered that you denied access. Unblock it manually:',
+    mic_request_btn: 'Enable microphone',
+    mic_try_again: 'Try again',
+    mic_skip: 'Join without microphone',
+    mic_not_supported: 'This browser does not support microphone access.',
+    mic_not_found_title: 'Microphone not found',
+    mic_not_found_subtitle: 'Connect a microphone or headset and try again.',
+    mic_error_access: 'Could not access microphone.',
+    mic_unavailable: 'Microphone unavailable. Others can\'t hear you.',
+    mic_no_mic_warning: 'You joined without a microphone. Others can\'t hear you.',
+    mic_enable_failed: 'Could not enable microphone. Others can\'t hear you.',
+    call_ended_title: 'Call ended',
+    call_ended_subtitle: 'You can close this page',
+    invite_btn: 'Invite',
+    copied: 'Copied!',
+    leave_btn: 'Leave',
+    toast_copied: 'Call link copied',
+    you: 'you',
+    participant_1: 'participant',
+    participant_2_4: 'participants',
+    participant_5: 'participants',
+    guest: 'Guest',
+    // Browser instructions
+    safari_mobile: '<ol><li>Open <b>Settings</b> → <b>Safari</b></li><li>Scroll to <b>Microphone</b> → <b>Allow</b></li><li>Come back and refresh the page</li></ol>',
+    mobile_default: '<ol><li>Tap the <b>lock</b> 🔒 icon left of the address bar</li><li>Find <b>Microphone</b> → switch to <b>Allow</b></li><li>Refresh the page</li></ol>',
+    safari_desktop: '<ol><li>In the menu <b>Safari</b> → <b>Settings for This Website...</b></li><li>Next to <b>Microphone</b> select <b>Allow</b></li><li>Refresh the page</li></ol>',
+    firefox: '<ol><li>Click the <b>lock</b> 🔒 icon left of the address bar</li><li>Next to <b>Use the Microphone</b> click <b>✕</b> to reset</li><li>Refresh and click <b>Allow</b></li></ol>',
+    opera: '<ol><li>Click the <b>lock</b> 🔒 icon left of the address bar</li><li>Click <b>Site settings</b></li><li>Next to <b>Microphone</b> select <b>Allow</b></li><li>Refresh the page</li></ol>',
+    chrome_default: '<ol><li>Click the <b>lock</b> 🔒 (or settings icon) left of the address bar</li><li>Find <b>Microphone</b> → switch to <b>Allow</b></li><li>Refresh the page</li></ol>',
+    mic_hint_title: 'Microphone blocked',
+  },
+  ru: {
+    name_title: 'Введите имя',
+    name_subtitle: 'Вы присоединитесь к звонку',
+    name_placeholder: 'Ваше имя',
+    name_btn: 'Далее',
+    no_room_title: 'Нет комнаты',
+    no_room_subtitle: 'Перейдите на главную страницу, чтобы создать звонок',
+    connecting: 'Подключение...',
+    connecting_call: 'Подключение к звонку...',
+    connect_error: 'Не удалось подключиться. Попробуйте ещё раз.',
+    mic_title: 'Разрешите микрофон',
+    mic_subtitle: 'Нажмите <strong>«Разрешить»</strong> во всплывающем окне браузера, чтобы собеседники вас слышали',
+    mic_blocked_title: 'Микрофон заблокирован',
+    mic_blocked_subtitle: 'Браузер запомнил, что вы отказали в доступе. Разблокируйте его вручную:',
+    mic_request_btn: 'Включить микрофон',
+    mic_try_again: 'Попробовать снова',
+    mic_skip: 'Войти без микрофона',
+    mic_not_supported: 'Браузер не поддерживает доступ к микрофону.',
+    mic_not_found_title: 'Микрофон не найден',
+    mic_not_found_subtitle: 'Подключите микрофон или наушники с микрофоном и попробуйте снова.',
+    mic_error_access: 'Не удалось получить доступ к микрофону.',
+    mic_unavailable: 'Микрофон недоступен. Вас не слышно.',
+    mic_no_mic_warning: 'Вы вошли без микрофона. Вас не слышно.',
+    mic_enable_failed: 'Не удалось включить микрофон. Вас не слышно.',
+    call_ended_title: 'Звонок завершён',
+    call_ended_subtitle: 'Вы можете закрыть эту страницу',
+    invite_btn: 'Пригласить',
+    copied: 'Скопировано!',
+    leave_btn: 'Выйти',
+    toast_copied: 'Ссылка на звонок скопирована',
+    you: 'вы',
+    participant_1: 'участник',
+    participant_2_4: 'участника',
+    participant_5: 'участников',
+    guest: 'Гость',
+    safari_mobile: '<ol><li>Откройте <b>Настройки</b> → <b>Safari</b></li><li>Прокрутите до <b>Микрофон</b> → <b>Разрешить</b></li><li>Вернитесь и обновите страницу</li></ol>',
+    mobile_default: '<ol><li>Нажмите на <b>замок</b> 🔒 слева от адресной строки</li><li>Найдите <b>Микрофон</b> → переключите на <b>Разрешить</b></li><li>Обновите страницу</li></ol>',
+    safari_desktop: '<ol><li>В меню <b>Safari</b> → <b>Настройки для этого сайта...</b></li><li>Рядом с <b>Микрофон</b> выберите <b>Разрешить</b></li><li>Обновите страницу</li></ol>',
+    firefox: '<ol><li>Нажмите на <b>замок</b> 🔒 слева от адресной строки</li><li>Рядом с <b>Использовать микрофон</b> нажмите <b>✕</b> чтобы сбросить</li><li>Обновите страницу и нажмите <b>Разрешить</b></li></ol>',
+    opera: '<ol><li>Нажмите на <b>замок</b> 🔒 слева от адресной строки</li><li>Нажмите <b>Настройки сайтов</b></li><li>Рядом с <b>Микрофон</b> выберите <b>Разрешить</b></li><li>Обновите страницу</li></ol>',
+    chrome_default: '<ol><li>Нажмите на <b>замок</b> 🔒 (или значок настроек) слева от адресной строки</li><li>Найдите <b>Микрофон</b> → переключите на <b>Разрешить</b></li><li>Обновите страницу</li></ol>',
+    mic_hint_title: 'Микрофон заблокирован',
+  }
+};
+
+const lang = localStorage.getItem('zvoon-lang') || 'ru';
+function t(key) { return (callI18n[lang] && callI18n[lang][key]) || callI18n.ru[key] || key; }
+
+// Apply initial translations to static elements
+document.getElementById('nameTitle').textContent = t('name_title');
+document.getElementById('nameSubtitle').textContent = t('name_subtitle');
+document.getElementById('nameInput').placeholder = t('name_placeholder');
+document.getElementById('nameBtn').textContent = t('name_btn');
+document.getElementById('micTitle').textContent = t('mic_title');
+document.getElementById('micSubtitle').innerHTML = t('mic_subtitle');
+document.getElementById('micRequestBtn').textContent = t('mic_request_btn');
+document.getElementById('micSkipBtn').textContent = t('mic_skip');
+document.getElementById('copyText').textContent = t('invite_btn');
+document.getElementById('leaveBtn').textContent = t('leave_btn');
+document.getElementById('shareToast').textContent = t('toast_copied');
+document.querySelector('.mic-hint-title').textContent = t('mic_hint_title');
 </script>
 
 </body>
