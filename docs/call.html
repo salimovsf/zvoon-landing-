@@ -17,6 +17,7 @@
   --accent: #e8734a;
   --green: #22c55e;
   --red: #ef4444;
+  --yellow: #eab308;
   --text: #f5f5f5;
   --muted: #888;
 }
@@ -109,6 +110,29 @@ body {
   font-size: 13px;
   margin-top: 12px;
   display: none;
+}
+
+/* ─── Mic status banner ─── */
+.mic-banner {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mic-banner.warning {
+  display: flex;
+  background: rgba(234, 179, 8, 0.12);
+  color: var(--yellow);
+}
+
+.mic-banner.error {
+  display: flex;
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--red);
 }
 
 /* ─── Call screen ─── */
@@ -246,12 +270,16 @@ body {
   background: rgba(239, 68, 68, 0.15);
   color: var(--red);
 }
+.ctrl-mute.no-mic {
+  background: rgba(239, 68, 68, 0.08);
+  color: #666;
+  cursor: not-allowed;
+}
 
 .ctrl-copy {
   background: var(--surface2);
   color: var(--muted);
 }
-.ctrl-copy.copied { color: var(--green); }
 
 .ctrl-leave {
   background: var(--red);
@@ -320,7 +348,7 @@ body {
 <!-- Connecting overlay -->
 <div class="connecting" id="connecting">
   <div class="spinner"></div>
-  <div class="connecting-text">Подключение...</div>
+  <div class="connecting-text" id="connectingText">Подключение...</div>
 </div>
 
 <!-- Join screen -->
@@ -345,6 +373,7 @@ body {
 
 <!-- Call screen -->
 <div class="call-screen" id="callScreen">
+  <div class="mic-banner" id="micBanner"></div>
   <div class="call-header">
     <div class="call-timer" id="timer">00:00</div>
     <div class="call-count" id="participantCount"></div>
@@ -378,6 +407,9 @@ body {
   </div>
 </div>
 
+<!-- Hidden audio container for autoplay unlock -->
+<div id="audioContainer" style="display:none"></div>
+
 <div class="share-toast" id="shareToast">Ссылка скопирована</div>
 
 <!-- LiveKit SDK -->
@@ -395,18 +427,23 @@ const isHost = params.get('host') === '1';
 // State
 let room = null;
 let isMuted = false;
+let micAvailable = false;
+let localStream = null;
 let timerSeconds = 0;
 let timerInterval = null;
+let joining = false;
 
 // Elements
 const joinScreen = document.getElementById('joinScreen');
 const callScreen = document.getElementById('callScreen');
 const connectingOverlay = document.getElementById('connecting');
+const connectingText = document.getElementById('connectingText');
 const nameInput = document.getElementById('nameInput');
 const joinBtn = document.getElementById('joinBtn');
 const joinError = document.getElementById('joinError');
 const joinTitle = document.getElementById('joinTitle');
 const joinSubtitle = document.getElementById('joinSubtitle');
+const micBanner = document.getElementById('micBanner');
 
 // If no room param and not host, show error
 if (!roomSlug && !isHost) {
@@ -425,71 +462,176 @@ nameInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && nameInput.value.trim()) joinBtn.click();
 });
 
-// Join / Create
+// ─── Mic permission ───
+// Request mic access BEFORE connecting to LiveKit.
+// This triggers the browser permission dialog from a user gesture (button click).
+// We keep the stream and pass it to LiveKit later.
+async function requestMicPermission() {
+  // Try multiple audio constraints for max browser compat
+  const constraintsList = [
+    { audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } },
+    { audio: { echoCancellation: true, noiseSuppression: true } },
+    { audio: true },
+  ];
+
+  for (const constraints of constraintsList) {
+    try {
+      localStream = await navigator.mediaDevices.getUserMedia(constraints);
+      micAvailable = true;
+      return true;
+    } catch (e) {
+      console.warn('getUserMedia failed with constraints:', constraints, e.name, e.message);
+      // NotAllowedError = user denied permission
+      if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
+        return false;
+      }
+      // NotFoundError = no mic device, try next constraints
+      // Other errors = try next
+      continue;
+    }
+  }
+  return false;
+}
+
+// Stop the preview stream tracks (LiveKit will create its own)
+function stopPreviewStream() {
+  if (localStream) {
+    localStream.getTracks().forEach(t => t.stop());
+    localStream = null;
+  }
+}
+
+// ─── API calls with retry ───
+async function apiCall(url, options, retries = 2) {
+  for (let i = 0; i <= retries; i++) {
+    try {
+      const res = await fetch(url, options);
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Ошибка сервера (${res.status})`);
+      }
+      return await res.json();
+    } catch (e) {
+      if (i === retries) throw e;
+      // Wait before retry (300ms, 800ms)
+      await new Promise(r => setTimeout(r, 300 * (i + 1)));
+    }
+  }
+}
+
+// ─── Safari / iOS autoplay unlock ───
+// Safari blocks audio playback until a user gesture.
+// We create and play a silent audio context on the join button click.
+function unlockAudioPlayback() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const buf = ctx.createBuffer(1, 1, 22050);
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.connect(ctx.destination);
+    src.start(0);
+    // Also create a silent <audio> to unlock HTMLAudioElement playback
+    const audio = document.createElement('audio');
+    audio.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+    audio.play().catch(() => {});
+    ctx.resume().catch(() => {});
+  } catch (e) {
+    // Ignore — not all browsers need this
+  }
+}
+
+// ─── Join / Create ───
 joinBtn.addEventListener('click', async () => {
   const name = nameInput.value.trim();
-  if (!name) return;
+  if (!name || joining) return;
 
+  joining = true;
   joinBtn.disabled = true;
   joinError.style.display = 'none';
+
+  // 1. Unlock audio playback (Safari/iOS)
+  unlockAudioPlayback();
+
+  // 2. Request mic permission FIRST (user gesture context)
+  connectingText.textContent = 'Доступ к микрофону...';
   connectingOverlay.classList.add('show');
+
+  const micGranted = await requestMicPermission();
+  stopPreviewStream(); // Free the stream, LiveKit will get its own
+
+  if (!micGranted) {
+    // Show warning but don't block — user can still listen
+    console.warn('Microphone not available or denied');
+  }
+
+  // 3. Get token from API
+  connectingText.textContent = 'Подключение...';
 
   try {
     let token, slug;
 
     if (isHost) {
-      // Create new room
-      const res = await fetch(`${API_URL}/rooms`, {
+      const data = await apiCall(`${API_URL}/rooms`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ hostName: name }),
       });
-      if (!res.ok) throw new Error('Не удалось создать комнату');
-      const data = await res.json();
       token = data.token;
       slug = data.slug;
-      // Update URL without reload
       history.replaceState(null, '', `?room=${slug}`);
     } else {
-      // Join existing room
-      const res = await fetch(`${API_URL}/rooms/${roomSlug}/token`, {
+      const data = await apiCall(`${API_URL}/rooms/${roomSlug}/token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name }),
       });
-      if (!res.ok) throw new Error('Не удалось присоединиться');
-      const data = await res.json();
       token = data.token;
       slug = roomSlug;
     }
 
-    await connectToRoom(token, slug);
+    // 4. Connect to LiveKit
+    await connectToRoom(token, slug, micGranted);
   } catch (err) {
     connectingOverlay.classList.remove('show');
-    joinError.textContent = err.message;
+    joinError.textContent = err.message || 'Не удалось подключиться. Попробуйте ещё раз.';
     joinError.style.display = 'block';
     joinBtn.disabled = false;
+    joining = false;
   }
 });
 
-async function connectToRoom(token, slug) {
-  const { Room, RoomEvent, Track } = LivekitClient;
+async function connectToRoom(token, slug, micGranted) {
+  const { Room, RoomEvent, Track, RoomOptions } = LivekitClient;
 
   room = new Room({
     adaptiveStream: true,
     dynacast: true,
+    // Explicit audio output settings for better compat
+    audioCaptureDefaults: {
+      echoCancellation: true,
+      noiseSuppression: true,
+      autoGainControl: true,
+    },
+    audioOutput: {
+      deviceId: 'default',
+    },
   });
 
-  // Attach remote audio tracks so we can hear other participants
+  // ─── Remote audio tracks ───
   room.on(RoomEvent.TrackSubscribed, (track, publication, participant) => {
     if (track.kind === Track.Kind.Audio) {
       const el = track.attach();
       el.id = `audio-${participant.sid}`;
-      document.body.appendChild(el);
+      el.setAttribute('autoplay', '');
+      el.setAttribute('playsinline', '');
+      // Force volume for Safari
+      el.volume = 1.0;
+      document.getElementById('audioContainer').appendChild(el);
+      // Some browsers need explicit play() after attach
+      el.play().catch(() => {});
     }
   });
 
-  // Detach when unsubscribed
   room.on(RoomEvent.TrackUnsubscribed, (track, publication, participant) => {
     track.detach().forEach(el => el.remove());
     const leftover = document.getElementById(`audio-${participant.sid}`);
@@ -511,25 +653,79 @@ async function connectToRoom(token, slug) {
     joinBtn.style.display = 'none';
   });
 
+  // ─── Handle MediaDeviceFailure ───
+  room.on(RoomEvent.MediaDevicesError, (e) => {
+    console.error('MediaDevicesError:', e);
+    showMicBanner('error', 'Микрофон недоступен. Вас не слышно.');
+    setMicUI(true, false);
+  });
+
+  // Connect
   await room.connect(LIVEKIT_URL, token);
 
+  // Show call UI
   connectingOverlay.classList.remove('show');
   joinScreen.style.display = 'none';
   callScreen.style.display = 'flex';
 
-  // Try enabling mic after UI is shown — don't block on failure
-  try {
-    await room.localParticipant.setMicrophoneEnabled(true);
-  } catch (e) {
-    console.warn('Mic not available:', e.message);
+  // ─── Enable microphone ───
+  if (micGranted) {
+    try {
+      await room.localParticipant.setMicrophoneEnabled(true);
+      micAvailable = true;
+      isMuted = false;
+
+      // Verify the mic track actually published
+      setTimeout(() => {
+        const micPub = room.localParticipant.getTrackPublication(Track.Source.Microphone);
+        if (!micPub || !micPub.track) {
+          console.warn('Mic track not published after enable');
+          showMicBanner('warning', 'Микрофон не определён. Попробуйте нажать кнопку микрофона.');
+          setMicUI(true, true);
+        }
+      }, 2000);
+    } catch (e) {
+      console.error('Failed to enable mic:', e.name, e.message);
+      micAvailable = false;
+      isMuted = true;
+
+      if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
+        showMicBanner('error', 'Разрешите доступ к микрофону в настройках браузера');
+      } else if (e.name === 'NotFoundError' || e.name === 'DevicesNotFoundError') {
+        showMicBanner('error', 'Микрофон не найден. Подключите микрофон и обновите страницу.');
+      } else {
+        showMicBanner('warning', 'Не удалось включить микрофон. Вас не слышно.');
+      }
+      setMicUI(true, false);
+    }
+  } else {
     isMuted = true;
-    document.getElementById('muteBtn').classList.add('muted');
-    document.getElementById('micOn').style.display = 'none';
-    document.getElementById('micOff').style.display = 'block';
+    micAvailable = false;
+    showMicBanner('error', 'Разрешите доступ к микрофону в настройках браузера');
+    setMicUI(true, false);
   }
 
   updateParticipants();
   startTimer();
+  joining = false;
+}
+
+function showMicBanner(type, text) {
+  micBanner.textContent = text;
+  micBanner.className = 'mic-banner ' + type;
+}
+
+function setMicUI(muted, canToggle) {
+  isMuted = muted;
+  const btn = document.getElementById('muteBtn');
+  document.getElementById('micOn').style.display = muted ? 'none' : 'block';
+  document.getElementById('micOff').style.display = muted ? 'block' : 'none';
+  btn.classList.toggle('muted', muted);
+  if (!canToggle) {
+    btn.classList.add('no-mic');
+  } else {
+    btn.classList.remove('no-mic');
+  }
 }
 
 function updateParticipants() {
@@ -574,19 +770,35 @@ function updateSpeakers(speakers) {
   });
 }
 
-function toggleMute() {
+async function toggleMute() {
   if (!room) return;
+
+  // If mic was never available, try to request it again
+  if (!micAvailable) {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach(t => t.stop());
+      await room.localParticipant.setMicrophoneEnabled(true);
+      micAvailable = true;
+      isMuted = false;
+      micBanner.className = 'mic-banner';
+      setMicUI(false, true);
+      updateParticipants();
+      return;
+    } catch (e) {
+      console.warn('Still no mic:', e.message);
+      return;
+    }
+  }
+
   isMuted = !isMuted;
-  room.localParticipant.setMicrophoneEnabled(!isMuted);
-
-  const btn = document.getElementById('muteBtn');
-  const micOn = document.getElementById('micOn');
-  const micOff = document.getElementById('micOff');
-
-  btn.classList.toggle('muted', isMuted);
-  micOn.style.display = isMuted ? 'none' : 'block';
-  micOff.style.display = isMuted ? 'block' : 'none';
-
+  try {
+    await room.localParticipant.setMicrophoneEnabled(!isMuted);
+  } catch (e) {
+    console.error('Toggle mic failed:', e);
+    isMuted = !isMuted; // revert
+  }
+  setMicUI(isMuted, true);
   updateParticipants();
 }
 
