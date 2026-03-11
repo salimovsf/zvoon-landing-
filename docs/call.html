@@ -384,6 +384,8 @@ body {
     <h1 class="screen-title" id="nameTitle">Введите имя</h1>
     <p class="screen-subtitle" id="nameSubtitle">Вы присоединитесь к звонку</p>
     <input class="input" id="nameInput" type="text" placeholder="Ваше имя" maxlength="30" autofocus>
+    <input class="input" id="emailInput" type="email" placeholder="Email — для получения сводки звонка" style="margin-bottom:4px;">
+    <p class="email-hint" id="emailHint" style="font-size:12px;color:#666;margin-bottom:14px;line-height:1.4;text-align:left;">Укажите email, чтобы получить ИИ-сводку после звонка. Без email звонок не записывается.</p>
     <button class="btn" id="nameBtn" disabled>Далее</button>
     <div class="error-text" id="nameError"></div>
   </div>
@@ -451,6 +453,24 @@ body {
   </div>
 </div>
 
+<!-- SCREEN 4: Call ended -->
+<div class="screen" id="screenEnd">
+  <div class="screen-box">
+    <div style="width:64px;height:64px;border-radius:50%;background:rgba(34,197,94,0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h1 class="screen-title" id="endTitle">Звонок завершён</h1>
+    <p class="screen-subtitle" id="endSubtitle">Вы можете закрыть эту страницу</p>
+    <div id="endSummaryInfo" style="display:none;background:var(--surface);border:1px solid #333;border-radius:14px;padding:16px;margin-bottom:16px;text-align:left;">
+      <div style="font-size:14px;font-weight:600;margin-bottom:6px;" id="endSummaryTitle">Сводка будет отправлена</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.5;" id="endSummaryText"></div>
+    </div>
+    <a href="https://zvoon.me" class="btn" style="display:block;text-decoration:none;text-align:center;" id="endHomeBtn">На главную</a>
+  </div>
+</div>
+
 <div id="audioContainer" style="display:none"></div>
 <div class="share-toast" id="shareToast">Ссылка на звонок скопирована</div>
 
@@ -470,6 +490,7 @@ let micAvailable = false;
 let timerSeconds = 0;
 let timerInterval = null;
 let userName = '';
+let userEmail = '';
 let userToken = '';
 let userSlug = '';
 
@@ -577,6 +598,8 @@ nameBtn.addEventListener('click', async () => {
   userName = nameInput.value.trim();
   if (!userName) return;
 
+  userEmail = document.getElementById('emailInput').value.trim();
+
   nameBtn.disabled = true;
   nameError.style.display = 'none';
 
@@ -591,19 +614,23 @@ nameBtn.addEventListener('click', async () => {
 
   try {
     if (isHost) {
+      const payload = { hostName: userName, lang: lang };
+      if (userEmail) payload.email = userEmail;
       const data = await apiCall(`${API_URL}/rooms`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ hostName: userName }),
+        body: JSON.stringify(payload),
       });
       userToken = data.token;
       userSlug = data.slug;
       history.replaceState(null, '', `?room=${userSlug}&lang=${lang}`);
     } else {
+      const payload = { name: userName };
+      if (userEmail) payload.email = userEmail;
       const data = await apiCall(`${API_URL}/rooms/${roomSlug}/token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: userName }),
+        body: JSON.stringify(payload),
       });
       userToken = data.token;
       userSlug = roomSlug;
@@ -781,11 +808,18 @@ async function connectToRoom(token, slug, withMic) {
   room.on(RoomEvent.Disconnected, () => {
     stopTimer();
     document.querySelectorAll('.screen, .call-screen').forEach(s => s.classList.remove('active'));
-    showScreen('screenName');
-    document.getElementById('nameTitle').textContent = t('call_ended_title');
-    document.getElementById('nameSubtitle').textContent = t('call_ended_subtitle');
-    document.getElementById('nameInput').style.display = 'none';
-    document.getElementById('nameBtn').style.display = 'none';
+    showScreen('screenEnd');
+    document.getElementById('endTitle').textContent = t('call_ended_title');
+    document.getElementById('endSubtitle').textContent = t('call_ended_subtitle');
+    document.getElementById('endHomeBtn').textContent = t('end_home_btn');
+
+    // Show summary info if email was provided
+    if (userEmail) {
+      const info = document.getElementById('endSummaryInfo');
+      info.style.display = 'block';
+      document.getElementById('endSummaryTitle').textContent = t('end_summary_title');
+      document.getElementById('endSummaryText').textContent = t('end_summary_text').replace('{email}', userEmail);
+    }
   });
 
   room.on(RoomEvent.MediaDevicesError, (e) => {
@@ -976,6 +1010,11 @@ const callI18n = {
     participant_2_4: 'participants',
     participant_5: 'participants',
     guest: 'Guest',
+    email_placeholder: 'Email — to receive call summary',
+    email_hint: 'Enter your email to get an AI summary after the call. Without email, the call is not recorded.',
+    end_home_btn: 'Go to main page',
+    end_summary_title: 'Summary will be sent',
+    end_summary_text: 'AI summary will be sent to {email} within a few minutes.',
     // Browser instructions
     safari_mobile: '<ol><li>Open <b>Settings</b> → <b>Safari</b></li><li>Scroll to <b>Microphone</b> → <b>Allow</b></li><li>Come back and refresh the page</li></ol>',
     mobile_default: '<ol><li>Tap the <b>lock</b> 🔒 icon left of the address bar</li><li>Find <b>Microphone</b> → switch to <b>Allow</b></li><li>Refresh the page</li></ol>',
@@ -1020,6 +1059,11 @@ const callI18n = {
     participant_2_4: 'участника',
     participant_5: 'участников',
     guest: 'Гость',
+    email_placeholder: 'Email — для получения сводки звонка',
+    email_hint: 'Укажите email, чтобы получить ИИ-сводку после звонка. Без email звонок не записывается.',
+    end_home_btn: 'На главную',
+    end_summary_title: 'Сводка будет отправлена',
+    end_summary_text: 'ИИ-сводка будет отправлена на {email} в течение нескольких минут.',
     safari_mobile: '<ol><li>Откройте <b>Настройки</b> → <b>Safari</b></li><li>Прокрутите до <b>Микрофон</b> → <b>Разрешить</b></li><li>Вернитесь и обновите страницу</li></ol>',
     mobile_default: '<ol><li>Нажмите на <b>замок</b> 🔒 слева от адресной строки</li><li>Найдите <b>Микрофон</b> → переключите на <b>Разрешить</b></li><li>Обновите страницу</li></ol>',
     safari_desktop: '<ol><li>В меню <b>Safari</b> → <b>Настройки для этого сайта...</b></li><li>Рядом с <b>Микрофон</b> выберите <b>Разрешить</b></li><li>Обновите страницу</li></ol>',
@@ -1038,6 +1082,8 @@ function t(key) { return (callI18n[lang] && callI18n[lang][key]) || callI18n.ru[
 document.getElementById('nameTitle').textContent = t('name_title');
 document.getElementById('nameSubtitle').textContent = t('name_subtitle');
 document.getElementById('nameInput').placeholder = t('name_placeholder');
+document.getElementById('emailInput').placeholder = t('email_placeholder');
+document.getElementById('emailHint').textContent = t('email_hint');
 document.getElementById('nameBtn').textContent = t('name_btn');
 document.getElementById('micTitle').textContent = t('mic_title');
 document.getElementById('micSubtitle').innerHTML = t('mic_subtitle');
