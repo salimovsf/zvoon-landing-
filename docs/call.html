@@ -34,22 +34,22 @@ body {
   overflow: hidden;
 }
 
-/* ─── Join screen ─── */
-.join-screen {
+/* ─── Screens ─── */
+.screen {
   flex: 1;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   padding: 24px;
 }
-
-.join-box {
+.screen.active { display: flex; }
+.screen-box {
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
   text-align: center;
 }
 
-.join-logo {
+.logo {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,19 +60,20 @@ body {
   letter-spacing: -0.5px;
 }
 
-.join-title {
+.screen-title {
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 8px;
 }
 
-.join-subtitle {
+.screen-subtitle {
   font-size: 14px;
   color: var(--muted);
   margin-bottom: 28px;
+  line-height: 1.5;
 }
 
-.join-input {
+.input {
   width: 100%;
   padding: 14px 18px;
   border-radius: 14px;
@@ -85,10 +86,9 @@ body {
   transition: border-color 0.2s;
   margin-bottom: 14px;
 }
+.input:focus { border-color: var(--accent); }
 
-.join-input:focus { border-color: var(--accent); }
-
-.join-btn {
+.btn {
   width: 100%;
   padding: 14px;
   border-radius: 14px;
@@ -101,15 +101,64 @@ body {
   cursor: pointer;
   transition: opacity 0.2s;
 }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn:not(:disabled):hover { opacity: 0.9; }
+.btn-secondary {
+  background: var(--surface2);
+  color: var(--muted);
+  margin-top: 10px;
+}
 
-.join-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.join-btn:not(:disabled):hover { opacity: 0.9; }
-
-.join-error {
+.error-text {
   color: var(--red);
   font-size: 13px;
   margin-top: 12px;
   display: none;
+}
+
+/* ─── Mic permission screen ─── */
+.mic-icon-big {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(232, 115, 74, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+
+.mic-hint {
+  display: none;
+  background: var(--surface);
+  border: 1px solid #333;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+.mic-hint.show { display: block; }
+
+.mic-hint-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--yellow);
+}
+
+.mic-hint ol {
+  font-size: 13px;
+  color: var(--muted);
+  padding-left: 20px;
+  line-height: 1.7;
+}
+
+.browser-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  margin-right: 2px;
 }
 
 /* ─── Mic status banner ─── */
@@ -122,13 +171,11 @@ body {
   font-size: 13px;
   font-weight: 600;
 }
-
 .mic-banner.warning {
   display: flex;
   background: rgba(234, 179, 8, 0.12);
   color: var(--yellow);
 }
-
 .mic-banner.error {
   display: flex;
   background: rgba(239, 68, 68, 0.12);
@@ -143,6 +190,7 @@ body {
   height: 100vh;
   height: 100dvh;
 }
+.call-screen.active { display: flex; }
 
 .call-header {
   display: flex;
@@ -158,10 +206,7 @@ body {
   font-weight: 600;
 }
 
-.call-count {
-  font-size: 13px;
-  color: var(--muted);
-}
+.call-count { font-size: 13px; color: var(--muted); }
 
 .call-participants {
   flex: 1;
@@ -250,45 +295,18 @@ body {
   gap: 6px;
 }
 
-.ctrl-round {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  padding: 0;
-}
+.ctrl-round { width: 56px; height: 56px; border-radius: 50%; padding: 0; }
+.ctrl-pill { padding: 12px 20px; border-radius: 14px; }
 
-.ctrl-pill {
-  padding: 12px 20px;
-  border-radius: 14px;
-}
+.ctrl-mute { background: var(--surface2); color: var(--text); }
+.ctrl-mute.muted { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+.ctrl-mute.no-mic { background: rgba(239, 68, 68, 0.08); color: #666; cursor: not-allowed; }
 
-.ctrl-mute {
-  background: var(--surface2);
-  color: var(--text);
-}
-.ctrl-mute.muted {
-  background: rgba(239, 68, 68, 0.15);
-  color: var(--red);
-}
-.ctrl-mute.no-mic {
-  background: rgba(239, 68, 68, 0.08);
-  color: #666;
-  cursor: not-allowed;
-}
-
-.ctrl-copy {
-  background: var(--surface2);
-  color: var(--muted);
-}
-
-.ctrl-leave {
-  background: var(--red);
-  color: #fff;
-}
-
+.ctrl-copy { background: var(--surface2); color: var(--muted); }
+.ctrl-leave { background: var(--red); color: #fff; }
 .ctrl-btn:hover { opacity: 0.85; }
 
-/* ─── Connecting overlay ─── */
+/* ─── Loading overlay ─── */
 .connecting {
   position: fixed;
   inset: 0;
@@ -300,7 +318,6 @@ body {
   gap: 16px;
   z-index: 100;
 }
-
 .connecting.show { display: flex; }
 
 .spinner {
@@ -311,15 +328,11 @@ body {
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
-
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.connecting-text {
-  font-size: 15px;
-  color: var(--muted);
-}
+.connecting-text { font-size: 15px; color: var(--muted); }
 
-/* ─── Share toast ─── */
+/* ─── Toast ─── */
 .share-toast {
   position: fixed;
   bottom: 100px;
@@ -336,25 +349,29 @@ body {
   pointer-events: none;
   z-index: 50;
 }
+.share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-.share-toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+/* ─── Pulse animation for mic icon ─── */
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(232, 115, 74, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(232, 115, 74, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(232, 115, 74, 0); }
 }
+.mic-icon-big.pulsing { animation: pulse-ring 1.5s infinite; }
 </style>
 </head>
 <body>
 
-<!-- Connecting overlay -->
+<!-- Loading overlay -->
 <div class="connecting" id="connecting">
   <div class="spinner"></div>
   <div class="connecting-text" id="connectingText">Подключение...</div>
 </div>
 
-<!-- Join screen -->
-<div class="join-screen" id="joinScreen">
-  <div class="join-box">
-    <div class="join-logo">
+<!-- SCREEN 1: Name input -->
+<div class="screen active" id="screenName">
+  <div class="screen-box">
+    <div class="logo">
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
         <rect width="28" height="28" rx="8" fill="#e8734a"/>
         <path d="M8 10.5C8 9.67 8.67 9 9.5 9h1C11.33 9 12 9.67 12 10.5v7c0 .83-.67 1.5-1.5 1.5h-1C8.67 19 8 18.33 8 17.5v-7z" fill="#fff"/>
@@ -363,16 +380,42 @@ body {
       </svg>
       Zvoon
     </div>
-    <h1 class="join-title" id="joinTitle">Введите имя</h1>
-    <p class="join-subtitle" id="joinSubtitle">Вы присоединитесь к звонку</p>
-    <input class="join-input" id="nameInput" type="text" placeholder="Ваше имя" maxlength="30" autofocus>
-    <button class="join-btn" id="joinBtn" disabled>Войти</button>
-    <div class="join-error" id="joinError"></div>
+    <h1 class="screen-title" id="nameTitle">Введите имя</h1>
+    <p class="screen-subtitle" id="nameSubtitle">Вы присоединитесь к звонку</p>
+    <input class="input" id="nameInput" type="text" placeholder="Ваше имя" maxlength="30" autofocus>
+    <button class="btn" id="nameBtn" disabled>Далее</button>
+    <div class="error-text" id="nameError"></div>
   </div>
 </div>
 
-<!-- Call screen -->
-<div class="call-screen" id="callScreen">
+<!-- SCREEN 2: Mic permission -->
+<div class="screen" id="screenMic">
+  <div class="screen-box">
+    <div class="mic-icon-big pulsing" id="micIconBig">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#e8734a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="1" width="6" height="12" rx="3"/>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+        <line x1="12" y1="19" x2="12" y2="23"/>
+        <line x1="8" y1="23" x2="16" y2="23"/>
+      </svg>
+    </div>
+    <h1 class="screen-title" id="micTitle">Разрешите микрофон</h1>
+    <p class="screen-subtitle" id="micSubtitle">Нажмите <strong>«Разрешить»</strong> во всплывающем окне браузера, чтобы собеседники вас слышали</p>
+
+    <!-- Hint for blocked mic (shown when denied) -->
+    <div class="mic-hint" id="micHint">
+      <div class="mic-hint-title">Микрофон заблокирован</div>
+      <div id="micHintContent"></div>
+    </div>
+
+    <button class="btn" id="micRequestBtn">Включить микрофон</button>
+    <button class="btn btn-secondary" id="micSkipBtn">Войти без микрофона</button>
+    <div class="error-text" id="micError"></div>
+  </div>
+</div>
+
+<!-- SCREEN 3: Call -->
+<div class="call-screen" id="screenCall">
   <div class="mic-banner" id="micBanner"></div>
   <div class="call-header">
     <div class="call-timer" id="timer">00:00</div>
@@ -407,98 +450,108 @@ body {
   </div>
 </div>
 
-<!-- Hidden audio container for autoplay unlock -->
 <div id="audioContainer" style="display:none"></div>
-
 <div class="share-toast" id="shareToast">Ссылка скопирована</div>
 
-<!-- LiveKit SDK -->
 <script src="https://unpkg.com/livekit-client@2.17.2/dist/livekit-client.umd.js"></script>
 
 <script>
 const API_URL = 'https://zvoon.kotik.space';
 const LIVEKIT_URL = 'wss://livekit.kotik.space';
 
-// Parse URL params
-const params = new URLSearchParams(window.location.search);
-const roomSlug = params.get('room');
-const isHost = params.get('host') === '1';
+const urlParams = new URLSearchParams(window.location.search);
+const roomSlug = urlParams.get('room');
+const isHost = urlParams.get('host') === '1';
 
-// State
 let room = null;
 let isMuted = false;
 let micAvailable = false;
-let localStream = null;
 let timerSeconds = 0;
 let timerInterval = null;
-let joining = false;
+let userName = '';
+let userToken = '';
+let userSlug = '';
 
-// Elements
-const joinScreen = document.getElementById('joinScreen');
-const callScreen = document.getElementById('callScreen');
-const connectingOverlay = document.getElementById('connecting');
-const connectingText = document.getElementById('connectingText');
-const nameInput = document.getElementById('nameInput');
-const joinBtn = document.getElementById('joinBtn');
-const joinError = document.getElementById('joinError');
-const joinTitle = document.getElementById('joinTitle');
-const joinSubtitle = document.getElementById('joinSubtitle');
-const micBanner = document.getElementById('micBanner');
-
-// If no room param and not host, show error
-if (!roomSlug && !isHost) {
-  joinTitle.textContent = 'Нет комнаты';
-  joinSubtitle.textContent = 'Перейдите на главную страницу, чтобы создать звонок';
-  nameInput.style.display = 'none';
-  joinBtn.style.display = 'none';
+// ─── Screens ───
+function showScreen(id) {
+  document.querySelectorAll('.screen, .call-screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
-// Enable join button on input
-nameInput.addEventListener('input', () => {
-  joinBtn.disabled = !nameInput.value.trim();
-});
+// ─── Detect browser ───
+function getBrowser() {
+  const ua = navigator.userAgent;
+  if (ua.includes('OPR') || ua.includes('Opera')) return 'opera';
+  if (ua.includes('Firefox')) return 'firefox';
+  if (ua.includes('Edg')) return 'edge';
+  if (ua.includes('Safari') && !ua.includes('Chrome')) return 'safari';
+  return 'chrome'; // Chrome and Chromium-based
+}
 
-nameInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && nameInput.value.trim()) joinBtn.click();
-});
+function isMobile() {
+  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+}
 
-// ─── Mic permission ───
-// Request mic access BEFORE connecting to LiveKit.
-// This triggers the browser permission dialog from a user gesture (button click).
-// We keep the stream and pass it to LiveKit later.
-async function requestMicPermission() {
-  // Try multiple audio constraints for max browser compat
-  const constraintsList = [
-    { audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } },
-    { audio: { echoCancellation: true, noiseSuppression: true } },
-    { audio: true },
-  ];
+function getMicBlockedInstructions() {
+  const browser = getBrowser();
+  const mobile = isMobile();
 
-  for (const constraints of constraintsList) {
-    try {
-      localStream = await navigator.mediaDevices.getUserMedia(constraints);
-      micAvailable = true;
-      return true;
-    } catch (e) {
-      console.warn('getUserMedia failed with constraints:', constraints, e.name, e.message);
-      // NotAllowedError = user denied permission
-      if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
-        return false;
-      }
-      // NotFoundError = no mic device, try next constraints
-      // Other errors = try next
-      continue;
+  if (mobile) {
+    if (browser === 'safari') {
+      return `<ol>
+        <li>Откройте <b>Настройки</b> → <b>Safari</b></li>
+        <li>Прокрутите до <b>Микрофон</b> → <b>Разрешить</b></li>
+        <li>Вернитесь и обновите страницу</li>
+      </ol>`;
     }
+    return `<ol>
+      <li>Нажмите на <b>замок</b> 🔒 слева от адресной строки</li>
+      <li>Найдите <b>Микрофон</b> → переключите на <b>Разрешить</b></li>
+      <li>Обновите страницу</li>
+    </ol>`;
   }
-  return false;
+
+  if (browser === 'safari') {
+    return `<ol>
+      <li>В меню <b>Safari</b> → <b>Настройки для этого сайта...</b></li>
+      <li>Рядом с <b>Микрофон</b> выберите <b>Разрешить</b></li>
+      <li>Обновите страницу</li>
+    </ol>`;
+  }
+  if (browser === 'firefox') {
+    return `<ol>
+      <li>Нажмите на <b>замок</b> 🔒 слева от адресной строки</li>
+      <li>Рядом с <b>Использовать микрофон</b> нажмите <b>✕</b> чтобы сбросить</li>
+      <li>Обновите страницу и нажмите <b>Разрешить</b></li>
+    </ol>`;
+  }
+  if (browser === 'opera') {
+    return `<ol>
+      <li>Нажмите на <b>замок</b> 🔒 слева от адресной строки</li>
+      <li>Нажмите <b>Настройки сайтов</b></li>
+      <li>Рядом с <b>Микрофон</b> выберите <b>Разрешить</b></li>
+      <li>Обновите страницу</li>
+    </ol>`;
+  }
+  // Chrome / Edge / default
+  return `<ol>
+    <li>Нажмите на <b>замок</b> 🔒 (или значок настроек) слева от адресной строки</li>
+    <li>Найдите <b>Микрофон</b> → переключите на <b>Разрешить</b></li>
+    <li>Обновите страницу</li>
+  </ol>`;
 }
 
-// Stop the preview stream tracks (LiveKit will create its own)
-function stopPreviewStream() {
-  if (localStream) {
-    localStream.getTracks().forEach(t => t.stop());
-    localStream = null;
+// ─── Check permission status via Permissions API ───
+async function checkMicPermission() {
+  try {
+    if (navigator.permissions && navigator.permissions.query) {
+      const result = await navigator.permissions.query({ name: 'microphone' });
+      return result.state; // 'granted', 'denied', 'prompt'
+    }
+  } catch (e) {
+    // Safari doesn't support permissions.query for microphone
   }
+  return 'unknown';
 }
 
 // ─── API calls with retry ───
@@ -513,15 +566,12 @@ async function apiCall(url, options, retries = 2) {
       return await res.json();
     } catch (e) {
       if (i === retries) throw e;
-      // Wait before retry (300ms, 800ms)
       await new Promise(r => setTimeout(r, 300 * (i + 1)));
     }
   }
 }
 
-// ─── Safari / iOS autoplay unlock ───
-// Safari blocks audio playback until a user gesture.
-// We create and play a silent audio context on the join button click.
+// ─── Safari autoplay unlock ───
 function unlockAudioPlayback() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -530,112 +580,185 @@ function unlockAudioPlayback() {
     src.buffer = buf;
     src.connect(ctx.destination);
     src.start(0);
-    // Also create a silent <audio> to unlock HTMLAudioElement playback
+    ctx.resume().catch(() => {});
     const audio = document.createElement('audio');
     audio.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
     audio.play().catch(() => {});
-    ctx.resume().catch(() => {});
-  } catch (e) {
-    // Ignore — not all browsers need this
-  }
+  } catch (e) {}
 }
 
-// ─── Join / Create ───
-joinBtn.addEventListener('click', async () => {
-  const name = nameInput.value.trim();
-  if (!name || joining) return;
+// ─── No room check ───
+if (!roomSlug && !isHost) {
+  document.getElementById('nameTitle').textContent = 'Нет комнаты';
+  document.getElementById('nameSubtitle').textContent = 'Перейдите на главную страницу, чтобы создать звонок';
+  document.getElementById('nameInput').style.display = 'none';
+  document.getElementById('nameBtn').style.display = 'none';
+}
 
-  joining = true;
-  joinBtn.disabled = true;
-  joinError.style.display = 'none';
+// ─── SCREEN 1: Name ───
+const nameInput = document.getElementById('nameInput');
+const nameBtn = document.getElementById('nameBtn');
+const nameError = document.getElementById('nameError');
 
-  // 1. Unlock audio playback (Safari/iOS)
+nameInput.addEventListener('input', () => {
+  nameBtn.disabled = !nameInput.value.trim();
+});
+nameInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && nameInput.value.trim()) nameBtn.click();
+});
+
+nameBtn.addEventListener('click', async () => {
+  userName = nameInput.value.trim();
+  if (!userName) return;
+
+  nameBtn.disabled = true;
+  nameError.style.display = 'none';
+
+  // Unlock audio (Safari)
   unlockAudioPlayback();
 
-  // 2. Request mic permission FIRST (user gesture context)
-  connectingText.textContent = 'Доступ к микрофону...';
-  connectingOverlay.classList.add('show');
-
-  const micGranted = await requestMicPermission();
-  stopPreviewStream(); // Free the stream, LiveKit will get its own
-
-  if (!micGranted) {
-    // Show warning but don't block — user can still listen
-    console.warn('Microphone not available or denied');
-  }
-
-  // 3. Get token from API
+  // Get token first
+  const connecting = document.getElementById('connecting');
+  const connectingText = document.getElementById('connectingText');
   connectingText.textContent = 'Подключение...';
+  connecting.classList.add('show');
 
   try {
-    let token, slug;
-
     if (isHost) {
       const data = await apiCall(`${API_URL}/rooms`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ hostName: name }),
+        body: JSON.stringify({ hostName: userName }),
       });
-      token = data.token;
-      slug = data.slug;
-      history.replaceState(null, '', `?room=${slug}`);
+      userToken = data.token;
+      userSlug = data.slug;
+      history.replaceState(null, '', `?room=${userSlug}`);
     } else {
       const data = await apiCall(`${API_URL}/rooms/${roomSlug}/token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name: userName }),
       });
-      token = data.token;
-      slug = roomSlug;
+      userToken = data.token;
+      userSlug = roomSlug;
     }
 
-    // 4. Connect to LiveKit
-    await connectToRoom(token, slug, micGranted);
+    connecting.classList.remove('show');
+
+    // Check mic permission state
+    const permState = await checkMicPermission();
+
+    if (permState === 'granted') {
+      // Already granted — skip mic screen, go straight to call
+      await startCall(true);
+    } else {
+      // Show mic permission screen
+      if (permState === 'denied') {
+        showMicDeniedUI();
+      }
+      showScreen('screenMic');
+    }
   } catch (err) {
-    connectingOverlay.classList.remove('show');
-    joinError.textContent = err.message || 'Не удалось подключиться. Попробуйте ещё раз.';
-    joinError.style.display = 'block';
-    joinBtn.disabled = false;
-    joining = false;
+    connecting.classList.remove('show');
+    nameError.textContent = err.message || 'Не удалось подключиться. Попробуйте ещё раз.';
+    nameError.style.display = 'block';
+    nameBtn.disabled = false;
   }
 });
 
-async function connectToRoom(token, slug, micGranted) {
-  const { Room, RoomEvent, Track, RoomOptions } = LivekitClient;
+// ─── SCREEN 2: Mic ───
+const micRequestBtn = document.getElementById('micRequestBtn');
+const micSkipBtn = document.getElementById('micSkipBtn');
+const micHint = document.getElementById('micHint');
+const micError = document.getElementById('micError');
+
+function showMicDeniedUI() {
+  document.getElementById('micTitle').textContent = 'Микрофон заблокирован';
+  document.getElementById('micSubtitle').textContent = 'Браузер запомнил, что вы отказали в доступе. Разблокируйте его вручную:';
+  document.getElementById('micHintContent').innerHTML = getMicBlockedInstructions();
+  micHint.classList.add('show');
+  micRequestBtn.textContent = 'Попробовать снова';
+  document.getElementById('micIconBig').classList.remove('pulsing');
+}
+
+micRequestBtn.addEventListener('click', async () => {
+  micRequestBtn.disabled = true;
+  micError.style.display = 'none';
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
+    });
+    // Got it! Stop preview tracks and proceed
+    stream.getTracks().forEach(t => t.stop());
+    await startCall(true);
+  } catch (e) {
+    console.warn('getUserMedia error:', e.name, e.message);
+    micRequestBtn.disabled = false;
+
+    if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
+      showMicDeniedUI();
+    } else if (e.name === 'NotFoundError' || e.name === 'DevicesNotFoundError') {
+      document.getElementById('micTitle').textContent = 'Микрофон не найден';
+      document.getElementById('micSubtitle').textContent = 'Подключите микрофон или наушники с микрофоном и попробуйте снова.';
+      document.getElementById('micIconBig').classList.remove('pulsing');
+    } else {
+      micError.textContent = `Ошибка: ${e.message}`;
+      micError.style.display = 'block';
+    }
+  }
+});
+
+micSkipBtn.addEventListener('click', () => {
+  startCall(false);
+});
+
+// ─── Start call ───
+async function startCall(withMic) {
+  const connecting = document.getElementById('connecting');
+  connecting.classList.add('show');
+  document.getElementById('connectingText').textContent = 'Подключение к звонку...';
+
+  try {
+    await connectToRoom(userToken, userSlug, withMic);
+  } catch (err) {
+    connecting.classList.remove('show');
+    showScreen('screenMic');
+    micError.textContent = 'Не удалось подключиться к звонку. Попробуйте ещё раз.';
+    micError.style.display = 'block';
+  }
+}
+
+async function connectToRoom(token, slug, withMic) {
+  const { Room, RoomEvent, Track } = LivekitClient;
 
   room = new Room({
     adaptiveStream: true,
     dynacast: true,
-    // Explicit audio output settings for better compat
     audioCaptureDefaults: {
       echoCancellation: true,
       noiseSuppression: true,
       autoGainControl: true,
     },
-    audioOutput: {
-      deviceId: 'default',
-    },
   });
 
-  // ─── Remote audio tracks ───
+  // Remote audio
   room.on(RoomEvent.TrackSubscribed, (track, publication, participant) => {
     if (track.kind === Track.Kind.Audio) {
       const el = track.attach();
       el.id = `audio-${participant.sid}`;
       el.setAttribute('autoplay', '');
       el.setAttribute('playsinline', '');
-      // Force volume for Safari
       el.volume = 1.0;
       document.getElementById('audioContainer').appendChild(el);
-      // Some browsers need explicit play() after attach
       el.play().catch(() => {});
     }
   });
 
   room.on(RoomEvent.TrackUnsubscribed, (track, publication, participant) => {
     track.detach().forEach(el => el.remove());
-    const leftover = document.getElementById(`audio-${participant.sid}`);
-    if (leftover) leftover.remove();
+    const el = document.getElementById(`audio-${participant.sid}`);
+    if (el) el.remove();
   });
 
   room.on(RoomEvent.ParticipantConnected, () => updateParticipants());
@@ -643,76 +766,58 @@ async function connectToRoom(token, slug, micGranted) {
   room.on(RoomEvent.ActiveSpeakersChanged, (speakers) => updateSpeakers(speakers));
   room.on(RoomEvent.TrackMuted, () => updateParticipants());
   room.on(RoomEvent.TrackUnmuted, () => updateParticipants());
+
   room.on(RoomEvent.Disconnected, () => {
     stopTimer();
-    callScreen.style.display = 'none';
-    joinScreen.style.display = 'flex';
-    joinTitle.textContent = 'Звонок завершён';
-    joinSubtitle.textContent = 'Вы можете закрыть эту страницу';
-    nameInput.style.display = 'none';
-    joinBtn.style.display = 'none';
+    document.querySelectorAll('.screen, .call-screen').forEach(s => s.classList.remove('active'));
+    showScreen('screenName');
+    document.getElementById('nameTitle').textContent = 'Звонок завершён';
+    document.getElementById('nameSubtitle').textContent = 'Вы можете закрыть эту страницу';
+    document.getElementById('nameInput').style.display = 'none';
+    document.getElementById('nameBtn').style.display = 'none';
   });
 
-  // ─── Handle MediaDeviceFailure ───
   room.on(RoomEvent.MediaDevicesError, (e) => {
     console.error('MediaDevicesError:', e);
     showMicBanner('error', 'Микрофон недоступен. Вас не слышно.');
     setMicUI(true, false);
   });
 
-  // Connect
   await room.connect(LIVEKIT_URL, token);
 
   // Show call UI
-  connectingOverlay.classList.remove('show');
-  joinScreen.style.display = 'none';
-  callScreen.style.display = 'flex';
+  document.getElementById('connecting').classList.remove('show');
+  showScreen('screenCall');
 
-  // ─── Enable microphone ───
-  if (micGranted) {
+  // Enable mic
+  if (withMic) {
     try {
       await room.localParticipant.setMicrophoneEnabled(true);
       micAvailable = true;
       isMuted = false;
-
-      // Verify the mic track actually published
-      setTimeout(() => {
-        const micPub = room.localParticipant.getTrackPublication(Track.Source.Microphone);
-        if (!micPub || !micPub.track) {
-          console.warn('Mic track not published after enable');
-          showMicBanner('warning', 'Микрофон не определён. Попробуйте нажать кнопку микрофона.');
-          setMicUI(true, true);
-        }
-      }, 2000);
+      setMicUI(false, true);
     } catch (e) {
-      console.error('Failed to enable mic:', e.name, e.message);
+      console.error('Mic enable failed in call:', e.name, e.message);
       micAvailable = false;
       isMuted = true;
-
-      if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
-        showMicBanner('error', 'Разрешите доступ к микрофону в настройках браузера');
-      } else if (e.name === 'NotFoundError' || e.name === 'DevicesNotFoundError') {
-        showMicBanner('error', 'Микрофон не найден. Подключите микрофон и обновите страницу.');
-      } else {
-        showMicBanner('warning', 'Не удалось включить микрофон. Вас не слышно.');
-      }
+      showMicBanner('warning', 'Не удалось включить микрофон. Вас не слышно.');
       setMicUI(true, false);
     }
   } else {
-    isMuted = true;
     micAvailable = false;
-    showMicBanner('error', 'Разрешите доступ к микрофону в настройках браузера');
+    isMuted = true;
+    showMicBanner('warning', 'Вы вошли без микрофона. Вас не слышно.');
     setMicUI(true, false);
   }
 
   updateParticipants();
   startTimer();
-  joining = false;
 }
 
 function showMicBanner(type, text) {
-  micBanner.textContent = text;
-  micBanner.className = 'mic-banner ' + type;
+  const b = document.getElementById('micBanner');
+  b.textContent = text;
+  b.className = 'mic-banner ' + type;
 }
 
 function setMicUI(muted, canToggle) {
@@ -721,11 +826,7 @@ function setMicUI(muted, canToggle) {
   document.getElementById('micOn').style.display = muted ? 'none' : 'block';
   document.getElementById('micOff').style.display = muted ? 'block' : 'none';
   btn.classList.toggle('muted', muted);
-  if (!canToggle) {
-    btn.classList.add('no-mic');
-  } else {
-    btn.classList.remove('no-mic');
-  }
+  btn.classList.toggle('no-mic', !canToggle);
 }
 
 function updateParticipants() {
@@ -762,9 +863,9 @@ function updateParticipants() {
 function updateSpeakers(speakers) {
   if (!room) return;
   document.querySelectorAll('.participant-avatar').forEach(el => el.classList.remove('speaking'));
-  const speakerSids = new Set(speakers.map(s => s.sid));
+  const sids = new Set(speakers.map(s => s.sid));
   document.querySelectorAll('.participant').forEach(el => {
-    if (speakerSids.has(el.dataset.sid)) {
+    if (sids.has(el.dataset.sid)) {
       el.querySelector('.participant-avatar').classList.add('speaking');
     }
   });
@@ -773,7 +874,6 @@ function updateSpeakers(speakers) {
 async function toggleMute() {
   if (!room) return;
 
-  // If mic was never available, try to request it again
   if (!micAvailable) {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -781,22 +881,20 @@ async function toggleMute() {
       await room.localParticipant.setMicrophoneEnabled(true);
       micAvailable = true;
       isMuted = false;
-      micBanner.className = 'mic-banner';
+      document.getElementById('micBanner').className = 'mic-banner';
       setMicUI(false, true);
       updateParticipants();
-      return;
     } catch (e) {
       console.warn('Still no mic:', e.message);
-      return;
     }
+    return;
   }
 
   isMuted = !isMuted;
   try {
     await room.localParticipant.setMicrophoneEnabled(!isMuted);
   } catch (e) {
-    console.error('Toggle mic failed:', e);
-    isMuted = !isMuted; // revert
+    isMuted = !isMuted;
   }
   setMicUI(isMuted, true);
   updateParticipants();
@@ -805,24 +903,18 @@ async function toggleMute() {
 function copyLink() {
   const slug = new URLSearchParams(window.location.search).get('room');
   if (!slug) return;
-
-  const base = window.location.origin + window.location.pathname;
-  const link = `${base}?room=${slug}`;
-
+  const link = `${window.location.origin}${window.location.pathname}?room=${slug}`;
   navigator.clipboard.writeText(link).then(() => {
-    const toast = document.getElementById('shareToast');
-    toast.classList.add('show');
+    document.getElementById('shareToast').classList.add('show');
     document.getElementById('copyText').textContent = 'Скопировано!';
     setTimeout(() => {
-      toast.classList.remove('show');
+      document.getElementById('shareToast').classList.remove('show');
       document.getElementById('copyText').textContent = 'Скопировать';
     }, 2000);
   });
 }
 
-function leaveCall() {
-  if (room) room.disconnect();
-}
+function leaveCall() { if (room) room.disconnect(); }
 
 function startTimer() {
   timerSeconds = 0;
@@ -834,9 +926,7 @@ function startTimer() {
   }, 1000);
 }
 
-function stopTimer() {
-  if (timerInterval) clearInterval(timerInterval);
-}
+function stopTimer() { if (timerInterval) clearInterval(timerInterval); }
 </script>
 
 </body>
