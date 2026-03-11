@@ -257,28 +257,33 @@ section { position: relative; z-index: 1; }
 .pricing-btn.outline { background: transparent; color: var(--text); border: 1.5px solid rgba(0,0,0,0.12); }
 .pricing-btn.outline:hover { border-color: var(--accent); color: var(--accent); }
 
-.pricing-scroll-hint {
-  display: none; justify-content: center; align-items: center; gap: 6px;
-  margin-top: 12px; font-size: 13px; color: var(--muted); opacity: 0.7;
+/* Pricing scroll dots (mobile) */
+.pricing-dots {
+  display: none; justify-content: center; gap: 8px; margin-top: 16px;
 }
-.pricing-scroll-hint svg { width: 16px; height: 16px; stroke: var(--muted); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-@keyframes scrollNudge { 0%,100%{transform:translateX(0)} 50%{transform:translateX(4px)} }
-.pricing-scroll-hint svg { animation: scrollNudge 1.5s ease-in-out infinite; }
+.pricing-dots span {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent); opacity: 0.25; transition: opacity 0.3s;
+}
+.pricing-dots span.active { opacity: 0.8; }
 
 /* ─── Summary infographic ─── */
 .summary { padding: 80px 24px; }
-.summary-flow {
-  display: flex; align-items: stretch; gap: 0; max-width: 900px; margin: 0 auto;
-  position: relative;
+.summary-wrap { position: relative; max-width: 900px; margin: 0 auto; }
+
+/* SVG arrows layer — desktop */
+.summary-arrows { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.summary-arrows path {
+  fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; opacity: 0.3;
 }
-.summary-flow::before {
-  content: ''; position: absolute; top: 50%; left: 40px; right: 40px;
-  height: 2px; background: linear-gradient(90deg, var(--accent), var(--peach), var(--accent));
-  opacity: 0.3; z-index: 0;
+.summary-arrows circle { fill: var(--accent); opacity: 0.4; }
+
+.summary-flow {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  position: relative; z-index: 1;
 }
 .summary-step {
-  flex: 1; text-align: center; padding: 24px 16px;
-  position: relative; z-index: 1;
+  text-align: center; padding: 16px 8px;
 }
 .summary-icon {
   width: 64px; height: 64px; border-radius: 50%;
@@ -292,7 +297,9 @@ section { position: relative; z-index: 1; }
 .summary-step:hover .summary-icon { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(232,115,74,0.12); }
 .summary-step-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
 .summary-step-desc { font-size: 13px; color: var(--muted); line-height: 1.4; }
-.summary-arrow { display: flex; align-items: center; justify-content: center; padding: 0 4px; color: var(--accent); opacity: 0.4; z-index: 1; }
+/* old arrow divs hidden */
+.summary-arrow { display: none; }
+.summary-arrows-mobile { display: none; }
 
 /* ─── FAQ ─── */
 .faq { padding: 80px 24px; }
@@ -357,14 +364,21 @@ section { position: relative; z-index: 1; }
   .steps-grid { grid-template-columns: 1fr; gap: 32px; }
 
   .pricing-grid {
-    grid-template-columns: repeat(3, 80vw);
-    overflow-x: auto; scroll-snap-type: x mandatory;
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    gap: 16px; padding-bottom: 16px;
+    gap: 16px; padding-bottom: 8px;
     margin: 0 -24px; padding-left: 24px; padding-right: 24px;
+    scrollbar-width: none;
   }
-  .pricing-card { scroll-snap-align: center; min-width: 0; }
-  .pricing-scroll-hint { display: flex; }
+  .pricing-grid::-webkit-scrollbar { display: none; }
+  .pricing-card { scroll-snap-align: center; min-width: 80vw; flex-shrink: 0; }
+  .pricing-card:hover { transform: none; box-shadow: none; }
+  .pricing-dots { display: flex; }
+
+  /* Summary mobile: 2x2 grid */
+  .summary-arrows-desktop { display: none; }
+  .summary-arrows-mobile { display: block; }
+  .summary-flow { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 
   .summary-flow { flex-direction: column; gap: 0; }
   .summary-flow::before { display: none; }
@@ -697,9 +711,8 @@ section { position: relative; z-index: 1; }
         <button class="pricing-btn business-btn coming-soon-btn" data-i18n="biz_btn">Подключить Business</button>
       </div>
     </div>
-    <div class="pricing-scroll-hint">
-      <span data-i18n="scroll_hint">Листайте</span>
-      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    <div class="pricing-dots">
+      <span class="active"></span><span></span><span></span>
     </div>
   </div>
 </section>
@@ -709,29 +722,60 @@ section { position: relative; z-index: 1; }
   <div class="container">
     <p class="section-label reveal" data-i18n="summary_label">ИИ-сводка</p>
     <h2 class="section-title reveal" data-i18n="summary_title">Что вы получите после звонка</h2>
-    <div class="summary-flow reveal">
-      <div class="summary-step">
-        <div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div>
-        <div class="summary-step-title" data-i18n="sum1_title">Запись</div>
-        <div class="summary-step-desc" data-i18n="sum1_desc">Аудио каждого участника</div>
-      </div>
-      <div class="summary-arrow"><svg class="lucide" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      <div class="summary-step">
-        <div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></div>
-        <div class="summary-step-title" data-i18n="sum2_title">Расшифровка</div>
-        <div class="summary-step-desc" data-i18n="sum2_desc">Кто что сказал</div>
-      </div>
-      <div class="summary-arrow"><svg class="lucide" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      <div class="summary-step">
-        <div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg></div>
-        <div class="summary-step-title" data-i18n="sum3_title">Темы и решения</div>
-        <div class="summary-step-desc" data-i18n="sum3_desc">Ключевые договорённости</div>
-      </div>
-      <div class="summary-arrow"><svg class="lucide" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      <div class="summary-step">
-        <div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-        <div class="summary-step-title" data-i18n="sum4_title">Задачи</div>
-        <div class="summary-step-desc" data-i18n="sum4_desc">Action items на email</div>
+    <div class="summary-wrap reveal">
+      <!-- Desktop curved arrows -->
+      <svg class="summary-arrows summary-arrows-desktop" viewBox="0 0 900 120" preserveAspectRatio="none" width="100%" height="120">
+        <!-- 1→2: curve up then loop down -->
+        <path d="M130 60 C180 10, 220 10, 250 30 C270 45, 280 55, 310 45 C340 35, 350 20, 340 60" marker-end="url(#arrowhead)"/>
+        <!-- 2→3: smooth S-curve -->
+        <path d="M360 60 C400 100, 440 20, 480 40 C520 60, 540 90, 570 60" marker-end="url(#arrowhead)"/>
+        <!-- 3→4: loop-the-loop -->
+        <path d="M590 60 C620 20, 660 10, 680 40 C700 70, 720 90, 700 50 C690 30, 710 15, 750 30 C780 42, 790 55, 790 60" marker-end="url(#arrowhead)"/>
+        <defs>
+          <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#e8734a" opacity="0.5"/>
+          </marker>
+        </defs>
+        <!-- Decorative dots at connection points -->
+        <circle cx="130" cy="60" r="3"/><circle cx="340" cy="60" r="3"/>
+        <circle cx="360" cy="60" r="3"/><circle cx="570" cy="60" r="3"/>
+        <circle cx="590" cy="60" r="3"/><circle cx="790" cy="60" r="3"/>
+      </svg>
+      <!-- Mobile curved arrows -->
+      <svg class="summary-arrows summary-arrows-mobile" viewBox="0 0 300 300" width="100%" height="300" style="display:none;position:absolute;inset:0;pointer-events:none;z-index:0">
+        <!-- 1→2 (top-left → top-right) -->
+        <path d="M100 55 C140 30, 160 30, 200 55" fill="none" stroke="#e8734a" stroke-width="1.8" stroke-linecap="round" opacity="0.3" marker-end="url(#arrowM)"/>
+        <!-- 2→3 (top-right → bottom-left) — diagonal swoop -->
+        <path d="M210 75 C240 120, 180 140, 100 160" fill="none" stroke="#e8734a" stroke-width="1.8" stroke-linecap="round" opacity="0.3" marker-end="url(#arrowM)"/>
+        <!-- 3→4 (bottom-left → bottom-right) -->
+        <path d="M100 175 C140 150, 160 150, 200 175" fill="none" stroke="#e8734a" stroke-width="1.8" stroke-linecap="round" opacity="0.3" marker-end="url(#arrowM)"/>
+        <defs>
+          <marker id="arrowM" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+            <polygon points="0 0, 7 2.5, 0 5" fill="#e8734a" opacity="0.5"/>
+          </marker>
+        </defs>
+      </svg>
+      <div class="summary-flow">
+        <div class="summary-step">
+          <div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div>
+          <div class="summary-step-title" data-i18n="sum1_title">Запись</div>
+          <div class="summary-step-desc" data-i18n="sum1_desc">Аудио каждого участника</div>
+        </div>
+        <div class="summary-step">
+          <div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></div>
+          <div class="summary-step-title" data-i18n="sum2_title">Расшифровка</div>
+          <div class="summary-step-desc" data-i18n="sum2_desc">Кто что сказал</div>
+        </div>
+        <div class="summary-step">
+          <div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg></div>
+          <div class="summary-step-title" data-i18n="sum3_title">Темы и решения</div>
+          <div class="summary-step-desc" data-i18n="sum3_desc">Ключевые договорённости</div>
+        </div>
+        <div class="summary-step">
+          <div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div class="summary-step-title" data-i18n="sum4_title">Задачи</div>
+          <div class="summary-step-desc" data-i18n="sum4_desc">Action items на email</div>
+        </div>
       </div>
     </div>
   </div>
@@ -797,6 +841,18 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+// Pricing dots scroll tracking
+const pricingGrid = document.querySelector('.pricing-grid');
+const dots = document.querySelectorAll('.pricing-dots span');
+if (pricingGrid && dots.length) {
+  pricingGrid.addEventListener('scroll', () => {
+    const scrollLeft = pricingGrid.scrollLeft;
+    const cardWidth = pricingGrid.querySelector('.pricing-card').offsetWidth + 16;
+    const idx = Math.round(scrollLeft / cardWidth);
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }, { passive: true });
+}
+
 document.querySelectorAll('.coming-soon-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const orig = btn.textContent;
@@ -826,7 +882,7 @@ const i18n = {
     plan_free:'Free', period_free:'forever', free_f1:'Up to 10 participants', free_f2:'60 min per call', free_f3:'No registration', free_f4:'Basic text summary', free_btn:'Start for free',
     badge_popular:'Popular', plan_pro:'Pro', period_pro:'per month', pro_f1:'Up to 25 participants', pro_f2:'No time limits', pro_f3:'Detailed AI summary', pro_f4:'Transcript with names', pro_f5:'Priority call quality', pro_btn:'Get Pro',
     badge_biz:'Business', plan_biz:'Business', biz_price:'On request', biz_f1:'Up to 1000 participants', biz_f2:'Dedicated server', biz_f3:'AI assistant in call', biz_f4:'Broadcast mode', biz_f5:'Summary with infographics & PDF', biz_f6:'24/7 support', biz_btn:'Get Business',
-    scroll_hint:'Swipe', summary_label:'AI Summary', summary_title:'What you get after the call',
+    summary_label:'AI Summary', summary_title:'What you get after the call',
     sum1_title:'Recording', sum1_desc:'Audio from each participant', sum2_title:'Transcript', sum2_desc:'Who said what', sum3_title:'Topics & decisions', sum3_desc:'Key agreements', sum4_title:'Tasks', sum4_desc:'Action items to email',
     faq_label:'Questions', faq_title:'FAQ',
     faq1_q:'Do I need to register?', faq1_a:'No. Create a call and share the link.',
@@ -847,7 +903,6 @@ const i18n = {
     plan_free:'Бесплатно', period_free:'навсегда', free_f1:'До 10 участников', free_f2:'60 минут на звонок', free_f3:'Без регистрации', free_f4:'Базовая текстовая сводка', free_btn:'Начать бесплатно',
     badge_popular:'Популярный', plan_pro:'Pro', period_pro:'в месяц', pro_f1:'До 25 участников', pro_f2:'Без лимита по времени', pro_f3:'Детальная ИИ-сводка', pro_f4:'Расшифровка с именами', pro_f5:'Приоритетное качество связи', pro_btn:'Подключить Pro',
     badge_biz:'Business', plan_biz:'Business', biz_price:'По запросу', biz_f1:'До 1000 участников', biz_f2:'Выделенный сервер', biz_f3:'ИИ-ассистент в звонке', biz_f4:'Режим трансляции', biz_f5:'Сводка с инфографикой и PDF', biz_f6:'Поддержка 24/7', biz_btn:'Подключить Business',
-    scroll_hint:'Листайте',
     summary_label:'ИИ-сводка', summary_title:'Что вы получите после звонка',
     sum1_title:'Запись', sum1_desc:'Аудио каждого участника', sum2_title:'Расшифровка', sum2_desc:'Кто что сказал', sum3_title:'Темы и решения', sum3_desc:'Ключевые договорённости', sum4_title:'Задачи', sum4_desc:'Action items на email',
     faq_label:'Вопросы', faq_title:'Частые вопросы',
