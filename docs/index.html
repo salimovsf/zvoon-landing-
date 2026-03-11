@@ -109,14 +109,13 @@ a { color: inherit; text-decoration: none; }
 .lang-switch button.active { background: var(--card); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 .header-cta {
   display: inline-flex; align-items: center; gap: 6px;
-  background: linear-gradient(135deg, #e8734a, #d4603a, #c74f2e);
-  background-size: 200% 200%; animation: gradientShift 3s ease infinite;
+  background: linear-gradient(135deg, #2a2a2a, #3d3d3d, #1a1a1a);
   color: #fff; font-weight: 700; font-size: 14px; padding: 10px 22px;
   border-radius: 50px; border: none; cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 12px rgba(232, 115, 74, 0.25);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
-.header-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(232, 115, 74, 0.45); }
+.header-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35); }
 
 /* ─── Hero ─── */
 .hero { text-align: center; padding: 120px 24px 100px; position: relative; z-index: 1; }
@@ -149,15 +148,14 @@ a { color: inherit; text-decoration: none; }
 .hero-cta-wrap { position: relative; display: inline-block; }
 .hero-cta {
   display: inline-flex; align-items: center; gap: 10px;
-  background: linear-gradient(135deg, #e8734a, #d4603a, #c74f2e);
-  background-size: 200% 200%; animation: gradientShift 3s ease infinite;
+  background: linear-gradient(135deg, #2a2a2a, #3d3d3d, #1a1a1a);
   color: #fff; font-family: inherit; font-weight: 700; font-size: 17px;
   padding: 18px 44px; border-radius: 50px; border: none; cursor: pointer;
   transition: transform 0.25s, box-shadow 0.25s;
-  box-shadow: 0 4px 20px rgba(232, 115, 74, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   position: relative; z-index: 2;
 }
-.hero-cta:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 32px rgba(232, 115, 74, 0.45); }
+.hero-cta:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35); }
 
 .phone-cord {
   position: absolute;
@@ -166,8 +164,8 @@ a { color: inherit; text-decoration: none; }
   pointer-events: none; z-index: 1;
 }
 .phone-cord path {
-  fill: none; stroke: #2a2a2a; stroke-width: 2.8;
-  stroke-linecap: round; opacity: 0.45;
+  fill: none; stroke: #111; stroke-width: 2.8;
+  stroke-linecap: round; opacity: 0.55;
 }
 @keyframes cordWiggle {
   0%   { d: path("M0 30 C30 12,60 48,90 30 C120 12,150 48,180 30 C210 12,240 48,270 30 C300 12,340 48,380 30 C420 12,470 44,520 30 C580 14,640 42,720 30 C800 18,900 40,1000 30 C1100 20,1300 38,1500 30 L2000 30"); }
@@ -175,7 +173,7 @@ a { color: inherit; text-decoration: none; }
   66%  { d: path("M0 30 C30 14,60 46,90 28 C120 14,150 46,180 28 C210 16,240 46,270 28 C300 14,340 44,380 32 C420 14,470 42,520 28 C580 18,640 40,720 32 C800 16,900 42,1000 28 C1100 22,1300 36,1500 30 L2000 30"); }
   100% { d: path("M0 30 C30 12,60 48,90 30 C120 12,150 48,180 30 C210 12,240 48,270 30 C300 12,340 48,380 30 C420 12,470 44,520 30 C580 14,640 42,720 30 C800 18,900 40,1000 30 C1100 20,1300 38,1500 30 L2000 30"); }
 }
-.phone-cord path { animation: cordWiggle 6s ease-in-out infinite; }
+.phone-cord path { animation: cordWiggle 3.5s ease-in-out infinite; }
 
 /* ─── Divider ─── */
 .divider { width: 80px; height: 1px; background: var(--accent); margin: 0 auto; opacity: 0.5; }
@@ -201,6 +199,7 @@ section { position: relative; z-index: 1; }
   background: var(--card); border-radius: 20px; padding: 36px 28px;
   border: 1px solid rgba(0,0,0,0.06);
   transition: transform 0.3s, box-shadow 0.3s; position: relative;
+  display: flex; flex-direction: column;
 }
 .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
 
@@ -229,7 +228,7 @@ section { position: relative; z-index: 1; }
 .pricing-card.business .pricing-price { color: var(--biz); font-size: 28px; letter-spacing: -1px; }
 .pricing-period { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
 
-.pricing-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+.pricing-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; flex: 1; }
 .pricing-features li { font-size: 15px; display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
 .pricing-features li .li-icon { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .pricing-features li .li-icon svg { width: 12px; height: 12px; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; fill: none; }
@@ -257,6 +256,14 @@ section { position: relative; z-index: 1; }
 .pricing-btn.business-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(30, 64, 175, 0.4); }
 .pricing-btn.outline { background: transparent; color: var(--text); border: 1.5px solid rgba(0,0,0,0.12); }
 .pricing-btn.outline:hover { border-color: var(--accent); color: var(--accent); }
+
+.pricing-scroll-hint {
+  display: none; justify-content: center; align-items: center; gap: 6px;
+  margin-top: 12px; font-size: 13px; color: var(--muted); opacity: 0.7;
+}
+.pricing-scroll-hint svg { width: 16px; height: 16px; stroke: var(--muted); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+@keyframes scrollNudge { 0%,100%{transform:translateX(0)} 50%{transform:translateX(4px)} }
+.pricing-scroll-hint svg { animation: scrollNudge 1.5s ease-in-out infinite; }
 
 /* ─── Summary infographic ─── */
 .summary { padding: 80px 24px; }
@@ -321,14 +328,15 @@ section { position: relative; z-index: 1; }
 .footer-founder-link:hover { background: var(--accent); color: #fff; }
 .footer-copy { font-size: 13px; color: var(--muted); }
 
-/* ─── Lucide icon patterns (bright, gradient glow) ─── */
+/* ─── Lucide icon patterns (subtle gradient glow) ─── */
 @keyframes iconGlow {
-  0%, 100% { opacity: 0.12; filter: drop-shadow(0 0 2px rgba(232,115,74,0.1)); }
-  50% { opacity: 0.22; filter: drop-shadow(0 0 8px rgba(232,115,74,0.35)); }
+  0%, 100% { opacity: 0.1; filter: drop-shadow(0 0 1px rgba(232,115,74,0.05)); }
+  50% { opacity: 0.16; filter: drop-shadow(0 0 6px rgba(232,115,74,0.2)); }
 }
 .pat-icon {
   position: absolute; pointer-events: none;
-  animation: iconGlow 4s ease-in-out infinite;
+  opacity: 0.1;
+  animation: iconGlow 5s ease-in-out infinite;
 }
 .pat-icon svg { stroke-linecap: round; stroke-linejoin: round; fill: none; }
 
@@ -349,13 +357,14 @@ section { position: relative; z-index: 1; }
   .steps-grid { grid-template-columns: 1fr; gap: 32px; }
 
   .pricing-grid {
-    grid-template-columns: repeat(3, 85vw);
+    grid-template-columns: repeat(3, 80vw);
     overflow-x: auto; scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    gap: 16px; padding-bottom: 8px;
+    gap: 16px; padding-bottom: 16px;
     margin: 0 -24px; padding-left: 24px; padding-right: 24px;
   }
-  .pricing-card { scroll-snap-align: center; flex-shrink: 0; }
+  .pricing-card { scroll-snap-align: center; min-width: 0; }
+  .pricing-scroll-hint { display: flex; }
 
   .summary-flow { flex-direction: column; gap: 0; }
   .summary-flow::before { display: none; }
@@ -688,6 +697,10 @@ section { position: relative; z-index: 1; }
         <button class="pricing-btn business-btn coming-soon-btn" data-i18n="biz_btn">Подключить Business</button>
       </div>
     </div>
+    <div class="pricing-scroll-hint">
+      <span data-i18n="scroll_hint">Листайте</span>
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
   </div>
 </section>
 
@@ -813,7 +826,7 @@ const i18n = {
     plan_free:'Free', period_free:'forever', free_f1:'Up to 10 participants', free_f2:'60 min per call', free_f3:'No registration', free_f4:'Basic text summary', free_btn:'Start for free',
     badge_popular:'Popular', plan_pro:'Pro', period_pro:'per month', pro_f1:'Up to 25 participants', pro_f2:'No time limits', pro_f3:'Detailed AI summary', pro_f4:'Transcript with names', pro_f5:'Priority call quality', pro_btn:'Get Pro',
     badge_biz:'Business', plan_biz:'Business', biz_price:'On request', biz_f1:'Up to 1000 participants', biz_f2:'Dedicated server', biz_f3:'AI assistant in call', biz_f4:'Broadcast mode', biz_f5:'Summary with infographics & PDF', biz_f6:'24/7 support', biz_btn:'Get Business',
-    summary_label:'AI Summary', summary_title:'What you get after the call',
+    scroll_hint:'Swipe', summary_label:'AI Summary', summary_title:'What you get after the call',
     sum1_title:'Recording', sum1_desc:'Audio from each participant', sum2_title:'Transcript', sum2_desc:'Who said what', sum3_title:'Topics & decisions', sum3_desc:'Key agreements', sum4_title:'Tasks', sum4_desc:'Action items to email',
     faq_label:'Questions', faq_title:'FAQ',
     faq1_q:'Do I need to register?', faq1_a:'No. Create a call and share the link.',
@@ -834,6 +847,7 @@ const i18n = {
     plan_free:'Бесплатно', period_free:'навсегда', free_f1:'До 10 участников', free_f2:'60 минут на звонок', free_f3:'Без регистрации', free_f4:'Базовая текстовая сводка', free_btn:'Начать бесплатно',
     badge_popular:'Популярный', plan_pro:'Pro', period_pro:'в месяц', pro_f1:'До 25 участников', pro_f2:'Без лимита по времени', pro_f3:'Детальная ИИ-сводка', pro_f4:'Расшифровка с именами', pro_f5:'Приоритетное качество связи', pro_btn:'Подключить Pro',
     badge_biz:'Business', plan_biz:'Business', biz_price:'По запросу', biz_f1:'До 1000 участников', biz_f2:'Выделенный сервер', biz_f3:'ИИ-ассистент в звонке', biz_f4:'Режим трансляции', biz_f5:'Сводка с инфографикой и PDF', biz_f6:'Поддержка 24/7', biz_btn:'Подключить Business',
+    scroll_hint:'Листайте',
     summary_label:'ИИ-сводка', summary_title:'Что вы получите после звонка',
     sum1_title:'Запись', sum1_desc:'Аудио каждого участника', sum2_title:'Расшифровка', sum2_desc:'Кто что сказал', sum3_title:'Темы и решения', sum3_desc:'Ключевые договорённости', sum4_title:'Задачи', sum4_desc:'Action items на email',
     faq_label:'Вопросы', faq_title:'Частые вопросы',
