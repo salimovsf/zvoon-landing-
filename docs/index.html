@@ -26,7 +26,7 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Zvoon","description":"Аудиозвонки по ссылке без регистрации с ИИ-сводкой","url":"https://zvoon.ai","applicationCategory":"CommunicationApplication","operatingSystem":"Web","offers":[{"@type":"Offer","name":"Бесплатно","price":"0","priceCurrency":"USD"},{"@type":"Offer","name":"Pro","price":"5.00","priceCurrency":"USD"},{"@type":"Offer","name":"Business","price":"25.00","priceCurrency":"USD"}]}
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Zvoon","description":"Аудиозвонки по ссылке без регистрации с ИИ-сводкой","url":"https://zvoon.ai","applicationCategory":"CommunicationApplication","operatingSystem":"Web","offers":[{"@type":"Offer","name":"Бесплатно","price":"0","priceCurrency":"USD"},{"@type":"Offer","name":"Pro","price":"5.00","priceCurrency":"USD"},{"@type":"Offer","name":"Business","price":"0","priceCurrency":"USD","description":"On request"}]}
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -219,7 +219,7 @@ section { position: relative; z-index: 1; }
 .pricing-name { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 12px; }
 .pricing-card.business .pricing-name { color: var(--biz); }
 .pricing-price { font-size: 40px; font-weight: 800; letter-spacing: -2px; margin-bottom: 4px; }
-.pricing-card.business .pricing-price { color: var(--biz); }
+.pricing-card.business .pricing-price { color: var(--biz); font-size: 28px; letter-spacing: -1px; }
 .pricing-period { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
 
 .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
@@ -305,19 +305,25 @@ section { position: relative; z-index: 1; }
 .footer { padding: 60px 24px; border-top: 1px solid rgba(0,0,0,0.06); position: relative; z-index: 1; }
 .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
 .footer-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 18px; letter-spacing: -0.5px; }
-.footer-links { display: flex; gap: 28px; }
-.footer-links a { font-size: 14px; color: var(--muted); transition: color 0.2s; }
-.footer-links a:hover { color: var(--text); }
-.footer-right { display: flex; align-items: center; gap: 20px; }
-.footer-socials { display: flex; gap: 12px; }
-.footer-socials a {
-  width: 36px; height: 36px; border-radius: 10px; background: var(--peach);
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.2s, transform 0.2s;
+.footer-founder-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 600; color: var(--accent);
+  padding: 10px 24px; border-radius: 50px; border: 1.5px solid var(--accent);
+  transition: all 0.2s;
 }
-.footer-socials a:hover { background: var(--accent); transform: translateY(-2px); }
-.footer-socials a:hover svg path { fill: #fff; }
+.footer-founder-link:hover { background: var(--accent); color: #fff; }
 .footer-copy { font-size: 13px; color: var(--muted); }
+
+/* ─── Lucide icon patterns (bright, gradient glow) ─── */
+@keyframes iconGlow {
+  0%, 100% { opacity: 0.12; filter: drop-shadow(0 0 2px rgba(232,115,74,0.1)); }
+  50% { opacity: 0.22; filter: drop-shadow(0 0 8px rgba(232,115,74,0.35)); }
+}
+.pat-icon {
+  position: absolute; pointer-events: none;
+  animation: iconGlow 4s ease-in-out infinite;
+}
+.pat-icon svg { stroke-linecap: round; stroke-linejoin: round; fill: none; }
 
 /* ─── Scroll reveal ─── */
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
@@ -465,6 +471,64 @@ section { position: relative; z-index: 1; }
     <circle cx="130" cy="120" r="8" fill="none" stroke="#e8734a" stroke-width="1"/>
     <circle cx="30" cy="130" r="3" fill="#e8734a" opacity="0.3"/>
   </svg>
+
+  <!-- Lucide icon patterns — brighter, with gradient glow animation -->
+  <!-- Rocket — top-left -->
+  <div class="pat-icon" style="top:8%;left:8%;animation-delay:0s">
+    <svg width="36" height="36" viewBox="0 0 24 24" stroke="#e8734a" stroke-width="1.5">
+      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+      <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+    </svg>
+  </div>
+  <!-- Bot — right mid -->
+  <div class="pat-icon" style="top:38%;right:6%;animation-delay:1.2s">
+    <svg width="40" height="40" viewBox="0 0 24 24" stroke="#e8734a" stroke-width="1.5">
+      <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/>
+      <path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
+    </svg>
+  </div>
+  <!-- Phone — bottom-left -->
+  <div class="pat-icon" style="bottom:22%;left:6%;animation-delay:2.4s">
+    <svg width="34" height="34" viewBox="0 0 24 24" stroke="#e8734a" stroke-width="1.5">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+  </div>
+  <!-- Sparkles — top-right -->
+  <div class="pat-icon" style="top:18%;right:15%;animation-delay:0.8s">
+    <svg width="32" height="32" viewBox="0 0 24 24" stroke="#e8734a" stroke-width="1.5">
+      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+      <path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>
+    </svg>
+  </div>
+  <!-- Mic — center-left -->
+  <div class="pat-icon" style="top:55%;left:4%;animation-delay:1.8s">
+    <svg width="30" height="30" viewBox="0 0 24 24" stroke="#e8734a" stroke-width="1.5">
+      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/>
+    </svg>
+  </div>
+  <!-- Zap — bottom-right -->
+  <div class="pat-icon" style="bottom:12%;right:10%;animation-delay:3s">
+    <svg width="34" height="34" viewBox="0 0 24 24" stroke="#e8734a" stroke-width="1.5">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+    </svg>
+  </div>
+  <!-- Mail — mid bottom -->
+  <div class="pat-icon" style="bottom:8%;left:35%;animation-delay:2s">
+    <svg width="32" height="32" viewBox="0 0 24 24" stroke="#e8734a" stroke-width="1.5">
+      <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+    </svg>
+  </div>
+  <!-- Brain — top center -->
+  <div class="pat-icon" style="top:5%;left:45%;animation-delay:0.5s">
+    <svg width="30" height="30" viewBox="0 0 24 24" stroke="#e8734a" stroke-width="1.5">
+      <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
+      <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+      <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/>
+      <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/>
+      <path d="M19.938 10.5a4 4 0 0 1 .585.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M19.967 17.484A4 4 0 0 1 18 18"/>
+    </svg>
+  </div>
 </div>
 
 <!-- Header -->
@@ -596,7 +660,7 @@ section { position: relative; z-index: 1; }
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="pro_f4">Расшифровка с именами</span></li>
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="pro_f5">Приоритетное качество связи</span></li>
         </ul>
-        <button class="pricing-btn secondary" data-i18n="pro_btn">Подключить Pro</button>
+        <button class="pricing-btn secondary coming-soon-btn" data-i18n="pro_btn">Подключить Pro</button>
       </div>
 
       <!-- Business $25 -->
@@ -604,8 +668,8 @@ section { position: relative; z-index: 1; }
         <span class="pricing-badge" data-i18n="badge_biz">Business</span>
         <div class="pricing-emoji"><svg viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg></div>
         <div class="pricing-name" data-i18n="plan_biz">Business</div>
-        <div class="pricing-price">$25</div>
-        <div class="pricing-period" data-i18n="period_biz">в месяц</div>
+        <div class="pricing-price" data-i18n="biz_price">По запросу</div>
+        <div class="pricing-period">&nbsp;</div>
         <ul class="pricing-features">
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f1">До 1000 участников</span></li>
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f2">Выделенный сервер</span></li>
@@ -614,7 +678,7 @@ section { position: relative; z-index: 1; }
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f5">Сводка с инфографикой и PDF</span></li>
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f6">Поддержка 24/7</span></li>
         </ul>
-        <button class="pricing-btn business-btn" data-i18n="biz_btn">Подключить Business</button>
+        <button class="pricing-btn business-btn coming-soon-btn" data-i18n="biz_btn">Подключить Business</button>
       </div>
     </div>
   </div>
@@ -698,18 +762,8 @@ section { position: relative; z-index: 1; }
         </span>
         Zvoon
       </div>
-      <div class="footer-links">
-        <a href="#" data-i18n="footer_pricing">Тарифы</a>
-        <a href="#" data-i18n="footer_policy">Политика</a>
-        <a href="#" data-i18n="footer_support">Поддержка</a>
-      </div>
-      <div class="footer-right">
-        <div class="footer-socials">
-          <a href="#" aria-label="VK"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12.78 18.14h1.12s.34-.04.51-.22c.16-.17.15-.48.15-.48s-.02-1.47.66-1.69c.67-.21 1.54 1.4 2.45 2.02.69.47 1.21.37 1.21.37l2.44-.03s1.28-.08.67-1.09c-.05-.08-.36-.74-1.83-2.1-1.54-1.42-1.34-1.19.52-3.65.83-1.34 1.49-2.6 1.36-3.02-.12-.4-.88-.3-.88-.3l-2.75.02s-.2-.03-.36.06c-.15.1-.24.31-.24.31s-.44 1.17-1.03 2.17c-1.24 2.1-1.74 2.21-1.94 2.08-.47-.31-.35-1.24-.35-1.9 0-2.06.31-2.92-.61-3.14-.31-.07-.53-.12-1.31-.13-.99-.01-1.83 0-2.31.24-.32.16-.56.5-.41.52.19.02.62.12.84.42.29.4.28 1.28.28 1.28s.17 2.43-.39 2.73c-.38.2-.91-.21-2.04-2.1-.58-.97-1.01-2.04-1.01-2.04s-.08-.2-.23-.31c-.18-.13-.44-.17-.44-.17l-2.61.02s-.39.01-.53.18c-.13.15-.01.47-.01.47s2.07 4.84 4.41 7.28c2.15 2.24 4.59 2.09 4.59 2.09z" fill="#7a7067"/></svg></a>
-          <a href="#" aria-label="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20.67 3.95L2.93 10.9s-1.25.43-1.15 1.24c.1.81.56 1.01 1.13 1.24l4.54 1.49 1.75 5.57s.3.87.56.9c.26.03.43-.1.6-.28l2.59-2.5 4.5 3.42s.93.58 1.56.15c.63-.43.82-1.12.82-1.12L22.13 5.58s.38-1.44-1.46-.63zM9.5 14.09l-.45 4.01-1.5-4.68 9.6-6.67-7.65 7.34z" fill="#7a7067"/></svg></a>
-        </div>
-        <span class="footer-copy">&copy; 2026 Zvoon</span>
-      </div>
+      <a href="https://t.me/retas_retas" target="_blank" class="footer-founder-link" data-i18n="footer_founder">Написать основателю</a>
+      <span class="footer-copy">&copy; 2026 Zvoon</span>
     </div>
   </div>
 </footer>
@@ -722,6 +776,15 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
 }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('.coming-soon-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const orig = btn.textContent;
+    btn.textContent = currentLang === 'en' ? 'Coming soon' : 'Скоро';
+    btn.style.opacity = '0.7'; btn.style.pointerEvents = 'none';
+    setTimeout(() => { btn.textContent = orig; btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }, 2000);
+  });
+});
 
 document.querySelectorAll('.faq-question').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -742,7 +805,7 @@ const i18n = {
     pricing_label:'Pricing', pricing_title:'Simple and transparent',
     plan_free:'Free', period_free:'forever', free_f1:'Up to 10 participants', free_f2:'60 min per call', free_f3:'No registration', free_f4:'Basic text summary', free_btn:'Start for free',
     badge_popular:'Popular', plan_pro:'Pro', period_pro:'per month', pro_f1:'Up to 25 participants', pro_f2:'No time limits', pro_f3:'Detailed AI summary', pro_f4:'Transcript with names', pro_f5:'Priority call quality', pro_btn:'Get Pro',
-    badge_biz:'Business', plan_biz:'Business', period_biz:'per month', biz_f1:'Up to 1000 participants', biz_f2:'Dedicated server', biz_f3:'AI assistant in call', biz_f4:'Broadcast mode', biz_f5:'Summary with infographics & PDF', biz_f6:'24/7 support', biz_btn:'Get Business',
+    badge_biz:'Business', plan_biz:'Business', biz_price:'On request', biz_f1:'Up to 1000 participants', biz_f2:'Dedicated server', biz_f3:'AI assistant in call', biz_f4:'Broadcast mode', biz_f5:'Summary with infographics & PDF', biz_f6:'24/7 support', biz_btn:'Get Business',
     summary_label:'AI Summary', summary_title:'What you get after the call',
     sum1_title:'Recording', sum1_desc:'Audio from each participant', sum2_title:'Transcript', sum2_desc:'Who said what', sum3_title:'Topics & decisions', sum3_desc:'Key agreements', sum4_title:'Tasks', sum4_desc:'Action items to email',
     faq_label:'Questions', faq_title:'FAQ',
@@ -751,7 +814,7 @@ const i18n = {
     faq3_q:'How long is a call?', faq3_a:'Free: up to 60 min. Pro & Business: unlimited.',
     faq4_q:'How does payment work?', faq4_a:'Stripe for international cards, YooKassa for Russia.',
     faq5_q:'Can I skip the summary?', faq5_a:'Yes. Calls are free, summary is optional.',
-    footer_pricing:'Pricing', footer_policy:'Policy', footer_support:'Support',
+    footer_founder:'Message the founder',
   },
   ru: {
     header_cta:'Создать звонок', hero_title:'Аудио звонки <span class="line2"><span class="gradient">с ИИ сводкой</span></span>',
@@ -763,7 +826,7 @@ const i18n = {
     pricing_label:'Тарифы', pricing_title:'Простые и понятные цены',
     plan_free:'Бесплатно', period_free:'навсегда', free_f1:'До 10 участников', free_f2:'60 минут на звонок', free_f3:'Без регистрации', free_f4:'Базовая текстовая сводка', free_btn:'Начать бесплатно',
     badge_popular:'Популярный', plan_pro:'Pro', period_pro:'в месяц', pro_f1:'До 25 участников', pro_f2:'Без лимита по времени', pro_f3:'Детальная ИИ-сводка', pro_f4:'Расшифровка с именами', pro_f5:'Приоритетное качество связи', pro_btn:'Подключить Pro',
-    badge_biz:'Business', plan_biz:'Business', period_biz:'в месяц', biz_f1:'До 1000 участников', biz_f2:'Выделенный сервер', biz_f3:'ИИ-ассистент в звонке', biz_f4:'Режим трансляции', biz_f5:'Сводка с инфографикой и PDF', biz_f6:'Поддержка 24/7', biz_btn:'Подключить Business',
+    badge_biz:'Business', plan_biz:'Business', biz_price:'По запросу', biz_f1:'До 1000 участников', biz_f2:'Выделенный сервер', biz_f3:'ИИ-ассистент в звонке', biz_f4:'Режим трансляции', biz_f5:'Сводка с инфографикой и PDF', biz_f6:'Поддержка 24/7', biz_btn:'Подключить Business',
     summary_label:'ИИ-сводка', summary_title:'Что вы получите после звонка',
     sum1_title:'Запись', sum1_desc:'Аудио каждого участника', sum2_title:'Расшифровка', sum2_desc:'Кто что сказал', sum3_title:'Темы и решения', sum3_desc:'Ключевые договорённости', sum4_title:'Задачи', sum4_desc:'Action items на email',
     faq_label:'Вопросы', faq_title:'Частые вопросы',
@@ -772,7 +835,7 @@ const i18n = {
     faq3_q:'Сколько длится звонок?', faq3_a:'Бесплатно — до 60 минут. Pro и Business — без ограничений.',
     faq4_q:'Как работает оплата?', faq4_a:'Stripe для международных карт, ЮKassa для России.',
     faq5_q:'Можно ли без сводки?', faq5_a:'Да. Звонки полностью бесплатны, сводка по желанию.',
-    footer_pricing:'Тарифы', footer_policy:'Политика', footer_support:'Поддержка',
+    footer_founder:'Написать основателю',
   }
 };
 
