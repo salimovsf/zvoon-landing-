@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zvoon — Мгновенные звонки по ссылке с ИИ-сводкой</title>
+<title>Zvoon — Аудио звонки по ссылке с ИИ-сводкой</title>
 <meta name="description" content="Создайте аудиозвонок за секунду, отправьте ссылку — без регистрации и приложений. После разговора получите ИИ-расшифровку, сводку и задачи на email.">
 <meta name="keywords" content="звонки по ссылке, онлайн звонки без регистрации, аудиозвонки, ИИ сводка звонка, расшифровка разговора, call by link, audio call no registration, AI meeting summary">
 <meta name="robots" content="index, follow">
@@ -148,6 +148,23 @@ a { color: inherit; text-decoration: none; }
   padding: 0 24px;
 }
 
+/* ─── Logo vibrate ─── */
+@keyframes zvibe {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  10% { transform: rotate(-1.5deg) scale(1.04); }
+  20% { transform: rotate(1.5deg) scale(0.97); }
+  30% { transform: rotate(-1deg) scale(1.02); }
+  40% { transform: rotate(0.5deg) scale(1); }
+}
+@keyframes zglow {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(232,115,74,0.2)); }
+  50% { filter: drop-shadow(0 0 14px rgba(232,115,74,0.5)); }
+}
+.logo-z {
+  display: inline-flex;
+  animation: zvibe 2s ease-in-out infinite, zglow 3s ease-in-out infinite;
+}
+
 /* ─── Header ─── */
 .header {
   position: sticky;
@@ -246,16 +263,35 @@ a { color: inherit; text-decoration: none; }
 /* ─── Hero ─── */
 .hero {
   text-align: center;
-  padding: 100px 24px 80px;
+  padding: 120px 24px 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-bg svg {
+  position: absolute;
+  opacity: 0.06;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 1;
 }
 
 .hero h1 {
-  font-size: clamp(48px, 8vw, 80px);
+  font-size: clamp(44px, 7vw, 72px);
   font-weight: 800;
-  letter-spacing: -3px;
-  line-height: 1.05;
-  max-width: 800px;
-  margin: 0 auto 28px;
+  letter-spacing: -2.5px;
+  line-height: 1.1;
+  max-width: 700px;
+  margin: 0 auto 24px;
 }
 
 .hero h1 .gradient {
@@ -265,12 +301,32 @@ a { color: inherit; text-decoration: none; }
   background-clip: text;
 }
 
-.hero-subtitle {
-  font-size: 20px;
-  line-height: 1.6;
-  color: var(--muted);
-  max-width: 520px;
+.hero-offers {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 20px;
   margin: 0 auto 40px;
+  max-width: 600px;
+}
+
+.hero-offer {
+  font-size: 15px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.5;
+}
+
+.hero-offer::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  opacity: 0.6;
 }
 
 .hero-cta {
@@ -726,10 +782,11 @@ a { color: inherit; text-decoration: none; }
 
 /* ─── Responsive ─── */
 @media (max-width: 768px) {
-  .hero { padding: 72px 24px 60px; }
+  .hero { padding: 80px 24px 64px; }
   .hero h1 { letter-spacing: -2px; }
-  .hero-subtitle { font-size: 17px; }
   .hero-cta { padding: 16px 32px; font-size: 16px; }
+  .hero-offers { gap: 6px 16px; }
+  .hero-offer { font-size: 14px; }
 
   .steps-grid {
     grid-template-columns: 1fr;
@@ -762,13 +819,15 @@ a { color: inherit; text-decoration: none; }
   <div class="container">
     <div class="header-inner">
       <a href="#" class="logo">
-        <svg width="28" height="28" viewBox="0 0 512 512" fill="none">
-          <defs><linearGradient id="logoG" x1="0" y1="0" x2="512" y2="512"><stop stop-color="#e8734a"/><stop offset="1" stop-color="#c74f2e"/></linearGradient></defs>
-          <rect width="512" height="512" rx="112" fill="url(#logoG)"/>
-          <path d="M152 148h208l-208 216h208" fill="none" stroke="#fff" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M388 200q32 56 0 112" fill="none" stroke="#fff" stroke-width="28" stroke-linecap="round" opacity="0.6"/>
-          <path d="M428 168q48 88 0 176" fill="none" stroke="#fff" stroke-width="24" stroke-linecap="round" opacity="0.35"/>
-        </svg>
+        <span class="logo-z">
+          <svg width="28" height="28" viewBox="0 0 512 512" fill="none">
+            <defs><linearGradient id="logoG" x1="0" y1="0" x2="512" y2="512"><stop stop-color="#e8734a"/><stop offset="1" stop-color="#c74f2e"/></linearGradient></defs>
+            <rect width="512" height="512" rx="112" fill="url(#logoG)"/>
+            <path d="M152 148h208l-208 216h208" fill="none" stroke="#fff" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M388 200q32 56 0 112" fill="none" stroke="#fff" stroke-width="28" stroke-linecap="round" opacity="0.6"/>
+            <path d="M428 168q48 88 0 176" fill="none" stroke="#fff" stroke-width="24" stroke-linecap="round" opacity="0.35"/>
+          </svg>
+        </span>
         Zvoon
       </a>
       <div class="header-right">
@@ -788,9 +847,45 @@ a { color: inherit; text-decoration: none; }
 <!-- Hero -->
 <main>
 <section class="hero" aria-label="Главный экран">
+  <!-- SVG background patterns -->
+  <div class="hero-bg" aria-hidden="true">
+    <!-- Sound waves -->
+    <svg width="320" height="320" viewBox="0 0 320 320" style="top:-40px;right:-60px">
+      <circle cx="160" cy="160" r="60" fill="none" stroke="#e8734a" stroke-width="1.5"/>
+      <circle cx="160" cy="160" r="100" fill="none" stroke="#e8734a" stroke-width="1"/>
+      <circle cx="160" cy="160" r="140" fill="none" stroke="#e8734a" stroke-width="0.7"/>
+    </svg>
+    <!-- Dots grid -->
+    <svg width="200" height="200" viewBox="0 0 200 200" style="bottom:20px;left:-30px">
+      <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+        <circle cx="2" cy="2" r="1.5" fill="#e8734a"/>
+      </pattern>
+      <rect width="200" height="200" fill="url(#dots)"/>
+    </svg>
+    <!-- Z letter -->
+    <svg width="280" height="280" viewBox="0 0 280 280" style="top:50%;left:5%;transform:translateY(-50%)">
+      <path d="M60 60h160l-160 160h160" fill="none" stroke="#e8734a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <!-- Wave lines -->
+    <svg width="400" height="120" viewBox="0 0 400 120" style="bottom:-10px;right:10%">
+      <path d="M0 60 Q50 20, 100 60 T200 60 T300 60 T400 60" fill="none" stroke="#e8734a" stroke-width="1.2"/>
+      <path d="M0 80 Q50 40, 100 80 T200 80 T300 80 T400 80" fill="none" stroke="#e8734a" stroke-width="0.8"/>
+    </svg>
+    <!-- Corner circles -->
+    <svg width="160" height="160" viewBox="0 0 160 160" style="top:10%;right:15%">
+      <circle cx="80" cy="80" r="3" fill="#e8734a"/>
+      <circle cx="80" cy="80" r="20" fill="none" stroke="#e8734a" stroke-width="0.8"/>
+      <circle cx="80" cy="80" r="40" fill="none" stroke="#e8734a" stroke-width="0.5"/>
+    </svg>
+  </div>
   <div class="container">
-    <h1 class="reveal" data-i18n-html="hero_title">Мгновенные групповые аудио звонки <span class="gradient">по ссылке</span></h1>
-    <p class="hero-subtitle reveal" data-i18n="hero_subtitle">Без регистрации. До 5 человек одновременно бесплатно. Идеальный звук. ИИ-сводка после звонка на почту.</p>
+    <h1 class="reveal" data-i18n-html="hero_title">Аудио звонки по ссылке<br><span class="gradient">с ИИ-сводкой</span></h1>
+    <div class="hero-offers reveal">
+      <span class="hero-offer" data-i18n="ho_1">Без регистрации</span>
+      <span class="hero-offer" data-i18n="ho_2">До 5 человек бесплатно</span>
+      <span class="hero-offer" data-i18n="ho_3">Идеальный звук</span>
+      <span class="hero-offer" data-i18n="ho_4">Сводка на почту</span>
+    </div>
     <a href="call.html?host=1" class="hero-cta reveal">
       <span data-i18n="hero_cta">Создать звонок</span>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -977,12 +1072,14 @@ a { color: inherit; text-decoration: none; }
   <div class="container">
     <div class="footer-inner">
       <div class="footer-logo">
-        <svg width="24" height="24" viewBox="0 0 512 512" fill="none">
-          <defs><linearGradient id="logoGf" x1="0" y1="0" x2="512" y2="512"><stop stop-color="#e8734a"/><stop offset="1" stop-color="#c74f2e"/></linearGradient></defs>
-          <rect width="512" height="512" rx="112" fill="url(#logoGf)"/>
-          <path d="M152 148h208l-208 216h208" fill="none" stroke="#fff" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M388 200q32 56 0 112" fill="none" stroke="#fff" stroke-width="28" stroke-linecap="round" opacity="0.6"/>
-        </svg>
+        <span class="logo-z">
+          <svg width="24" height="24" viewBox="0 0 512 512" fill="none">
+            <defs><linearGradient id="logoGf" x1="0" y1="0" x2="512" y2="512"><stop stop-color="#e8734a"/><stop offset="1" stop-color="#c74f2e"/></linearGradient></defs>
+            <rect width="512" height="512" rx="112" fill="url(#logoGf)"/>
+            <path d="M152 148h208l-208 216h208" fill="none" stroke="#fff" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M388 200q32 56 0 112" fill="none" stroke="#fff" stroke-width="28" stroke-linecap="round" opacity="0.6"/>
+          </svg>
+        </span>
         Zvoon
       </div>
       <div class="footer-links">
@@ -1051,9 +1148,12 @@ document.querySelectorAll('.faq-question').forEach(btn => {
 const i18n = {
   en: {
     header_cta: 'Start a call',
-    hero_title: 'Instant group audio calls <span class="gradient">via link</span>',
-    hero_subtitle: 'No sign-up required. Up to 5 people free. Crystal-clear audio. AI summary sent to your email after the call.',
+    hero_title: 'Audio calls via link<br><span class="gradient">with AI summary</span>',
     hero_cta: 'Start a call',
+    ho_1: 'No registration',
+    ho_2: 'Up to 5 people free',
+    ho_3: 'Crystal-clear audio',
+    ho_4: 'Summary to email',
     steps_label: 'How it works',
     steps_title: 'Three steps to a call',
     step1_title: 'Create a call',
@@ -1114,9 +1214,12 @@ const i18n = {
   },
   ru: {
     header_cta: 'Создать звонок',
-    hero_title: 'Мгновенные групповые аудио звонки <span class="gradient">по ссылке</span>',
-    hero_subtitle: 'Без регистрации. До 5 человек одновременно бесплатно. Идеальный звук. ИИ-сводка после звонка на почту.',
+    hero_title: 'Аудио звонки по ссылке<br><span class="gradient">с ИИ-сводкой</span>',
     hero_cta: 'Создать звонок',
+    ho_1: 'Без регистрации',
+    ho_2: 'До 5 человек бесплатно',
+    ho_3: 'Идеальный звук',
+    ho_4: 'Сводка на почту',
     steps_label: 'Как это работает',
     steps_title: 'Три шага до звонка',
     step1_title: 'Создайте звонок',
