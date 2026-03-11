@@ -161,14 +161,21 @@ a { color: inherit; text-decoration: none; }
 
 .phone-cord {
   position: absolute;
-  top: 50%; right: -200vw; width: 200vw; height: 40px;
+  top: 50%; right: -200vw; width: 200vw; height: 60px;
   transform: translateY(-50%);
   pointer-events: none; z-index: 1;
 }
 .phone-cord path {
-  fill: none; stroke: var(--accent); stroke-width: 2.5;
-  stroke-linecap: round; opacity: 0.25;
+  fill: none; stroke: #2a2a2a; stroke-width: 2.8;
+  stroke-linecap: round; opacity: 0.45;
 }
+@keyframes cordWiggle {
+  0%   { d: path("M0 30 C30 12,60 48,90 30 C120 12,150 48,180 30 C210 12,240 48,270 30 C300 12,340 48,380 30 C420 12,470 44,520 30 C580 14,640 42,720 30 C800 18,900 40,1000 30 C1100 20,1300 38,1500 30 L2000 30"); }
+  33%  { d: path("M0 30 C30 18,60 42,90 30 C120 18,150 42,180 30 C210 18,240 44,270 32 C300 16,340 46,380 28 C420 16,470 46,520 32 C580 16,640 44,720 28 C800 20,900 38,1000 32 C1100 18,1300 40,1500 30 L2000 30"); }
+  66%  { d: path("M0 30 C30 14,60 46,90 28 C120 14,150 46,180 28 C210 16,240 46,270 28 C300 14,340 44,380 32 C420 14,470 42,520 28 C580 18,640 40,720 32 C800 16,900 42,1000 28 C1100 22,1300 36,1500 30 L2000 30"); }
+  100% { d: path("M0 30 C30 12,60 48,90 30 C120 12,150 48,180 30 C210 12,240 48,270 30 C300 12,340 48,380 30 C420 12,470 44,520 30 C580 14,640 42,720 30 C800 18,900 40,1000 30 C1100 20,1300 38,1500 30 L2000 30"); }
+}
+.phone-cord path { animation: cordWiggle 6s ease-in-out infinite; }
 
 /* ─── Divider ─── */
 .divider { width: 80px; height: 1px; background: var(--accent); margin: 0 auto; opacity: 0.5; }
@@ -579,8 +586,8 @@ section { position: relative; z-index: 1; }
         <svg class="lucide lucide-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
       <!-- Phone cord trailing off screen -->
-      <svg class="phone-cord" viewBox="0 0 2000 40" preserveAspectRatio="none">
-        <path d="M0 20 Q25 5, 50 20 T100 20 T150 20 T200 20 T250 20 T300 20 T350 20 T400 20 T450 20 T500 20 T600 20 T700 20 T800 20 T1000 20 T1200 20 T1500 20 T2000 20"/>
+      <svg class="phone-cord" viewBox="0 0 2000 60" preserveAspectRatio="none">
+        <path d="M0 30 C30 12,60 48,90 30 C120 12,150 48,180 30 C210 12,240 48,270 30 C300 12,340 48,380 30 C420 12,470 44,520 30 C580 14,640 42,720 30 C800 18,900 40,1000 30 C1100 20,1300 38,1500 30 L2000 30"/>
       </svg>
     </div>
   </div>
