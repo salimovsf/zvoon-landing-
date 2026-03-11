@@ -2,13 +2,13 @@ import { Hono } from "hono";
 import { processCallRecording, cleanupRecordings } from "../services/ai-pipeline.js";
 import { sendSummaryEmail, sendErrorEmail } from "../services/email.js";
 import { listRoomEgress, stopEgress } from "../services/egress.js";
+import { rateLimiter } from "../middleware/rate-limit.js";
 import * as fs from "fs";
 import * as path from "path";
 
 export const summaryRouter = new Hono();
 
 // In-memory store for room data (emails, egress IDs, etc.)
-// In production, this should be in a database
 interface RoomData {
   emails: Map<string, string>; // participantName -> email
   egressIds: string[];
@@ -21,9 +21,10 @@ export const roomStore = new Map<string, RoomData>();
 
 /**
  * Register email for a participant in a room.
- * Called from the frontend when user enters their email.
+ * Protected: room must already exist (created via /rooms POST).
+ * Rate limited to prevent spam.
  */
-summaryRouter.post("/register-email", async (c) => {
+summaryRouter.post("/register-email", rateLimiter({ windowMs: 60 * 60 * 1000, max: 30 }), async (c) => {
   const { roomSlug, participantName, email } = await c.req.json<{
     roomSlug: string;
     participantName: string;
@@ -34,32 +35,37 @@ summaryRouter.post("/register-email", async (c) => {
     return c.json({ error: "roomSlug, participantName, and email are required" }, 400);
   }
 
+  // Room MUST already exist — no creating rooms via this endpoint
+  const data = roomStore.get(roomSlug);
+  if (!data) {
+    return c.json({ error: "Room not found" }, 404);
+  }
+
   // Basic email validation
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return c.json({ error: "Invalid email" }, 400);
   }
 
-  if (!roomStore.has(roomSlug)) {
-    roomStore.set(roomSlug, {
-      emails: new Map(),
-      egressIds: [],
-      lang: "ru",
-      recording: true,
-      createdAt: Date.now(),
-    });
+  // Limit emails per room (prevent abuse)
+  if (data.emails.size >= 10) {
+    return c.json({ error: "Max email registrations reached" }, 400);
   }
 
-  const data = roomStore.get(roomSlug)!;
-  data.emails.set(participantName, email);
+  // Sanitize name
+  const safeName = participantName.replace(/[<>"'&]/g, "").trim().slice(0, 40);
+  if (!safeName) {
+    return c.json({ error: "Invalid name" }, 400);
+  }
 
-  console.log(`Email registered: ${participantName} -> ${email} in room ${roomSlug}`);
+  data.emails.set(safeName, email);
+  console.log(`Email registered: ${safeName} -> ${email} in room ${roomSlug}`);
 
   return c.json({ status: "ok" });
 });
 
 /**
  * Process summary for a completed room.
- * Called internally when a room ends (via webhook or manual trigger).
+ * Called internally when a room ends (via webhook).
  */
 export async function processRoomSummary(roomSlug: string) {
   const data = roomStore.get(roomSlug);
@@ -83,7 +89,6 @@ export async function processRoomSummary(roomSlug: string) {
     if (fs.existsSync(recordingsDir)) {
       const files = fs.readdirSync(recordingsDir).filter((f) => f.endsWith(".ogg"));
       tracks = files.map((f) => {
-        // Extract participant name from filename: "Name_timestamp.ogg"
         const name = f.replace(/_{0,1}\d{4}-\d{2}.*\.ogg$/, "").replace(/_/g, " ") || f;
         return {
           participantName: name,
@@ -97,7 +102,6 @@ export async function processRoomSummary(roomSlug: string) {
 
   if (tracks.length === 0) {
     console.log(`No recording files found for room ${roomSlug}`);
-    // Notify users about the error
     for (const email of data.emails.values()) {
       await sendErrorEmail(email, data.lang).catch(console.error);
     }
@@ -109,10 +113,8 @@ export async function processRoomSummary(roomSlug: string) {
   );
 
   try {
-    // Generate summary via Gemini
     const result = await processCallRecording(tracks, data.lang);
 
-    // Send to all registered emails
     const participantNames = [...data.emails.keys()];
     const sendPromises = [...data.emails.values()].map((email) =>
       sendSummaryEmail(email, result.summary, roomSlug, participantNames, data.lang).catch(
@@ -124,36 +126,17 @@ export async function processRoomSummary(roomSlug: string) {
     console.log(`Summary sent for room ${roomSlug} to ${data.emails.size} recipients`);
   } catch (e) {
     console.error(`Summary generation failed for room ${roomSlug}:`, e);
-    // Send error emails
     for (const email of data.emails.values()) {
       await sendErrorEmail(email, data.lang).catch(console.error);
     }
   } finally {
-    // Cleanup recordings (GDPR)
     cleanupRecordings(roomSlug);
-    // Cleanup memory (after 1 hour to handle late requests)
     setTimeout(() => roomStore.delete(roomSlug), 60 * 60 * 1000);
   }
 }
 
 /**
- * Manual trigger for testing: POST /summary/trigger
- */
-summaryRouter.post("/trigger", async (c) => {
-  const { roomSlug } = await c.req.json<{ roomSlug: string }>();
-
-  if (!roomSlug) {
-    return c.json({ error: "roomSlug is required" }, 400);
-  }
-
-  // Process async — don't block the response
-  processRoomSummary(roomSlug).catch(console.error);
-
-  return c.json({ status: "processing" });
-});
-
-/**
- * Get summary status for a room.
+ * Get summary status for a room (no sensitive data exposed).
  */
 summaryRouter.get("/:roomSlug", async (c) => {
   const roomSlug = c.req.param("roomSlug");
@@ -165,7 +148,6 @@ summaryRouter.get("/:roomSlug", async (c) => {
 
   return c.json({
     roomSlug,
-    emailCount: data.emails.size,
-    hasEgress: data.egressIds.length > 0,
+    hasRecording: data.recording,
   });
 });

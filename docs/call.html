@@ -927,15 +927,19 @@ function updateParticipants() {
 
   count.textContent = `${all.length} ${all.length === 1 ? t('participant_1') : all.length < 5 ? t('participant_2_4') : t('participant_5')}`;
 
+  // Escape HTML to prevent XSS via participant names
+  function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
   grid.innerHTML = all.map(p => {
-    const name = p.identity || t('guest');
-    const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    const rawName = p.identity || t('guest');
+    const name = esc(rawName);
+    const initials = esc(rawName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2));
     const micOff = !p.isMicrophoneEnabled;
     const speaking = p.isSpeaking;
     const isLocal = p === room.localParticipant;
 
     return `
-      <div class="participant" data-sid="${p.sid}">
+      <div class="participant" data-sid="${esc(p.sid)}">
         <div class="participant-avatar ${speaking ? 'speaking' : ''}">
           ${initials}
           ${micOff ? `<div class="muted-badge">
@@ -944,7 +948,7 @@ function updateParticipants() {
             </svg>
           </div>` : ''}
         </div>
-        <div class="participant-name">${name}${isLocal ? ` (${t('you')})` : ''}</div>
+        <div class="participant-name">${name}${isLocal ? ` (${esc(t('you'))})` : ''}</div>
       </div>
     `;
   }).join('');
