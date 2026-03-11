@@ -598,7 +598,7 @@ nameBtn.addEventListener('click', async () => {
       });
       userToken = data.token;
       userSlug = data.slug;
-      history.replaceState(null, '', `?room=${userSlug}`);
+      history.replaceState(null, '', `?room=${userSlug}&lang=${lang}`);
     } else {
       const data = await apiCall(`${API_URL}/rooms/${roomSlug}/token`, {
         method: 'POST',
@@ -914,7 +914,7 @@ async function toggleMute() {
 function copyLink() {
   const slug = new URLSearchParams(window.location.search).get('room');
   if (!slug) return;
-  const link = `${window.location.origin}${window.location.pathname}?room=${slug}`;
+  const link = `${window.location.origin}${window.location.pathname}?room=${slug}&lang=${lang}`;
   navigator.clipboard.writeText(link).then(() => {
     document.getElementById('shareToast').classList.add('show');
     document.getElementById('copyText').textContent = t('copied');
@@ -1030,7 +1030,8 @@ const callI18n = {
   }
 };
 
-const lang = localStorage.getItem('zvoon-lang') || 'ru';
+const urlLang = new URLSearchParams(window.location.search).get('lang');
+const lang = (urlLang === 'en' || urlLang === 'ru') ? urlLang : (localStorage.getItem('zvoon-lang') || 'ru');
 function t(key) { return (callI18n[lang] && callI18n[lang][key]) || callI18n.ru[key] || key; }
 
 // Apply initial translations to static elements
