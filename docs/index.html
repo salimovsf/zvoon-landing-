@@ -131,33 +131,37 @@ a { color: inherit; text-decoration: none; }
 }
 .hero h1 .line2 { display: block; margin-top: 4px; }
 
-/* Rotating hero text */
+/* Rotating hero text — 7 items (last = duplicate of first for seamless loop) */
 .hero-rotate-wrap {
-  display: inline-block; height: 1.15em; overflow: hidden; vertical-align: bottom;
+  display: block; height: 1.1em; overflow: hidden;
   position: relative;
+  clip-path: inset(0);
+  -webkit-clip-path: inset(0);
 }
 .hero-rotate-inner {
   display: flex; flex-direction: column;
-  animation: heroRotate 12s ease-in-out infinite;
+  animation: heroRotate 14s cubic-bezier(0.65,0,0.35,1) infinite;
 }
 .hero-rotate-inner span {
-  display: block; height: 1.15em; line-height: 1.15;
-  white-space: nowrap;
+  display: block; height: 1.1em; line-height: 1.1;
+  white-space: nowrap; text-align: center;
 }
-.hero-rotate-inner span:nth-child(1) { font-family: 'Tenor Sans', serif; font-weight: 400; }
+.hero-rotate-inner span:nth-child(1),
+.hero-rotate-inner span:nth-child(7) { font-family: 'Tenor Sans', serif; font-weight: 400; }
 .hero-rotate-inner span:nth-child(2) { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; }
 .hero-rotate-inner span:nth-child(3) { font-family: 'Caveat', cursive; font-weight: 700; }
 .hero-rotate-inner span:nth-child(4) { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
 .hero-rotate-inner span:nth-child(5) { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 0.85em; }
 .hero-rotate-inner span:nth-child(6) { font-family: 'Russo One', sans-serif; font-weight: 400; }
+/* 7 items: each = 1/7 = 14.28%. Show 2s, slide 0.4s */
 @keyframes heroRotate {
-  0%, 14%     { transform: translateY(0); }
-  16.66%, 30.66%  { transform: translateY(-16.666%); }
-  33.33%, 47.33%  { transform: translateY(-33.333%); }
-  50%, 64%    { transform: translateY(-50%); }
-  66.66%, 80.66%  { transform: translateY(-66.666%); }
-  83.33%, 97.33%  { transform: translateY(-83.333%); }
-  100%        { transform: translateY(-83.333%); }
+  0%, 12%       { transform: translateY(0); }
+  14.28%, 26.28%  { transform: translateY(-14.285%); }
+  28.57%, 40.57%  { transform: translateY(-28.571%); }
+  42.85%, 54.85%  { transform: translateY(-42.857%); }
+  57.14%, 69.14%  { transform: translateY(-57.142%); }
+  71.42%, 83.42%  { transform: translateY(-71.428%); }
+  85.71%, 100%    { transform: translateY(-85.714%); }
 }
 
 .hero-offers {
@@ -632,7 +636,7 @@ section { position: relative; z-index: 1; }
 <main>
 <section class="hero">
   <div class="container">
-    <h1 class="reveal" data-i18n-html="hero_title"><span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Очередной meet</span><span>Звонок боссу</span></span></span> <span class="line2"><span class="gradient">с ИИ сводкой</span></span></h1>
+    <h1 class="reveal" data-i18n-html="hero_title"><span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Очередной meet</span><span>Звонок боссу</span><span>Созвон с командой</span></span></span><span class="line2"><span class="gradient">с ИИ сводкой</span></span></h1>
     <div class="hero-offers reveal">
       <span class="hero-offer" data-i18n="ho_1">Без регистрации</span>
       <span class="hero-offer" data-i18n="ho_2">До 10 человек бесплатно</span>
@@ -905,7 +909,7 @@ document.querySelectorAll('.faq-question').forEach(btn => {
 
 const i18n = {
   en: {
-    header_cta:'Start a call', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Team standup</span><span>Call with family</span><span>Chat with a friend</span><span>Call with Gen Z</span><span>Another meeting</span><span>Call with the boss</span></span></span> <span class="line2"><span class="gradient">with AI summary</span></span>',
+    header_cta:'Start a call', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Team standup</span><span>Call with family</span><span>Chat with a friend</span><span>Call with Gen Z</span><span>Another meeting</span><span>Call with the boss</span><span>Team standup</span></span></span><span class="line2"><span class="gradient">with AI summary</span></span>',
     hero_cta:'Start a call', ho_1:'No registration', ho_2:'Up to 10 people free', ho_3:'Crystal-clear audio', ho_4:'Summary to email',
     steps_label:'How it works', steps_title:'Three steps to a call',
     step1_title:'Create a call', step1_desc:'Press one button and get a unique link. No registration.',
@@ -926,7 +930,7 @@ const i18n = {
     footer_founder:'Message the founder',
   },
   ru: {
-    header_cta:'Создать звонок', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Очередной meet</span><span>Звонок боссу</span></span></span> <span class="line2"><span class="gradient">с ИИ сводкой</span></span>',
+    header_cta:'Создать звонок', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Очередной meet</span><span>Звонок боссу</span><span>Созвон с командой</span></span></span><span class="line2"><span class="gradient">с ИИ сводкой</span></span>',
     hero_cta:'Создать звонок', ho_1:'Без регистрации', ho_2:'До 10 человек бесплатно', ho_3:'Идеальный звук', ho_4:'Сводка на почту',
     steps_label:'Как это работает', steps_title:'Три шага до звонка',
     step1_title:'Создайте звонок', step1_desc:'Нажмите одну кнопку и получите уникальную ссылку. Без регистрации.',
