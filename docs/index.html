@@ -104,9 +104,22 @@ a { color: inherit; text-decoration: none; }
 .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; letter-spacing: -0.5px; }
 .logo svg { flex-shrink: 0; }
 .header-right { display: flex; align-items: center; gap: 24px; }
-.lang-switch { display: flex; gap: 2px; background: var(--peach); border-radius: 8px; padding: 3px; }
-.lang-switch button { border: none; background: transparent; font-family: inherit; font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 6px; cursor: pointer; color: var(--muted); transition: all 0.2s; }
-.lang-switch button.active { background: var(--card); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.lang-switch {
+  display: flex; gap: 0; border-radius: 20px; padding: 3px;
+  background: rgba(0,0,0,0.06); backdrop-filter: blur(8px);
+  border: 1px solid rgba(0,0,0,0.04);
+}
+.lang-switch button {
+  border: none; background: transparent; font-family: inherit;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+  padding: 6px 14px; border-radius: 18px; cursor: pointer;
+  color: var(--muted); transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.lang-switch button:hover { color: var(--text); }
+.lang-switch button.active {
+  background: var(--text); color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
 .header-cta {
   display: inline-flex; align-items: center; gap: 6px;
   background: linear-gradient(135deg, #2a2a2a, #3d3d3d, #1a1a1a);
@@ -147,7 +160,7 @@ a { color: inherit; text-decoration: none; }
   display: flex; align-items: center; justify-content: center;
   opacity: 0;
   transform: translateY(100%);
-  animation: heroSlide 14s infinite;
+  animation: heroSlide 12s infinite;
 }
 .hero-rotate-inner span:nth-child(1) { animation-delay: 0s; }
 .hero-rotate-inner span:nth-child(2) { animation-delay: 2s; }
@@ -155,9 +168,7 @@ a { color: inherit; text-decoration: none; }
 .hero-rotate-inner span:nth-child(4) { animation-delay: 6s; }
 .hero-rotate-inner span:nth-child(5) { animation-delay: 8s; }
 .hero-rotate-inner span:nth-child(6) { animation-delay: 10s; }
-.hero-rotate-inner span:nth-child(7) { animation-delay: 12s; }
-.hero-rotate-inner span:nth-child(1),
-.hero-rotate-inner span:nth-child(7) { font-family: 'Tenor Sans', serif; font-weight: 400; }
+.hero-rotate-inner span:nth-child(1) { font-family: 'Tenor Sans', serif; font-weight: 400; }
 .hero-rotate-inner span:nth-child(2) { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; }
 .hero-rotate-inner span:nth-child(3) { font-family: 'Caveat', cursive; font-weight: 700; }
 .hero-rotate-inner span:nth-child(4) { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
@@ -165,9 +176,9 @@ a { color: inherit; text-decoration: none; }
 .hero-rotate-inner span:nth-child(6) { font-family: 'Russo One', sans-serif; font-weight: 400; }
 @keyframes heroSlide {
   0%      { opacity: 0; transform: translateY(100%); }
-  1.5%    { opacity: 1; transform: translateY(0); }
-  12.5%   { opacity: 1; transform: translateY(0); }
-  14%     { opacity: 0; transform: translateY(-100%); }
+  2%      { opacity: 1; transform: translateY(0); }
+  14.66%  { opacity: 1; transform: translateY(0); }
+  16.66%  { opacity: 0; transform: translateY(-100%); }
   100%    { opacity: 0; transform: translateY(-100%); }
 }
 
@@ -645,7 +656,7 @@ section { position: relative; z-index: 1; }
 <main>
 <section class="hero">
   <div class="container">
-    <h1 class="reveal" data-i18n-html="hero_title"><span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Ещё один meet</span><span>Звонок боссу</span><span>Созвон с командой</span></span></span><span class="line2"><span class="gradient">с саммари на почту</span></span></h1>
+    <h1 class="reveal" data-i18n-html="hero_title"><span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Ещё один meet</span><span>Звонок боссу</span></span></span><span class="line2"><span class="gradient">с саммари на почту</span></span></h1>
     <div class="hero-offers reveal">
       <span class="hero-offer" data-i18n="ho_1">Без регистрации</span>
       <span class="hero-offer" data-i18n="ho_2">До 10 человек бесплатно</span>
@@ -918,7 +929,7 @@ document.querySelectorAll('.faq-question').forEach(btn => {
 
 const i18n = {
   en: {
-    header_cta:'Start a call', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Team standup</span><span>Call with family</span><span>Chat with a friend</span><span>Call with Gen Z</span><span>Yet another meet</span><span>Call with the boss</span><span>Team standup</span></span></span><span class="line2"><span class="gradient">with AI summary</span></span>',
+    header_cta:'Start a call', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Team standup</span><span>Call with family</span><span>Chat with a friend</span><span>Call with Gen Z</span><span>Yet another meet</span><span>Call with the boss</span></span></span><span class="line2"><span class="gradient">with AI summary</span></span>',
     hero_cta:'Start a call', ho_1:'No registration', ho_2:'Up to 10 people free', ho_3:'Crystal-clear audio', ho_4:'Summary to email',
     steps_label:'How it works', steps_title:'Three steps to a call',
     step1_title:'Create a call', step1_desc:'Press one button and get a unique link. No registration.',
@@ -939,7 +950,7 @@ const i18n = {
     footer_founder:'Message the founder',
   },
   ru: {
-    header_cta:'Создать звонок', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Ещё один meet</span><span>Звонок боссу</span><span>Созвон с командой</span></span></span><span class="line2"><span class="gradient">с саммари на почту</span></span>',
+    header_cta:'Создать звонок', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Ещё один meet</span><span>Звонок боссу</span></span></span><span class="line2"><span class="gradient">с саммари на почту</span></span>',
     hero_cta:'Создать звонок', ho_1:'Без регистрации', ho_2:'До 10 человек бесплатно', ho_3:'Идеальный звук', ho_4:'Саммари на почту',
     steps_label:'Как это работает', steps_title:'Три шага до звонка',
     step1_title:'Создайте звонок', step1_desc:'Нажмите одну кнопку и получите уникальную ссылку. Без регистрации.',
