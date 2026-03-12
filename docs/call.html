@@ -815,6 +815,7 @@ async function connectToRoom(token, slug, withMic) {
   room = new Room({
     adaptiveStream: true,
     dynacast: true,
+    disconnectOnPageLeave: false,
     audioCaptureDefaults: {
       echoCancellation: true,
       noiseSuppression: true,
