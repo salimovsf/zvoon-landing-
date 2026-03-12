@@ -195,6 +195,27 @@ a { color: inherit; text-decoration: none; }
   background: var(--accent); flex-shrink: 0; opacity: 0.6;
 }
 
+/* Privacy badge */
+.privacy-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(34, 197, 94, 0.06);
+  border: 1.5px solid rgba(34, 197, 94, 0.25);
+  border-radius: 14px; padding: 14px 22px;
+  margin-bottom: 8px; max-width: 380px;
+}
+.privacy-badge svg {
+  width: 18px; height: 18px; flex-shrink: 0;
+  stroke: #22c55e; fill: none; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.privacy-badge-text {
+  font-size: 13px; line-height: 1.45; color: var(--muted);
+  text-align: left;
+}
+.privacy-badge-text strong {
+  color: var(--text); font-weight: 600;
+}
+
 /* CTA with phone cord */
 .hero-cta-wrap { position: relative; display: inline-block; }
 .hero-cta {
@@ -663,6 +684,10 @@ section { position: relative; z-index: 1; }
       <span class="hero-offer" data-i18n="ho_3">Идеальный звук</span>
       <span class="hero-offer" data-i18n="ho_4">Саммари на почту</span>
     </div>
+    <div class="privacy-badge reveal">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <div class="privacy-badge-text" data-i18n-html="privacy_badge"><strong>Не храним</strong> звонки и саммари. Полная анонимность. Шифрование звонка — никто не подслушает.</div>
+    </div>
     <div class="hero-cta-wrap reveal">
       <a href="call.html?host=1" class="hero-cta">
         <svg class="lucide" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -931,6 +956,7 @@ const i18n = {
   en: {
     header_cta:'Start a call', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Team standup</span><span>Call with family</span><span>Chat with a friend</span><span>Call with Gen Z</span><span>Yet another meet</span><span>Call with the boss</span></span></span><span class="line2"><span class="gradient">with AI summary</span></span>',
     hero_cta:'Start a call', ho_1:'No registration', ho_2:'Up to 10 people free', ho_3:'Crystal-clear audio', ho_4:'Summary to email',
+    privacy_badge:'<strong>We don\'t store</strong> your calls or summaries. Full anonymity. Encrypted calls — no one can listen in.',
     steps_label:'How it works', steps_title:'Three steps to a call',
     step1_title:'Create a call', step1_desc:'Press one button and get a unique link. No registration.',
     step2_title:'Share the link', step2_desc:'Send via any messenger. Guests don\'t need to install anything.',
@@ -952,6 +978,7 @@ const i18n = {
   ru: {
     header_cta:'Создать звонок', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Ещё один meet</span><span>Звонок боссу</span></span></span><span class="line2"><span class="gradient">с саммари на почту</span></span>',
     hero_cta:'Создать звонок', ho_1:'Без регистрации', ho_2:'До 10 человек бесплатно', ho_3:'Идеальный звук', ho_4:'Саммари на почту',
+    privacy_badge:'<strong>Не храним</strong> звонки и саммари. Полная анонимность. Шифрование звонка — никто не подслушает.',
     steps_label:'Как это работает', steps_title:'Три шага до звонка',
     step1_title:'Создайте звонок', step1_desc:'Нажмите одну кнопку и получите уникальную ссылку. Без регистрации.',
     step2_title:'Отправьте ссылку', step2_desc:'Поделитесь в любом мессенджере. Собеседнику ничего не нужно устанавливать.',
