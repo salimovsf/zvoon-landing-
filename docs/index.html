@@ -31,7 +31,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tenor+Sans&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -121,8 +121,9 @@ a { color: inherit; text-decoration: none; }
 .hero { text-align: center; padding: 120px 24px 100px; position: relative; z-index: 1; }
 
 .hero h1 {
+  font-family: 'Tenor Sans', serif;
   font-size: clamp(40px, 7vw, 72px);
-  font-weight: 800; letter-spacing: -2.5px; line-height: 1.1;
+  font-weight: 400; letter-spacing: -1px; line-height: 1.1;
   max-width: 800px; margin: 0 auto 28px;
 }
 .hero h1 .gradient {
@@ -130,6 +131,29 @@ a { color: inherit; text-decoration: none; }
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .hero h1 .line2 { display: block; margin-top: 4px; }
+
+/* Rotating hero text */
+.hero-rotate-wrap {
+  display: inline-block; height: 1.15em; overflow: hidden; vertical-align: bottom;
+  position: relative;
+}
+.hero-rotate-inner {
+  display: flex; flex-direction: column;
+  animation: heroRotate 12s ease-in-out infinite;
+}
+.hero-rotate-inner span {
+  display: block; height: 1.15em; line-height: 1.15;
+  white-space: nowrap;
+}
+@keyframes heroRotate {
+  0%, 14%     { transform: translateY(0); }
+  16.66%, 30.66%  { transform: translateY(-16.666%); }
+  33.33%, 47.33%  { transform: translateY(-33.333%); }
+  50%, 64%    { transform: translateY(-50%); }
+  66.66%, 80.66%  { transform: translateY(-66.666%); }
+  83.33%, 97.33%  { transform: translateY(-83.333%); }
+  100%        { transform: translateY(-83.333%); }
+}
 
 .hero-offers {
   display: flex; justify-content: center; flex-wrap: wrap;
@@ -168,12 +192,19 @@ a { color: inherit; text-decoration: none; }
   stroke-linecap: round; opacity: 0.4;
 }
 @keyframes cordWiggle {
-  0%   { d: path("M0 30 C30 12,60 48,90 30 C120 12,150 48,180 30 C210 12,240 48,270 30 C300 12,340 48,380 30 C420 12,470 44,520 30 C580 14,640 42,720 30 C800 18,900 40,1000 30 C1100 20,1300 38,1500 30 L2000 30"); }
-  33%  { d: path("M0 30 C30 18,60 42,90 30 C120 18,150 42,180 30 C210 18,240 44,270 32 C300 16,340 46,380 28 C420 16,470 46,520 32 C580 16,640 44,720 28 C800 20,900 38,1000 32 C1100 18,1300 40,1500 30 L2000 30"); }
-  66%  { d: path("M0 30 C30 14,60 46,90 28 C120 14,150 46,180 28 C210 16,240 46,270 28 C300 14,340 44,380 32 C420 14,470 42,520 28 C580 18,640 40,720 32 C800 16,900 42,1000 28 C1100 22,1300 36,1500 30 L2000 30"); }
-  100% { d: path("M0 30 C30 12,60 48,90 30 C120 12,150 48,180 30 C210 12,240 48,270 30 C300 12,340 48,380 30 C420 12,470 44,520 30 C580 14,640 42,720 30 C800 18,900 40,1000 30 C1100 20,1300 38,1500 30 L2000 30"); }
+  /* Smooth sway 0-40% (2s) */
+  0%   { d: path("M0 30 C30 18,60 42,90 30 C120 18,150 42,180 30 C210 18,240 42,270 30 C300 18,340 42,380 30 C420 18,470 42,520 30 C580 18,640 42,720 30 C800 20,900 40,1000 30 C1100 20,1300 38,1500 30 L2000 30"); }
+  38%  { d: path("M0 30 C30 22,60 38,90 30 C120 22,150 38,180 30 C210 22,240 38,270 30 C300 22,340 38,380 30 C420 22,470 38,520 30 C580 22,640 38,720 30 C800 22,900 38,1000 30 C1100 22,1300 38,1500 30 L2000 30"); }
+  /* Sound wave burst 40-60% */
+  42%  { d: path("M0 30 C15 8,30 52,45 30 C60 8,75 52,90 30 C105 8,120 52,135 30 C150 8,165 52,180 30 C195 8,210 52,225 30 C240 8,255 52,270 30 C285 10,310 50,340 30 C380 12,440 48,520 30 C600 15,700 45,800 30 C900 18,1100 40,1500 30 L2000 30"); }
+  46%  { d: path("M0 30 C15 50,30 10,45 30 C60 50,75 10,90 30 C105 50,120 10,135 30 C150 50,165 10,180 30 C195 50,210 10,225 30 C240 48,255 12,270 30 C285 46,310 14,340 30 C380 44,440 16,520 30 C600 40,700 20,800 30 C900 35,1100 25,1500 30 L2000 30"); }
+  50%  { d: path("M0 30 C15 6,30 54,45 30 C60 6,75 54,90 30 C105 6,120 54,135 30 C150 8,165 52,180 30 C195 10,210 50,225 30 C240 12,255 48,270 30 C285 14,310 46,340 30 C380 16,440 44,520 30 C600 18,700 42,800 30 C900 20,1100 38,1500 30 L2000 30"); }
+  54%  { d: path("M0 30 C15 48,30 12,45 30 C60 46,75 14,90 30 C105 44,120 16,135 30 C150 42,165 18,180 30 C195 40,210 20,225 30 C240 38,255 22,270 30 C285 36,310 24,340 30 C380 34,440 26,520 30 C600 32,700 28,800 30 C900 30,1100 30,1500 30 L2000 30"); }
+  /* Back to smooth 60-100% */
+  62%  { d: path("M0 30 C30 20,60 40,90 30 C120 20,150 40,180 30 C210 20,240 40,270 30 C300 20,340 40,380 30 C420 20,470 40,520 30 C580 20,640 40,720 30 C800 22,900 38,1000 30 C1100 22,1300 38,1500 30 L2000 30"); }
+  100% { d: path("M0 30 C30 18,60 42,90 30 C120 18,150 42,180 30 C210 18,240 42,270 30 C300 18,340 42,380 30 C420 18,470 42,520 30 C580 18,640 42,720 30 C800 20,900 40,1000 30 C1100 20,1300 38,1500 30 L2000 30"); }
 }
-.phone-cord path { animation: cordWiggle 3.5s ease-in-out infinite; }
+.phone-cord path { animation: cordWiggle 5s ease-in-out infinite; }
 
 /* ─── Divider ─── */
 .divider { width: 80px; height: 1px; background: var(--accent); margin: 0 auto; opacity: 0.5; }
@@ -596,7 +627,7 @@ section { position: relative; z-index: 1; }
 <main>
 <section class="hero">
   <div class="container">
-    <h1 class="reveal" data-i18n-html="hero_title">Аудио звонки <span class="line2"><span class="gradient">с ИИ сводкой</span></span></h1>
+    <h1 class="reveal" data-i18n-html="hero_title"><span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Очередной meet</span><span>Звонок боссу</span></span></span> <span class="line2"><span class="gradient">с ИИ сводкой</span></span></h1>
     <div class="hero-offers reveal">
       <span class="hero-offer" data-i18n="ho_1">Без регистрации</span>
       <span class="hero-offer" data-i18n="ho_2">До 10 человек бесплатно</span>
@@ -724,37 +755,33 @@ section { position: relative; z-index: 1; }
     <p class="section-label reveal" data-i18n="summary_label">ИИ-сводка</p>
     <h2 class="section-title reveal" data-i18n="summary_title">Что вы получите после звонка</h2>
     <div class="summary-wrap reveal">
-      <!-- Desktop curved arrows -->
+      <!-- Desktop curved arrows — start/end at exact circle centers -->
       <svg class="summary-arrows summary-arrows-desktop" viewBox="0 0 900 120" preserveAspectRatio="none" width="100%" height="120">
-        <!-- 1→2: curve up then loop down -->
-        <path d="M130 60 C180 10, 220 10, 250 30 C270 45, 280 55, 310 45 C340 35, 350 20, 340 60" marker-end="url(#arrowhead)"/>
-        <!-- 2→3: smooth S-curve -->
-        <path d="M360 60 C400 100, 440 20, 480 40 C520 60, 540 90, 570 60" marker-end="url(#arrowhead)"/>
-        <!-- 3→4: loop-the-loop -->
-        <path d="M590 60 C620 20, 660 10, 680 40 C700 70, 720 90, 700 50 C690 30, 710 15, 750 30 C780 42, 790 55, 790 60" marker-end="url(#arrowhead)"/>
         <defs>
           <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
             <polygon points="0 0, 8 3, 0 6" fill="#e8734a" opacity="0.5"/>
           </marker>
         </defs>
-        <!-- Decorative dots at connection points -->
-        <circle cx="130" cy="60" r="3"/><circle cx="340" cy="60" r="3"/>
-        <circle cx="360" cy="60" r="3"/><circle cx="570" cy="60" r="3"/>
-        <circle cx="590" cy="60" r="3"/><circle cx="790" cy="60" r="3"/>
+        <!-- 1→2: wild S with loop -->
+        <path d="M112 32 C140 -15, 180 95, 220 20 C245 -20, 270 90, 300 50 C320 25, 330 35, 337 32" marker-end="url(#arrowhead)"/>
+        <!-- 2→3: dip down then sweep up -->
+        <path d="M337 32 C370 110, 410 -10, 450 70 C475 110, 510 -5, 540 40 C555 60, 560 38, 562 32" marker-end="url(#arrowhead)"/>
+        <!-- 3→4: loop-the-loop -->
+        <path d="M562 32 C590 -20, 640 100, 670 30 C690 -10, 720 80, 710 45 C705 25, 730 10, 760 25 C780 35, 785 32, 787 32" marker-end="url(#arrowhead)"/>
       </svg>
-      <!-- Mobile curved arrows -->
-      <svg class="summary-arrows summary-arrows-mobile" viewBox="0 0 300 300" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0">
-        <!-- 1→2 (top-left → top-right) -->
-        <path d="M100 55 C140 30, 160 30, 200 55" fill="none" stroke="#e8734a" stroke-width="1.8" stroke-linecap="round" opacity="0.3" marker-end="url(#arrowM)"/>
-        <!-- 2→3 (top-right → bottom-left) — diagonal swoop -->
-        <path d="M210 75 C240 120, 180 140, 100 160" fill="none" stroke="#e8734a" stroke-width="1.8" stroke-linecap="round" opacity="0.3" marker-end="url(#arrowM)"/>
-        <!-- 3→4 (bottom-left → bottom-right) -->
-        <path d="M100 175 C140 150, 160 150, 200 175" fill="none" stroke="#e8734a" stroke-width="1.8" stroke-linecap="round" opacity="0.3" marker-end="url(#arrowM)"/>
+      <!-- Mobile curved arrows — 2x2 grid, centers at ~75,55 / 225,55 / 75,175 / 225,175 -->
+      <svg class="summary-arrows summary-arrows-mobile" viewBox="0 0 300 240" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0">
         <defs>
           <marker id="arrowM" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
             <polygon points="0 0, 7 2.5, 0 5" fill="#e8734a" opacity="0.5"/>
           </marker>
         </defs>
+        <!-- 1→2 (top-left → top-right): wavy -->
+        <path d="M75 55 C100 15, 130 90, 160 40 C185 5, 210 70, 225 55" fill="none" stroke="#e8734a" stroke-width="1.8" stroke-linecap="round" opacity="0.3" marker-end="url(#arrowM)"/>
+        <!-- 2→3 (top-right → bottom-left): diagonal swoop -->
+        <path d="M225 55 C260 100, 170 80, 150 120 C130 155, 50 130, 75 175" fill="none" stroke="#e8734a" stroke-width="1.8" stroke-linecap="round" opacity="0.3" marker-end="url(#arrowM)"/>
+        <!-- 3→4 (bottom-left → bottom-right): chaotic -->
+        <path d="M75 175 C95 140, 130 210, 170 155 C195 125, 215 195, 225 175" fill="none" stroke="#e8734a" stroke-width="1.8" stroke-linecap="round" opacity="0.3" marker-end="url(#arrowM)"/>
       </svg>
       <div class="summary-flow">
         <div class="summary-step">
@@ -873,7 +900,7 @@ document.querySelectorAll('.faq-question').forEach(btn => {
 
 const i18n = {
   en: {
-    header_cta:'Start a call', hero_title:'Audio calls <span class="line2"><span class="gradient">with AI summary</span></span>',
+    header_cta:'Start a call', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Team standup</span><span>Call with family</span><span>Chat with a friend</span><span>Call with Gen Z</span><span>Another meeting</span><span>Call with the boss</span></span></span> <span class="line2"><span class="gradient">with AI summary</span></span>',
     hero_cta:'Start a call', ho_1:'No registration', ho_2:'Up to 10 people free', ho_3:'Crystal-clear audio', ho_4:'Summary to email',
     steps_label:'How it works', steps_title:'Three steps to a call',
     step1_title:'Create a call', step1_desc:'Press one button and get a unique link. No registration.',
@@ -894,7 +921,7 @@ const i18n = {
     footer_founder:'Message the founder',
   },
   ru: {
-    header_cta:'Создать звонок', hero_title:'Аудио звонки <span class="line2"><span class="gradient">с ИИ сводкой</span></span>',
+    header_cta:'Создать звонок', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Очередной meet</span><span>Звонок боссу</span></span></span> <span class="line2"><span class="gradient">с ИИ сводкой</span></span>',
     hero_cta:'Создать звонок', ho_1:'Без регистрации', ho_2:'До 10 человек бесплатно', ho_3:'Идеальный звук', ho_4:'Сводка на почту',
     steps_label:'Как это работает', steps_title:'Три шага до звонка',
     step1_title:'Создайте звонок', step1_desc:'Нажмите одну кнопку и получите уникальную ссылку. Без регистрации.',
@@ -923,6 +950,9 @@ function setLang(lang) {
   document.querySelectorAll('[data-i18n-html]').forEach(el => { const k = el.getAttribute('data-i18n-html'); if (t[k]) el.innerHTML = t[k]; });
   document.querySelectorAll('.lang-switch button').forEach(b => { b.classList.toggle('active', b.textContent === lang.toUpperCase()); });
   document.querySelectorAll('.faq-item.open').forEach(item => { item.classList.remove('open'); item.querySelector('.faq-answer').style.maxHeight = '0'; });
+  // Restart rotation animation
+  const rotEl = document.getElementById('heroRotate');
+  if (rotEl) { rotEl.style.animation = 'none'; rotEl.offsetHeight; rotEl.style.animation = ''; }
   localStorage.setItem('zvoon-lang', lang);
 }
 document.querySelectorAll('.lang-switch button').forEach(btn => { btn.addEventListener('click', () => { setLang(btn.textContent.trim().toLowerCase()); }); });
