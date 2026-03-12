@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zvoon — Аудио звонки с ИИ сводкой</title>
-<meta name="description" content="Создайте аудиозвонок за секунду, отправьте ссылку — без регистрации и приложений. После разговора получите ИИ-расшифровку, сводку и задачи на email.">
+<meta name="description" content="Создайте аудиозвонок за секунду, отправьте ссылку — без регистрации и приложений. После разговора получите транскрипцию, ИИ-сводку и задачи на email.">
 <meta name="keywords" content="звонки по ссылке, онлайн звонки без регистрации, аудиозвонки, ИИ сводка звонка, расшифровка разговора, call by link, audio call no registration, AI meeting summary">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Zvoon">
@@ -758,9 +758,9 @@ section { position: relative; z-index: 1; }
       </svg>
       <div class="summary-flow">
         <div class="summary-step">
-          <div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div>
-          <div class="summary-step-title" data-i18n="sum1_title">Запись</div>
-          <div class="summary-step-desc" data-i18n="sum1_desc">Аудио каждого участника</div>
+          <div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M2 15h10"/><path d="m5 12-3 3 3 3"/></svg></div>
+          <div class="summary-step-title" data-i18n="sum1_title">Транскрипция</div>
+          <div class="summary-step-desc" data-i18n="sum1_desc">Полная расшифровка по ролям</div>
         </div>
         <div class="summary-step">
           <div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></div>
@@ -884,7 +884,7 @@ const i18n = {
     badge_popular:'Popular', plan_pro:'Pro', period_pro:'per month', pro_f1:'Up to 25 participants', pro_f2:'No time limits', pro_f3:'Detailed AI summary', pro_f4:'Transcript with names', pro_f5:'Priority call quality', pro_btn:'Get Pro',
     badge_biz:'Business', plan_biz:'Business', biz_price:'On request', biz_f1:'Up to 1000 participants', biz_f2:'Dedicated server', biz_f3:'AI assistant in call', biz_f4:'Broadcast mode', biz_f5:'Summary with infographics & PDF', biz_f6:'24/7 support', biz_btn:'Get Business',
     summary_label:'AI Summary', summary_title:'What you get after the call',
-    sum1_title:'Recording', sum1_desc:'Audio from each participant', sum2_title:'Transcript', sum2_desc:'Who said what', sum3_title:'Topics & decisions', sum3_desc:'Key agreements', sum4_title:'Tasks', sum4_desc:'Action items to email',
+    sum1_title:'Transcription', sum1_desc:'Full transcript by speaker', sum2_title:'Transcript', sum2_desc:'Who said what', sum3_title:'Topics & decisions', sum3_desc:'Key agreements', sum4_title:'Tasks', sum4_desc:'Action items to email',
     faq_label:'Questions', faq_title:'FAQ',
     faq1_q:'Do I need to register?', faq1_a:'No. Create a call and share the link.',
     faq2_q:'Business vs Pro?', faq2_a:'Business: dedicated server, up to 1000 participants, broadcast mode, real-time AI assistant, PDF report with infographics.',
@@ -905,7 +905,7 @@ const i18n = {
     badge_popular:'Популярный', plan_pro:'Pro', period_pro:'в месяц', pro_f1:'До 25 участников', pro_f2:'Без лимита по времени', pro_f3:'Детальная ИИ-сводка', pro_f4:'Расшифровка с именами', pro_f5:'Приоритетное качество связи', pro_btn:'Подключить Pro',
     badge_biz:'Business', plan_biz:'Business', biz_price:'По запросу', biz_f1:'До 1000 участников', biz_f2:'Выделенный сервер', biz_f3:'ИИ-ассистент в звонке', biz_f4:'Режим трансляции', biz_f5:'Сводка с инфографикой и PDF', biz_f6:'Поддержка 24/7', biz_btn:'Подключить Business',
     summary_label:'ИИ-сводка', summary_title:'Что вы получите после звонка',
-    sum1_title:'Запись', sum1_desc:'Аудио каждого участника', sum2_title:'Расшифровка', sum2_desc:'Кто что сказал', sum3_title:'Темы и решения', sum3_desc:'Ключевые договорённости', sum4_title:'Задачи', sum4_desc:'Action items на email',
+    sum1_title:'Транскрипция', sum1_desc:'Полная расшифровка по ролям', sum2_title:'Расшифровка', sum2_desc:'Кто что сказал', sum3_title:'Темы и решения', sum3_desc:'Ключевые договорённости', sum4_title:'Задачи', sum4_desc:'Action items на email',
     faq_label:'Вопросы', faq_title:'Частые вопросы',
     faq1_q:'Нужна ли регистрация?', faq1_a:'Нет. Создайте звонок и отправьте ссылку.',
     faq2_q:'Чем Business отличается от Pro?', faq2_a:'Business — выделенный сервер, до 1000 участников, режим трансляции, ИИ-ассистент в реальном времени и PDF-отчёт с инфографикой.',
