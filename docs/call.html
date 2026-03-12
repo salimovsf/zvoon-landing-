@@ -233,46 +233,116 @@ body {
 
 .call-count { font-size: 13px; color: var(--muted); }
 
-.call-participants {
+/* ─── Call center: phone illustration ─── */
+.call-center {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
+.call-illustration {
+  position: relative;
+  width: 280px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.phone-left, .phone-right {
+  position: absolute;
+  top: 50%;
+}
+.phone-left { left: 0; transform: translateY(-50%) rotate(-25deg); }
+.phone-right { right: 0; transform: translateY(-50%) rotate(25deg) scaleX(-1); }
+.phone-handset { filter: drop-shadow(0 4px 16px rgba(232,115,74,0.1)); }
+
+/* Wave between phones */
+.wave-container {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 80px;
+  z-index: 1;
+}
+.wave-bar {
+  width: 4px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--accent);
+  opacity: 0.7;
+  transition: height 0.06s ease-out;
+  will-change: height;
+}
+.wave-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,115,74,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.call-time-big {
+  text-align: center;
+  font-size: 13px;
+  color: #444;
+  font-weight: 600;
+  margin-top: -8px;
+  font-variant-numeric: tabular-nums;
+}
+.call-speaker-label {
+  text-align: center;
+  font-size: 12px;
+  color: #555;
+  margin-top: 2px;
+}
+.call-speaker-label b { color: var(--accent); font-weight: 600; }
+
+/* ─── Participants: horizontal row above controls ─── */
+.call-participants {
+  display: flex;
+  justify-content: center;
+  padding: 12px 20px 0;
+}
 
 .participants-grid {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  gap: 16px;
   justify-content: center;
-  max-width: 500px;
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
+.participants-grid::-webkit-scrollbar { display: none; }
 
 .participant {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
+  flex-shrink: 0;
 }
 
 .participant-avatar {
-  width: 80px;
-  height: 80px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: var(--surface2);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
   transition: all 0.2s;
   position: relative;
+  border: 2px solid transparent;
 }
 
 .participant-avatar.speaking {
-  background: var(--green);
-  box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(232, 115, 74, 0.12);
   transform: scale(1.08);
 }
 
@@ -280,31 +350,33 @@ body {
   position: absolute;
   bottom: -2px;
   right: -2px;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: var(--red);
+  border: 2px solid var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .participant-name {
-  font-size: 12px;
-  color: var(--muted);
-  max-width: 80px;
+  font-size: 10px;
+  color: #666;
+  max-width: 60px;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+/* ─── Controls: redesigned ─── */
 .call-controls {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  padding: 20px 20px 40px;
+  gap: 12px;
+  padding: 14px 20px 36px;
 }
 
 .ctrl-btn {
@@ -314,22 +386,77 @@ body {
   border: none;
   font-family: inherit;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s;
-  gap: 6px;
+  transition: transform 0.1s, opacity 0.15s;
+  gap: 8px;
+  -webkit-tap-highlight-color: transparent;
+}
+.ctrl-btn:active { transform: scale(0.94); }
+
+.ctrl-round {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  padding: 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.ctrl-pill {
+  height: 48px;
+  padding: 0 20px;
+  border-radius: 50px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
-.ctrl-round { width: 56px; height: 56px; border-radius: 50%; padding: 0; }
-.ctrl-pill { padding: 12px 20px; border-radius: 14px; }
-
 .ctrl-mute { background: var(--surface2); color: var(--text); }
-.ctrl-mute.muted { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+.ctrl-mute.muted { background: rgba(239, 68, 68, 0.15); color: var(--red); box-shadow: 0 2px 10px rgba(239,68,68,0.2); }
 .ctrl-mute.no-mic { background: rgba(239, 68, 68, 0.08); color: #666; cursor: not-allowed; }
 
-.ctrl-copy { background: var(--surface2); color: var(--muted); }
-.ctrl-leave { background: var(--red); color: #fff; }
-.ctrl-btn:hover { opacity: 0.85; }
+.ctrl-copy { background: rgba(34, 197, 94, 0.12); color: var(--green); }
+.ctrl-copy:active { background: rgba(34, 197, 94, 0.2); }
+
+/* More button (contains leave) */
+.ctrl-more { background: var(--surface2); color: #666; position: relative; }
+.ctrl-more svg { fill: #666; }
+
+/* More menu dropdown */
+.more-menu {
+  display: none;
+  position: absolute;
+  bottom: 60px;
+  right: -8px;
+  background: #1c1c22;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 6px;
+  min-width: 210px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.7);
+  z-index: 60;
+}
+.more-menu.open { display: block; }
+.more-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: transparent;
+  border: none;
+  width: 100%;
+  color: var(--red);
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+.more-menu-item:active { background: rgba(239,68,68,0.08); }
+.more-menu-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+.more-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+.more-overlay.open { display: block; }
 
 /* ─── Loading overlay ─── */
 .connecting {
@@ -459,14 +586,50 @@ body {
     <div class="call-timer" id="timer">00:00</div>
     <div class="call-count" id="participantCount"></div>
   </div>
+
+  <!-- Center: vintage phone handsets + audio wave -->
+  <div class="call-center">
+    <div class="call-illustration">
+      <div class="wave-glow"></div>
+      <div class="phone-left">
+        <svg width="56" height="130" viewBox="0 0 56 130" fill="none" class="phone-handset">
+          <!-- Vintage handset: earpiece top, grip middle, mouthpiece bottom -->
+          <ellipse cx="28" cy="14" rx="20" ry="14" fill="#1e1e24" stroke="#333" stroke-width="1"/>
+          <ellipse cx="28" cy="14" rx="12" ry="8" fill="#111"/>
+          <rect x="22" y="26" width="12" height="72" rx="6" fill="#1e1e24" stroke="#333" stroke-width="1"/>
+          <ellipse cx="28" cy="116" rx="20" ry="14" fill="#1e1e24" stroke="#333" stroke-width="1"/>
+          <ellipse cx="28" cy="116" rx="11" ry="7" fill="#111"/>
+          <circle cx="28" cy="116" r="4" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="wave-container" id="waveContainer">
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div>
+      </div>
+      <div class="phone-right">
+        <svg width="56" height="130" viewBox="0 0 56 130" fill="none" class="phone-handset">
+          <ellipse cx="28" cy="14" rx="20" ry="14" fill="#1e1e24" stroke="#333" stroke-width="1"/>
+          <ellipse cx="28" cy="14" rx="12" ry="8" fill="#111"/>
+          <rect x="22" y="26" width="12" height="72" rx="6" fill="#1e1e24" stroke="#333" stroke-width="1"/>
+          <ellipse cx="28" cy="116" rx="20" ry="14" fill="#1e1e24" stroke="#333" stroke-width="1"/>
+          <ellipse cx="28" cy="116" rx="11" ry="7" fill="#111"/>
+          <circle cx="28" cy="116" r="4" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="call-time-big" id="timerBig">00:00</div>
+  <div class="call-speaker-label" id="speakerLabel"></div>
+
+  <!-- Participants row: just above controls -->
   <div class="call-participants">
     <div class="participants-grid" id="participantsGrid"></div>
   </div>
+
+  <!-- Controls: mic (round), invite (green pill), more (round, contains leave) -->
   <div class="call-controls">
-    <button class="ctrl-btn ctrl-pill ctrl-copy" id="copyBtn" onclick="copyLink()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      <span id="copyText">Пригласить</span>
-    </button>
     <button class="ctrl-btn ctrl-round ctrl-mute" id="muteBtn" onclick="toggleMute()">
       <svg id="micOn" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="9" y="1" width="6" height="12" rx="3"/>
@@ -482,11 +645,22 @@ body {
         <line x1="8" y1="23" x2="16" y2="23"/>
       </svg>
     </button>
-    <button class="ctrl-btn ctrl-pill ctrl-leave" id="leaveBtn" onclick="leaveCall()">
-      Выйти
+    <button class="ctrl-btn ctrl-pill ctrl-copy" id="copyBtn" onclick="copyLink()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span id="copyText">Пригласить</span>
+    </button>
+    <button class="ctrl-btn ctrl-round ctrl-more" id="moreBtn" onclick="toggleMoreMenu(event)">
+      <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="19" r="2" fill="currentColor"/></svg>
+      <div class="more-menu" id="moreMenu">
+        <button class="more-menu-item" onclick="leaveCall()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span id="leaveText">Выйти из звонка</span>
+        </button>
+      </div>
     </button>
   </div>
 </div>
+<div class="more-overlay" id="moreOverlay" onclick="closeMoreMenu()"></div>
 
 <!-- SCREEN 4: Call ended -->
 <div class="screen" id="screenEnd">
@@ -844,7 +1018,7 @@ async function connectToRoom(token, slug, withMic) {
 
   room.on(RoomEvent.ParticipantConnected, () => updateParticipants());
   room.on(RoomEvent.ParticipantDisconnected, () => updateParticipants());
-  room.on(RoomEvent.ActiveSpeakersChanged, (speakers) => updateSpeakers(speakers));
+  room.on(RoomEvent.ActiveSpeakersChanged, (speakers) => { updateSpeakers(speakers); updateSpeakerLabel(speakers); });
   room.on(RoomEvent.TrackMuted, () => updateParticipants());
   room.on(RoomEvent.TrackUnmuted, () => updateParticipants());
 
@@ -900,6 +1074,10 @@ async function connectToRoom(token, slug, withMic) {
 
   updateParticipants();
   startTimer();
+  startWaveAnimation();
+
+  // Connect audio analyser after a short delay (mic track needs time to initialize)
+  setTimeout(() => connectAudioAnalyser(), 500);
 
   // Show recording indicator — check if anyone registered email for this room
   checkRecordingStatus();
@@ -1020,17 +1198,111 @@ function checkRecordingStatus() {
 
 function leaveCall() { if (room) room.disconnect(); }
 
+// ─── More menu (contains Leave) ───
+function toggleMoreMenu(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('moreMenu');
+  const ov = document.getElementById('moreOverlay');
+  const isOpen = menu.classList.contains('open');
+  closeMoreMenu();
+  if (!isOpen) { menu.classList.add('open'); ov.classList.add('open'); }
+}
+function closeMoreMenu() {
+  document.getElementById('moreMenu').classList.remove('open');
+  document.getElementById('moreOverlay').classList.remove('open');
+}
+document.addEventListener('click', (e) => { if (!e.target.closest('.ctrl-more')) closeMoreMenu(); });
+
+// ─── Audio wave animation (driven by voice via AudioAnalyser) ───
+let waveAnimId = null;
+let audioAnalyser = null;
+let audioDataArray = null;
+
+function startWaveAnimation() {
+  if (waveAnimId) return;
+  const bars = document.querySelectorAll('#waveContainer .wave-bar');
+  if (!bars.length) return;
+  const baseShape = [0.15, 0.25, 0.4, 0.55, 0.7, 0.85, 0.7, 0.55, 0.4, 0.25, 0.15];
+  let phase = 0;
+
+  function animate() {
+    phase += 0.04;
+    let level = 0;
+
+    // Try to get real audio level from analyser
+    if (audioAnalyser && audioDataArray) {
+      audioAnalyser.getByteFrequencyData(audioDataArray);
+      let sum = 0;
+      for (let i = 0; i < audioDataArray.length; i++) sum += audioDataArray[i];
+      level = sum / (audioDataArray.length * 255); // 0..1
+    }
+
+    // Fallback: simulate subtle idle movement when no audio
+    const idle = 0.08 + 0.04 * Math.sin(phase * 0.5);
+    const vol = Math.max(level, idle);
+
+    bars.forEach((bar, i) => {
+      const noise = Math.sin(phase * 3.5 + i * 1.4) * 0.08;
+      const h = (baseShape[i] * vol + noise) * 70;
+      bar.style.height = Math.max(4, h) + 'px';
+      bar.style.opacity = (0.4 + vol * 0.6).toFixed(2);
+    });
+    waveAnimId = requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+function stopWaveAnimation() {
+  if (waveAnimId) { cancelAnimationFrame(waveAnimId); waveAnimId = null; }
+}
+
+// Connect analyser to local mic track for real voice reactivity
+function connectAudioAnalyser() {
+  try {
+    if (!room || !room.localParticipant) return;
+    const pub = room.localParticipant.getTrackPublication(LivekitClient.Track.Source.Microphone);
+    if (!pub || !pub.track) return;
+    const mediaStream = new MediaStream([pub.track.mediaStreamTrack]);
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const source = ctx.createMediaStreamSource(mediaStream);
+    audioAnalyser = ctx.createAnalyser();
+    audioAnalyser.fftSize = 64;
+    audioAnalyser.smoothingTimeConstant = 0.7;
+    source.connect(audioAnalyser);
+    audioDataArray = new Uint8Array(audioAnalyser.frequencyBinCount);
+  } catch (e) { console.warn('Wave analyser failed:', e.message); }
+}
+
+// ─── Speaker label ───
+function updateSpeakerLabel(speakers) {
+  const el = document.getElementById('speakerLabel');
+  if (!el) return;
+  if (speakers && speakers.length > 0) {
+    const name = speakers[0].identity || t('guest');
+    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+    el.innerHTML = t('speaking_label') ? t('speaking_label').replace('{name}', '<b>' + esc(name) + '</b>') : 'Говорит: <b>' + esc(name) + '</b>';
+  } else {
+    el.textContent = '';
+  }
+}
+
 function startTimer() {
   timerSeconds = 0;
   timerInterval = setInterval(() => {
     timerSeconds++;
     const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
     const s = (timerSeconds % 60).toString().padStart(2, '0');
-    document.getElementById('timer').textContent = `${m}:${s}`;
+    const txt = `${m}:${s}`;
+    document.getElementById('timer').textContent = txt;
+    const big = document.getElementById('timerBig');
+    if (big) big.textContent = txt;
   }, 1000);
 }
 
-function stopTimer() { if (timerInterval) clearInterval(timerInterval); }
+function stopTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  stopWaveAnimation();
+}
 
 // ─── i18n ───
 const callI18n = {
@@ -1086,6 +1358,8 @@ const callI18n = {
     end_summary_title: 'Summary will be sent',
     end_summary_text: 'AI summary will be sent to {email} within a few minutes.',
     rec_recording: 'Call is being recorded for summary',
+    speaking_label: 'Speaking: {name}',
+    leave_call: 'Leave call',
     // Browser instructions
     safari_mobile: '<ol><li>Open <b>Settings</b> → <b>Safari</b></li><li>Scroll to <b>Microphone</b> → <b>Allow</b></li><li>Come back and refresh the page</li></ol>',
     mobile_default: '<ol><li>Tap the <b>lock</b> 🔒 icon left of the address bar</li><li>Find <b>Microphone</b> → switch to <b>Allow</b></li><li>Refresh the page</li></ol>',
@@ -1147,6 +1421,8 @@ const callI18n = {
     end_summary_title: 'Сводка будет отправлена',
     end_summary_text: 'ИИ-сводка будет отправлена на {email} в течение нескольких минут.',
     rec_recording: 'Звонок записывается для создания сводки',
+    speaking_label: 'Говорит: {name}',
+    leave_call: 'Выйти из звонка',
     safari_mobile: '<ol><li>Откройте <b>Настройки</b> → <b>Safari</b></li><li>Прокрутите до <b>Микрофон</b> → <b>Разрешить</b></li><li>Вернитесь и обновите страницу</li></ol>',
     mobile_default: '<ol><li>Нажмите на <b>замок</b> 🔒 слева от адресной строки</li><li>Найдите <b>Микрофон</b> → переключите на <b>Разрешить</b></li><li>Обновите страницу</li></ol>',
     safari_desktop: '<ol><li>В меню <b>Safari</b> → <b>Настройки для этого сайта...</b></li><li>Рядом с <b>Микрофон</b> выберите <b>Разрешить</b></li><li>Обновите страницу</li></ol>',
@@ -1168,7 +1444,7 @@ document.getElementById('micSubtitle').innerHTML = t('mic_subtitle');
 document.getElementById('micRequestBtn').textContent = t('mic_request_btn');
 document.getElementById('micSkipBtn').textContent = t('mic_skip');
 document.getElementById('copyText').textContent = t('invite_btn');
-document.getElementById('leaveBtn').textContent = t('leave_btn');
+document.getElementById('leaveText').textContent = t('leave_call');
 document.getElementById('shareToast').textContent = t('toast_copied');
 document.querySelector('.mic-hint-title').textContent = t('mic_hint_title');
 
