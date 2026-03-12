@@ -243,26 +243,49 @@ body {
 }
 .call-illustration {
   position: relative;
-  width: 280px;
-  height: 220px;
+  width: 340px;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+@media (max-width: 480px) {
+  .call-illustration { width: 280px; height: 160px; }
+}
 .phone-left, .phone-right {
   position: absolute;
   top: 50%;
+  width: 50px;
 }
-.phone-left { left: 0; transform: translateY(-50%) rotate(-25deg); }
-.phone-right { right: 0; transform: translateY(-50%) rotate(25deg) scaleX(-1); }
-.phone-handset { filter: drop-shadow(0 4px 16px rgba(232,115,74,0.1)); }
+.phone-left { left: 16px; transform: translateY(-50%) rotate(-15deg); }
+.phone-right { right: 16px; transform: translateY(-50%) rotate(15deg) scaleX(-1); }
+.phone-left svg, .phone-right svg { width: 100%; height: auto; display: block; }
+@media (max-width: 480px) {
+  .phone-left, .phone-right { width: 40px; }
+  .phone-left { left: 10px; }
+  .phone-right { right: 10px; }
+}
+
+/* Dialog bubble between phones */
+.dialog-bubble {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 180px; height: 116px;
+  z-index: 0;
+  opacity: 0.07;
+}
+.dialog-bubble svg { width: 100%; height: 100%; }
+@media (max-width: 480px) {
+  .dialog-bubble { width: 150px; height: 96px; }
+}
 
 /* Wave between phones */
 .wave-container {
   display: flex;
   align-items: center;
   gap: 3px;
-  height: 80px;
+  height: 70px;
   z-index: 1;
 }
 .wave-bar {
@@ -274,14 +297,9 @@ body {
   transition: height 0.06s ease-out;
   will-change: height;
 }
-.wave-glow {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 120px; height: 120px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(232,115,74,0.08) 0%, transparent 70%);
-  pointer-events: none;
+@media (max-width: 480px) {
+  .wave-container { height: 50px; gap: 2px; }
+  .wave-bar { width: 3px; }
 }
 
 .call-time-big {
@@ -289,7 +307,7 @@ body {
   font-size: 13px;
   color: #444;
   font-weight: 600;
-  margin-top: -8px;
+  margin-top: -4px;
   font-variant-numeric: tabular-nums;
 }
 .call-speaker-label {
@@ -375,8 +393,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 14px 20px 36px;
+  gap: 16px;
+  padding: 16px 20px 40px;
+  width: 100%;
 }
 
 .ctrl-btn {
@@ -391,39 +410,41 @@ body {
   transition: transform 0.1s, opacity 0.15s;
   gap: 8px;
   -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
 }
 .ctrl-btn:active { transform: scale(0.94); }
 
 .ctrl-round {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   padding: 0;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 .ctrl-pill {
-  height: 48px;
-  padding: 0 20px;
+  height: 50px;
+  padding: 0 24px;
   border-radius: 50px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
 .ctrl-mute { background: var(--surface2); color: var(--text); }
 .ctrl-mute.muted { background: rgba(239, 68, 68, 0.15); color: var(--red); box-shadow: 0 2px 10px rgba(239,68,68,0.2); }
 .ctrl-mute.no-mic { background: rgba(239, 68, 68, 0.08); color: #666; cursor: not-allowed; }
 
-.ctrl-copy { background: rgba(34, 197, 94, 0.12); color: var(--green); }
-.ctrl-copy:active { background: rgba(34, 197, 94, 0.2); }
+.ctrl-copy { background: rgba(34, 197, 94, 0.15); color: var(--green); }
+.ctrl-copy:hover { background: rgba(34, 197, 94, 0.22); }
+.ctrl-copy:active { background: rgba(34, 197, 94, 0.28); }
 
-/* More button (contains leave) */
-.ctrl-more { background: var(--surface2); color: #666; position: relative; }
-.ctrl-more svg { fill: #666; }
+/* More button wrapper */
+.more-wrapper { position: relative; flex-shrink: 0; }
+.ctrl-more { background: var(--surface2); color: #888; }
 
 /* More menu dropdown */
 .more-menu {
   display: none;
   position: absolute;
-  bottom: 60px;
+  bottom: calc(100% + 10px);
   right: -8px;
   background: #1c1c22;
   border: 1px solid rgba(255,255,255,0.08);
@@ -457,6 +478,12 @@ body {
   z-index: 50;
 }
 .more-overlay.open { display: block; }
+
+@media (max-width: 480px) {
+  .call-controls { gap: 12px; padding: 12px 16px 32px; }
+  .ctrl-round { width: 50px; height: 50px; }
+  .ctrl-pill { height: 46px; padding: 0 18px; font-size: 13px; }
+}
 
 /* ─── Loading overlay ─── */
 .connecting {
@@ -587,19 +614,24 @@ body {
     <div class="call-count" id="participantCount"></div>
   </div>
 
-  <!-- Center: vintage phone handsets + audio wave -->
+  <!-- Center: phone handsets + dialog bubble + audio wave -->
   <div class="call-center">
     <div class="call-illustration">
-      <div class="wave-glow"></div>
+      <div class="dialog-bubble">
+        <svg viewBox="0 0 1280 824" preserveAspectRatio="xMidYMid meet">
+          <g transform="translate(0,824) scale(0.1,-0.1)" fill="rgba(255,255,255,0.9)" stroke="none">
+            <path d="M4500 8234 c-800 -51 -1376 -164 -1985 -389 -1292 -478 -2181 -1310 -2429 -2275 -191 -747 11 -1508 575 -2165 229 -266 564 -548 892 -749 l78 -48 -27 -47 c-53 -93 -194 -298 -267 -389 -258 -321 -567 -618 -1080 -1037 -145 -119 -227 -193 -241 -218 -21 -37 -21 -38 -2 -52 28 -21 157 -19 291 4 722 125 1656 487 2652 1028 l183 99 142 -32 c290 -64 551 -105 898 -141 140 -14 266 -18 625 -18 459 0 567 6 885 45 1514 191 2784 844 3454 1778 229 318 369 644 437 1010 26 138 37 479 20 619 -87 722 -504 1380 -1211 1909 -780 584 -1794 940 -2985 1049 -158 15 -774 28 -905 19z"/>
+            <path d="M10106 4738 c-73 -597 -285 -1093 -678 -1586 -113 -141 -384 -417 -523 -533 -502 -420 -1091 -739 -1783 -969 -111 -37 -205 -69 -208 -72 -6 -7 198 -188 281 -248 289 -212 605 -371 968 -489 811 -263 1774 -277 2593 -38 l81 24 161 -98 c355 -217 731 -410 1032 -531 215 -87 533 -179 666 -194 63 -6 104 5 104 29 0 24 -46 75 -121 138 -226 187 -311 264 -441 398 -164 169 -258 293 -328 436 -46 94 -90 231 -90 281 0 15 26 42 93 95 50 40 144 125 207 188 427 428 601 941 495 1455 -111 535 -535 1025 -1180 1362 -367 192 -826 335 -1276 398 l-47 7 -6 -53z"/>
+          </g>
+        </svg>
+      </div>
       <div class="phone-left">
-        <svg width="56" height="130" viewBox="0 0 56 130" fill="none" class="phone-handset">
-          <!-- Vintage handset: earpiece top, grip middle, mouthpiece bottom -->
-          <ellipse cx="28" cy="14" rx="20" ry="14" fill="#1e1e24" stroke="#333" stroke-width="1"/>
-          <ellipse cx="28" cy="14" rx="12" ry="8" fill="#111"/>
-          <rect x="22" y="26" width="12" height="72" rx="6" fill="#1e1e24" stroke="#333" stroke-width="1"/>
-          <ellipse cx="28" cy="116" rx="20" ry="14" fill="#1e1e24" stroke="#333" stroke-width="1"/>
-          <ellipse cx="28" cy="116" rx="11" ry="7" fill="#111"/>
-          <circle cx="28" cy="116" r="4" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+        <svg viewBox="0 0 640 1280" preserveAspectRatio="xMidYMid meet">
+          <g transform="translate(0,1280) scale(0.1,-0.1)" fill="#e8734a" stroke="none">
+            <path d="M3682 12784 c-255 -56 -574 -222 -852 -444 -144 -115 -384 -358 -511 -517 -751 -941 -1208 -2354 -1348 -4178 -39 -498 -45 -683 -45 -1300 0 -574 5 -740 35 -1165 166 -2353 910 -4114 2064 -4885 243 -163 547 -284 713 -285 l42 0 0 1795 0 1795 -38 0 c-21 0 -64 7 -97 15 -269 71 -405 346 -504 1020 -46 313 -97 834 -123 1255 -15 257 -15 1132 0 1370 38 561 86 960 148 1202 101 402 277 617 534 652 l80 10 0 1838 c0 1744 -1 1838 -17 1837 -10 -1 -46 -7 -81 -15z"/>
+            <path d="M4060 10960 l0 -1841 553 3 c551 3 552 3 609 26 67 27 155 103 191 165 61 103 58 9 55 1673 l-3 1519 -33 67 c-41 84 -128 167 -209 200 l-58 23 -552 3 -553 3 0 -1841z"/>
+            <path d="M4060 1800 l0 -1800 528 0 c565 0 598 3 681 52 87 51 158 143 185 239 15 49 16 205 14 1535 l-3 1479 -27 57 c-31 67 -103 147 -163 183 -92 53 -115 55 -687 55 l-528 0 0 -1800z"/>
+          </g>
         </svg>
       </div>
       <div class="wave-container" id="waveContainer">
@@ -609,13 +641,12 @@ body {
         <div class="wave-bar"></div><div class="wave-bar"></div>
       </div>
       <div class="phone-right">
-        <svg width="56" height="130" viewBox="0 0 56 130" fill="none" class="phone-handset">
-          <ellipse cx="28" cy="14" rx="20" ry="14" fill="#1e1e24" stroke="#333" stroke-width="1"/>
-          <ellipse cx="28" cy="14" rx="12" ry="8" fill="#111"/>
-          <rect x="22" y="26" width="12" height="72" rx="6" fill="#1e1e24" stroke="#333" stroke-width="1"/>
-          <ellipse cx="28" cy="116" rx="20" ry="14" fill="#1e1e24" stroke="#333" stroke-width="1"/>
-          <ellipse cx="28" cy="116" rx="11" ry="7" fill="#111"/>
-          <circle cx="28" cy="116" r="4" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+        <svg viewBox="0 0 640 1280" preserveAspectRatio="xMidYMid meet">
+          <g transform="translate(0,1280) scale(0.1,-0.1)" fill="#e8734a" stroke="none">
+            <path d="M3682 12784 c-255 -56 -574 -222 -852 -444 -144 -115 -384 -358 -511 -517 -751 -941 -1208 -2354 -1348 -4178 -39 -498 -45 -683 -45 -1300 0 -574 5 -740 35 -1165 166 -2353 910 -4114 2064 -4885 243 -163 547 -284 713 -285 l42 0 0 1795 0 1795 -38 0 c-21 0 -64 7 -97 15 -269 71 -405 346 -504 1020 -46 313 -97 834 -123 1255 -15 257 -15 1132 0 1370 38 561 86 960 148 1202 101 402 277 617 534 652 l80 10 0 1838 c0 1744 -1 1838 -17 1837 -10 -1 -46 -7 -81 -15z"/>
+            <path d="M4060 10960 l0 -1841 553 3 c551 3 552 3 609 26 67 27 155 103 191 165 61 103 58 9 55 1673 l-3 1519 -33 67 c-41 84 -128 167 -209 200 l-58 23 -552 3 -553 3 0 -1841z"/>
+            <path d="M4060 1800 l0 -1800 528 0 c565 0 598 3 681 52 87 51 158 143 185 239 15 49 16 205 14 1535 l-3 1479 -27 57 c-31 67 -103 147 -163 183 -92 53 -115 55 -687 55 l-528 0 0 -1800z"/>
+          </g>
         </svg>
       </div>
     </div>
@@ -649,15 +680,17 @@ body {
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       <span id="copyText">Пригласить</span>
     </button>
-    <button class="ctrl-btn ctrl-round ctrl-more" id="moreBtn" onclick="toggleMoreMenu(event)">
-      <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="19" r="2" fill="currentColor"/></svg>
+    <div class="more-wrapper">
+      <button class="ctrl-btn ctrl-round ctrl-more" id="moreBtn" onclick="toggleMoreMenu(event)">
+        <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="19" r="2" fill="currentColor"/></svg>
+      </button>
       <div class="more-menu" id="moreMenu">
         <button class="more-menu-item" onclick="leaveCall()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           <span id="leaveText">Выйти из звонка</span>
         </button>
       </div>
-    </button>
+    </div>
   </div>
 </div>
 <div class="more-overlay" id="moreOverlay" onclick="closeMoreMenu()"></div>
@@ -1211,7 +1244,7 @@ function closeMoreMenu() {
   document.getElementById('moreMenu').classList.remove('open');
   document.getElementById('moreOverlay').classList.remove('open');
 }
-document.addEventListener('click', (e) => { if (!e.target.closest('.ctrl-more')) closeMoreMenu(); });
+document.addEventListener('click', (e) => { if (!e.target.closest('.more-wrapper')) closeMoreMenu(); });
 
 // ─── Audio wave animation (driven by voice via AudioAnalyser) ───
 let waveAnimId = null;
