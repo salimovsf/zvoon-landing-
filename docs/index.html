@@ -31,7 +31,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tenor+Sans&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tenor+Sans&family=Playfair+Display:wght@700&family=Space+Grotesk:wght@700&family=Caveat:wght@700&family=Unbounded:wght@700&family=Russo+One&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -121,9 +121,8 @@ a { color: inherit; text-decoration: none; }
 .hero { text-align: center; padding: 120px 24px 100px; position: relative; z-index: 1; }
 
 .hero h1 {
-  font-family: 'Tenor Sans', serif;
   font-size: clamp(40px, 7vw, 72px);
-  font-weight: 400; letter-spacing: -1px; line-height: 1.1;
+  font-weight: 800; letter-spacing: -2.5px; line-height: 1.1;
   max-width: 800px; margin: 0 auto 28px;
 }
 .hero h1 .gradient {
@@ -145,6 +144,12 @@ a { color: inherit; text-decoration: none; }
   display: block; height: 1.15em; line-height: 1.15;
   white-space: nowrap;
 }
+.hero-rotate-inner span:nth-child(1) { font-family: 'Tenor Sans', serif; font-weight: 400; }
+.hero-rotate-inner span:nth-child(2) { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; }
+.hero-rotate-inner span:nth-child(3) { font-family: 'Caveat', cursive; font-weight: 700; }
+.hero-rotate-inner span:nth-child(4) { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+.hero-rotate-inner span:nth-child(5) { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 0.85em; }
+.hero-rotate-inner span:nth-child(6) { font-family: 'Russo One', sans-serif; font-weight: 400; }
 @keyframes heroRotate {
   0%, 14%     { transform: translateY(0); }
   16.66%, 30.66%  { transform: translateY(-16.666%); }
