@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zvoon — Аудио звонки с ИИ сводкой</title>
-<meta name="description" content="Создайте аудиозвонок за секунду, отправьте ссылку — без регистрации и приложений. После разговора получите транскрипцию, ИИ-сводку и задачи на email.">
-<meta name="keywords" content="звонки по ссылке, онлайн звонки без регистрации, аудиозвонки, ИИ сводка звонка, расшифровка разговора, call by link, audio call no registration, AI meeting summary">
+<title>Zvoon — Аудио звонки с саммари на почту</title>
+<meta name="description" content="Создайте аудиозвонок за секунду, отправьте ссылку — без регистрации и приложений. После разговора получите транскрипцию, саммари и задачи на email.">
+<meta name="keywords" content="звонки по ссылке, онлайн звонки без регистрации, аудиозвонки, саммари звонка, расшифровка разговора, call by link, audio call no registration, AI meeting summary">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Zvoon">
 <link rel="canonical" href="https://zvoon.ai/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Zvoon — Аудио звонки по ссылке">
-<meta property="og:description" content="Без регистрации и приложений. Создайте звонок, отправьте ссылку, получите ИИ-сводку после разговора.">
+<meta property="og:description" content="Без регистрации и приложений. Создайте звонок, отправьте ссылку, получите саммари после разговора.">
 <meta property="og:url" content="https://zvoon.ai/">
 <meta property="og:site_name" content="Zvoon">
 <meta property="og:locale" content="ru_RU">
@@ -21,12 +21,12 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Zvoon — Аудио звонки по ссылке">
-<meta name="twitter:description" content="Без регистрации. Создайте звонок, отправьте ссылку, получите ИИ-сводку.">
+<meta name="twitter:description" content="Без регистрации. Создайте звонок, отправьте ссылку, получите саммари.">
 <meta name="twitter:image" content="https://zvoon.ai/og-image.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Zvoon","description":"Аудиозвонки по ссылке без регистрации с ИИ-сводкой","url":"https://zvoon.ai","applicationCategory":"CommunicationApplication","operatingSystem":"Web","offers":[{"@type":"Offer","name":"Бесплатно","price":"0","priceCurrency":"USD"},{"@type":"Offer","name":"Pro","price":"5.00","priceCurrency":"USD"},{"@type":"Offer","name":"Business","price":"0","priceCurrency":"USD","description":"On request"}]}
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Zvoon","description":"Аудиозвонки по ссылке без регистрации с саммари на почту","url":"https://zvoon.ai","applicationCategory":"CommunicationApplication","operatingSystem":"Web","offers":[{"@type":"Offer","name":"Бесплатно","price":"0","priceCurrency":"USD"},{"@type":"Offer","name":"Pro","price":"5.00","priceCurrency":"USD"},{"@type":"Offer","name":"Business","price":"0","priceCurrency":"USD","description":"On request"}]}
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -645,12 +645,12 @@ section { position: relative; z-index: 1; }
 <main>
 <section class="hero">
   <div class="container">
-    <h1 class="reveal" data-i18n-html="hero_title"><span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Ещё один meet</span><span>Звонок боссу</span><span>Созвон с командой</span></span></span><span class="line2"><span class="gradient">с ИИ сводкой</span></span></h1>
+    <h1 class="reveal" data-i18n-html="hero_title"><span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Ещё один meet</span><span>Звонок боссу</span><span>Созвон с командой</span></span></span><span class="line2"><span class="gradient">с саммари на почту</span></span></h1>
     <div class="hero-offers reveal">
       <span class="hero-offer" data-i18n="ho_1">Без регистрации</span>
       <span class="hero-offer" data-i18n="ho_2">До 10 человек бесплатно</span>
       <span class="hero-offer" data-i18n="ho_3">Идеальный звук</span>
-      <span class="hero-offer" data-i18n="ho_4">Сводка на почту</span>
+      <span class="hero-offer" data-i18n="ho_4">Саммари на почту</span>
     </div>
     <div class="hero-cta-wrap reveal">
       <a href="call.html?host=1" class="hero-cta">
@@ -697,8 +697,8 @@ section { position: relative; z-index: 1; }
           <svg viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </div>
         <div>
-          <div class="step-title" data-i18n="step3_title">Получите сводку</div>
-          <p class="step-desc" data-i18n="step3_desc">ИИ подготовит сводку: темы, решения, задачи — на email.</p>
+          <div class="step-title" data-i18n="step3_title">Получите саммари</div>
+          <p class="step-desc" data-i18n="step3_desc">ИИ подготовит саммари: темы, решения, задачи — на email.</p>
         </div>
       </div>
     </div>
@@ -721,7 +721,7 @@ section { position: relative; z-index: 1; }
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="free_f1">До 10 участников</span></li>
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="free_f2">60 минут на звонок</span></li>
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="free_f3">Без регистрации</span></li>
-          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="free_f4">Базовая текстовая сводка</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="free_f4">Базовое текстовое саммари</span></li>
         </ul>
         <a href="call.html?host=1" class="pricing-btn outline" style="display:block;text-decoration:none;text-align:center" data-i18n="free_btn">Начать бесплатно</a>
       </div>
@@ -736,7 +736,7 @@ section { position: relative; z-index: 1; }
         <ul class="pricing-features">
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="pro_f1">До 25 участников</span></li>
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="pro_f2">Без лимита по времени</span></li>
-          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="pro_f3">Детальная ИИ-сводка</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="pro_f3">Детальное ИИ-саммари</span></li>
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="pro_f4">Расшифровка с именами</span></li>
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="pro_f5">Приоритетное качество связи</span></li>
         </ul>
@@ -755,7 +755,7 @@ section { position: relative; z-index: 1; }
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f2">Выделенный сервер</span></li>
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f3">ИИ-ассистент в звонке</span></li>
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f4">Режим трансляции</span></li>
-          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f5">Сводка с инфографикой и PDF</span></li>
+          <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f5">Саммари с инфографикой и PDF</span></li>
           <li><span class="li-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span data-i18n="biz_f6">Поддержка 24/7</span></li>
         </ul>
         <button class="pricing-btn business-btn coming-soon-btn" data-i18n="biz_btn">Подключить Business</button>
@@ -770,7 +770,7 @@ section { position: relative; z-index: 1; }
 <!-- Summary infographic -->
 <section class="summary">
   <div class="container">
-    <p class="section-label reveal" data-i18n="summary_label">ИИ-сводка</p>
+    <p class="section-label reveal" data-i18n="summary_label">ИИ-саммари</p>
     <h2 class="section-title reveal" data-i18n="summary_title">Что вы получите после звонка</h2>
     <div class="summary-wrap reveal">
       <!-- Desktop curved arrows — start/end at exact circle centers -->
@@ -820,7 +820,7 @@ section { position: relative; z-index: 1; }
         <div class="summary-step">
           <div class="summary-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
           <div class="summary-step-title" data-i18n="sum4_title">Задачи</div>
-          <div class="summary-step-desc" data-i18n="sum4_desc">Action items на email</div>
+          <div class="summary-step-desc" data-i18n="sum4_desc">Задачи на почту</div>
         </div>
       </div>
     </div>
@@ -850,8 +850,8 @@ section { position: relative; z-index: 1; }
         <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faq4_a">Stripe для международных карт, ЮKassa для России.</div></div>
       </div>
       <div class="faq-item reveal">
-        <button class="faq-question"><span data-i18n="faq5_q">Можно ли без сводки?</span><span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg></span></button>
-        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faq5_a">Да. Звонки полностью бесплатны, сводка по желанию.</div></div>
+        <button class="faq-question"><span data-i18n="faq5_q">Можно ли без саммари?</span><span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e8734a" stroke-width="2.5" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faq5_a">Да. Звонки полностью бесплатны, саммари по желанию.</div></div>
       </div>
     </div>
   </div>
@@ -939,24 +939,24 @@ const i18n = {
     footer_founder:'Message the founder',
   },
   ru: {
-    header_cta:'Создать звонок', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Ещё один meet</span><span>Звонок боссу</span><span>Созвон с командой</span></span></span><span class="line2"><span class="gradient">с ИИ сводкой</span></span>',
-    hero_cta:'Создать звонок', ho_1:'Без регистрации', ho_2:'До 10 человек бесплатно', ho_3:'Идеальный звук', ho_4:'Сводка на почту',
+    header_cta:'Создать звонок', hero_title:'<span class="hero-rotate-wrap"><span class="hero-rotate-inner" id="heroRotate"><span>Созвон с командой</span><span>Общение с родными</span><span>Звонок близкому</span><span>Call c зумерами</span><span>Ещё один meet</span><span>Звонок боссу</span><span>Созвон с командой</span></span></span><span class="line2"><span class="gradient">с саммари на почту</span></span>',
+    hero_cta:'Создать звонок', ho_1:'Без регистрации', ho_2:'До 10 человек бесплатно', ho_3:'Идеальный звук', ho_4:'Саммари на почту',
     steps_label:'Как это работает', steps_title:'Три шага до звонка',
     step1_title:'Создайте звонок', step1_desc:'Нажмите одну кнопку и получите уникальную ссылку. Без регистрации.',
     step2_title:'Отправьте ссылку', step2_desc:'Поделитесь в любом мессенджере. Собеседнику ничего не нужно устанавливать.',
-    step3_title:'Получите сводку', step3_desc:'ИИ подготовит сводку: темы, решения, задачи — на email.',
+    step3_title:'Получите саммари', step3_desc:'ИИ подготовит саммари: темы, решения, задачи — на email.',
     pricing_label:'Тарифы', pricing_title:'Простые и понятные цены',
-    plan_free:'Бесплатно', period_free:'навсегда', free_f1:'До 10 участников', free_f2:'60 минут на звонок', free_f3:'Без регистрации', free_f4:'Базовая текстовая сводка', free_btn:'Начать бесплатно',
-    badge_popular:'Популярный', plan_pro:'Pro', period_pro:'в месяц', pro_f1:'До 25 участников', pro_f2:'Без лимита по времени', pro_f3:'Детальная ИИ-сводка', pro_f4:'Расшифровка с именами', pro_f5:'Приоритетное качество связи', pro_btn:'Подключить Pro',
-    badge_biz:'Business', plan_biz:'Business', biz_price:'По запросу', biz_f1:'До 1000 участников', biz_f2:'Выделенный сервер', biz_f3:'ИИ-ассистент в звонке', biz_f4:'Режим трансляции', biz_f5:'Сводка с инфографикой и PDF', biz_f6:'Поддержка 24/7', biz_btn:'Подключить Business',
-    summary_label:'ИИ-сводка', summary_title:'Что вы получите после звонка',
-    sum1_title:'Транскрипция', sum1_desc:'Полная расшифровка по ролям', sum2_title:'Расшифровка', sum2_desc:'Кто что сказал', sum3_title:'Темы и решения', sum3_desc:'Ключевые договорённости', sum4_title:'Задачи', sum4_desc:'Action items на email',
+    plan_free:'Бесплатно', period_free:'навсегда', free_f1:'До 10 участников', free_f2:'60 минут на звонок', free_f3:'Без регистрации', free_f4:'Базовое текстовое саммари', free_btn:'Начать бесплатно',
+    badge_popular:'Популярный', plan_pro:'Pro', period_pro:'в месяц', pro_f1:'До 25 участников', pro_f2:'Без лимита по времени', pro_f3:'Детальное ИИ-саммари', pro_f4:'Расшифровка с именами', pro_f5:'Приоритетное качество связи', pro_btn:'Подключить Pro',
+    badge_biz:'Business', plan_biz:'Business', biz_price:'По запросу', biz_f1:'До 1000 участников', biz_f2:'Выделенный сервер', biz_f3:'ИИ-ассистент в звонке', biz_f4:'Режим трансляции', biz_f5:'Саммари с инфографикой и PDF', biz_f6:'Поддержка 24/7', biz_btn:'Подключить Business',
+    summary_label:'ИИ-саммари', summary_title:'Что вы получите после звонка',
+    sum1_title:'Транскрипция', sum1_desc:'Полная расшифровка по ролям', sum2_title:'Расшифровка', sum2_desc:'Кто что сказал', sum3_title:'Темы и решения', sum3_desc:'Ключевые договорённости', sum4_title:'Задачи', sum4_desc:'Задачи на почту',
     faq_label:'Вопросы', faq_title:'Частые вопросы',
     faq1_q:'Нужна ли регистрация?', faq1_a:'Нет. Создайте звонок и отправьте ссылку.',
     faq2_q:'Чем Business отличается от Pro?', faq2_a:'Business — выделенный сервер, до 1000 участников, режим трансляции, ИИ-ассистент в реальном времени и PDF-отчёт с инфографикой.',
     faq3_q:'Сколько длится звонок?', faq3_a:'Бесплатно — до 60 минут. Pro и Business — без ограничений.',
     faq4_q:'Как работает оплата?', faq4_a:'Stripe для международных карт, ЮKassa для России.',
-    faq5_q:'Можно ли без сводки?', faq5_a:'Да. Звонки полностью бесплатны, сводка по желанию.',
+    faq5_q:'Можно ли без саммари?', faq5_a:'Да. Звонки полностью бесплатны, саммари по желанию.',
     footer_founder:'Написать основателю',
   }
 };
