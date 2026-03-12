@@ -241,6 +241,11 @@ body {
   justify-content: center;
   padding: 20px;
 }
+.call-center-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .call-illustration {
   position: relative;
   width: 340px;
@@ -288,27 +293,28 @@ body {
   .wave-bar { width: 3px; }
 }
 
+.call-speaker-label {
+  text-align: center;
+  font-size: 15px;
+  color: #fff;
+  margin-top: 12px;
+  font-weight: 500;
+  min-height: 22px;
+}
 .call-time-big {
   text-align: center;
   font-size: 13px;
   color: #666;
   font-weight: 600;
-  margin-top: 8px;
+  margin-top: 4px;
   font-variant-numeric: tabular-nums;
-}
-.call-speaker-label {
-  text-align: center;
-  font-size: 15px;
-  color: #fff;
-  margin-top: 6px;
-  font-weight: 500;
 }
 
 /* ─── Participants: horizontal row above controls ─── */
 .call-participants {
   display: flex;
   justify-content: center;
-  padding: 12px 20px 0;
+  padding: 8px 20px 0;
 }
 
 .participants-grid {
@@ -316,7 +322,9 @@ body {
   gap: 16px;
   justify-content: center;
   overflow-x: auto;
+  overflow-y: visible;
   max-width: 100%;
+  padding: 8px 4px;
   -webkit-overflow-scrolling: touch;
 }
 .participants-grid::-webkit-scrollbar { display: none; }
@@ -339,14 +347,16 @@ body {
   justify-content: center;
   font-size: 16px;
   font-weight: 700;
+  color: #ccc;
   transition: all 0.2s;
   position: relative;
   border: 2px solid transparent;
+  overflow: visible;
 }
 
 .participant-avatar.speaking {
   border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(232, 115, 74, 0.12);
+  box-shadow: 0 0 0 4px rgba(232, 115, 74, 0.15);
   transform: scale(1.08);
 }
 
@@ -365,9 +375,9 @@ body {
 }
 
 .participant-name {
-  font-size: 10px;
-  color: #666;
-  max-width: 60px;
+  font-size: 11px;
+  color: #999;
+  max-width: 64px;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -600,37 +610,39 @@ body {
     <div class="call-count" id="participantCount"></div>
   </div>
 
-  <!-- Center: phone handsets + dialog bubble + audio wave -->
+  <!-- Center: phone handsets + audio wave + speaker label -->
   <div class="call-center">
-    <div class="call-illustration">
-      <div class="phone-left">
-        <svg viewBox="0 0 640 1280" preserveAspectRatio="xMidYMid meet">
-          <g transform="translate(0,1280) scale(0.1,-0.1)" fill="#e8734a" stroke="none">
-            <path d="M3682 12784 c-255 -56 -574 -222 -852 -444 -144 -115 -384 -358 -511 -517 -751 -941 -1208 -2354 -1348 -4178 -39 -498 -45 -683 -45 -1300 0 -574 5 -740 35 -1165 166 -2353 910 -4114 2064 -4885 243 -163 547 -284 713 -285 l42 0 0 1795 0 1795 -38 0 c-21 0 -64 7 -97 15 -269 71 -405 346 -504 1020 -46 313 -97 834 -123 1255 -15 257 -15 1132 0 1370 38 561 86 960 148 1202 101 402 277 617 534 652 l80 10 0 1838 c0 1744 -1 1838 -17 1837 -10 -1 -46 -7 -81 -15z"/>
-            <path d="M4060 10960 l0 -1841 553 3 c551 3 552 3 609 26 67 27 155 103 191 165 61 103 58 9 55 1673 l-3 1519 -33 67 c-41 84 -128 167 -209 200 l-58 23 -552 3 -553 3 0 -1841z"/>
-            <path d="M4060 1800 l0 -1800 528 0 c565 0 598 3 681 52 87 51 158 143 185 239 15 49 16 205 14 1535 l-3 1479 -27 57 c-31 67 -103 147 -163 183 -92 53 -115 55 -687 55 l-528 0 0 -1800z"/>
-          </g>
-        </svg>
+    <div class="call-center-inner">
+      <div class="call-illustration">
+        <div class="phone-left">
+          <svg viewBox="0 0 640 1280" preserveAspectRatio="xMidYMid meet">
+            <g transform="translate(0,1280) scale(0.1,-0.1)" fill="#e8734a" stroke="none">
+              <path d="M3682 12784 c-255 -56 -574 -222 -852 -444 -144 -115 -384 -358 -511 -517 -751 -941 -1208 -2354 -1348 -4178 -39 -498 -45 -683 -45 -1300 0 -574 5 -740 35 -1165 166 -2353 910 -4114 2064 -4885 243 -163 547 -284 713 -285 l42 0 0 1795 0 1795 -38 0 c-21 0 -64 7 -97 15 -269 71 -405 346 -504 1020 -46 313 -97 834 -123 1255 -15 257 -15 1132 0 1370 38 561 86 960 148 1202 101 402 277 617 534 652 l80 10 0 1838 c0 1744 -1 1838 -17 1837 -10 -1 -46 -7 -81 -15z"/>
+              <path d="M4060 10960 l0 -1841 553 3 c551 3 552 3 609 26 67 27 155 103 191 165 61 103 58 9 55 1673 l-3 1519 -33 67 c-41 84 -128 167 -209 200 l-58 23 -552 3 -553 3 0 -1841z"/>
+              <path d="M4060 1800 l0 -1800 528 0 c565 0 598 3 681 52 87 51 158 143 185 239 15 49 16 205 14 1535 l-3 1479 -27 57 c-31 67 -103 147 -163 183 -92 53 -115 55 -687 55 l-528 0 0 -1800z"/>
+            </g>
+          </svg>
+        </div>
+        <div class="wave-container" id="waveContainer">
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div>
+        </div>
+        <div class="phone-right">
+          <svg viewBox="0 0 640 1280" preserveAspectRatio="xMidYMid meet">
+            <g transform="translate(0,1280) scale(0.1,-0.1)" fill="#e8734a" stroke="none">
+              <path d="M3682 12784 c-255 -56 -574 -222 -852 -444 -144 -115 -384 -358 -511 -517 -751 -941 -1208 -2354 -1348 -4178 -39 -498 -45 -683 -45 -1300 0 -574 5 -740 35 -1165 166 -2353 910 -4114 2064 -4885 243 -163 547 -284 713 -285 l42 0 0 1795 0 1795 -38 0 c-21 0 -64 7 -97 15 -269 71 -405 346 -504 1020 -46 313 -97 834 -123 1255 -15 257 -15 1132 0 1370 38 561 86 960 148 1202 101 402 277 617 534 652 l80 10 0 1838 c0 1744 -1 1838 -17 1837 -10 -1 -46 -7 -81 -15z"/>
+              <path d="M4060 10960 l0 -1841 553 3 c551 3 552 3 609 26 67 27 155 103 191 165 61 103 58 9 55 1673 l-3 1519 -33 67 c-41 84 -128 167 -209 200 l-58 23 -552 3 -553 3 0 -1841z"/>
+              <path d="M4060 1800 l0 -1800 528 0 c565 0 598 3 681 52 87 51 158 143 185 239 15 49 16 205 14 1535 l-3 1479 -27 57 c-31 67 -103 147 -163 183 -92 53 -115 55 -687 55 l-528 0 0 -1800z"/>
+            </g>
+          </svg>
+        </div>
       </div>
-      <div class="wave-container" id="waveContainer">
-        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-        <div class="wave-bar"></div><div class="wave-bar"></div>
-      </div>
-      <div class="phone-right">
-        <svg viewBox="0 0 640 1280" preserveAspectRatio="xMidYMid meet">
-          <g transform="translate(0,1280) scale(0.1,-0.1)" fill="#e8734a" stroke="none">
-            <path d="M3682 12784 c-255 -56 -574 -222 -852 -444 -144 -115 -384 -358 -511 -517 -751 -941 -1208 -2354 -1348 -4178 -39 -498 -45 -683 -45 -1300 0 -574 5 -740 35 -1165 166 -2353 910 -4114 2064 -4885 243 -163 547 -284 713 -285 l42 0 0 1795 0 1795 -38 0 c-21 0 -64 7 -97 15 -269 71 -405 346 -504 1020 -46 313 -97 834 -123 1255 -15 257 -15 1132 0 1370 38 561 86 960 148 1202 101 402 277 617 534 652 l80 10 0 1838 c0 1744 -1 1838 -17 1837 -10 -1 -46 -7 -81 -15z"/>
-            <path d="M4060 10960 l0 -1841 553 3 c551 3 552 3 609 26 67 27 155 103 191 165 61 103 58 9 55 1673 l-3 1519 -33 67 c-41 84 -128 167 -209 200 l-58 23 -552 3 -553 3 0 -1841z"/>
-            <path d="M4060 1800 l0 -1800 528 0 c565 0 598 3 681 52 87 51 158 143 185 239 15 49 16 205 14 1535 l-3 1479 -27 57 c-31 67 -103 147 -163 183 -92 53 -115 55 -687 55 l-528 0 0 -1800z"/>
-          </g>
-        </svg>
-      </div>
+      <div class="call-speaker-label" id="speakerLabel"></div>
+      <div class="call-time-big" id="timerBig">00:00</div>
     </div>
   </div>
-  <div class="call-time-big" id="timerBig">00:00</div>
-  <div class="call-speaker-label" id="speakerLabel"></div>
 
   <!-- Participants row: just above controls -->
   <div class="call-participants">
