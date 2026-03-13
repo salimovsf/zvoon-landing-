@@ -289,73 +289,105 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: relative; display: flex;
   justify-content: center; align-items: center;
 }
+/* Glass Orbit hero card */
 .hero-card {
-  background: var(--white); border-radius: var(--radius-lg);
-  padding: 32px; box-shadow: var(--shadow-xl);
+  background: rgba(0,31,63,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(219,230,76,0.12);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
   width: 100%; max-width: 420px;
   position: relative; overflow: hidden;
 }
 .hero-card::before {
   content: ''; position: absolute;
-  top: 0; left: 0; right: 0; height: 4px;
-  background: linear-gradient(90deg, var(--spring), var(--mantis));
+  inset: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle at 30% 50%, rgba(219,230,76,0.06) 0%, transparent 60%);
+  animation: hero-glow 4s ease-in-out infinite;
+  pointer-events: none;
 }
+@keyframes hero-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
 .hero-card-header {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+  position: relative; z-index: 2;
+}
+.hero-card-avatar-wrap {
+  position: relative; width: 56px; height: 56px; flex-shrink: 0;
 }
 .hero-card-avatar {
-  width: 44px; height: 44px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--spring), var(--mantis));
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--mantis), var(--book-green));
   display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 1rem; color: var(--midnight);
+  font-weight: 700; font-size: 1.2rem; color: #fff;
+  position: relative; z-index: 2;
+  box-shadow: 0 4px 20px rgba(0,128,76,0.3);
 }
-.hero-card-meta { flex: 1; }
-.hero-card-meta strong { display: block; font-size: 0.95rem; font-weight: 700; }
-.hero-card-meta span { font-size: 0.8rem; color: var(--gray-400); }
+.hero-card-orbit {
+  position: absolute; inset: -8px; border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: var(--spring);
+  animation: hero-orbit-spin 2s linear infinite;
+}
+.hero-card-orbit::after {
+  content: ''; position: absolute;
+  top: -3px; left: 50%;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--spring);
+  box-shadow: 0 0 10px var(--spring);
+}
+@keyframes hero-orbit-spin { to { transform: rotate(360deg); } }
+
+.hero-card-meta { flex: 1; position: relative; z-index: 2; }
+.hero-card-meta strong { display: block; font-size: 1rem; font-weight: 700; color: #fff; }
+.hero-card-meta span {
+  font-size: 0.82rem; color: var(--spring);
+  animation: hero-status-pulse 1.5s ease-in-out infinite;
+}
+@keyframes hero-status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
 
 .hero-card-waves {
   display: flex; align-items: center; gap: 3px;
-  height: 48px; margin-bottom: 20px; padding: 0 8px;
+  height: 48px; padding: 0 4px;
+  position: relative; z-index: 2;
 }
 .hero-card-wave {
-  width: 4px; border-radius: 4px;
+  width: 3.5px; border-radius: 3px;
   background: var(--spring);
-  animation: wave-bar 1.2s ease-in-out infinite;
+  animation: hero-wave-bar 1s ease-in-out infinite;
 }
-@keyframes wave-bar {
-  0%, 100% { height: 8px; opacity: 0.4; }
-  50% { height: 100%; opacity: 1; }
+@keyframes hero-wave-bar {
+  0%, 100% { transform: scaleY(0.3); opacity: 0.4; }
+  50% { transform: scaleY(1); opacity: 1; }
 }
-.hero-card-waves .hero-card-wave:nth-child(1) { animation-delay: 0s; height: 30px; }
-.hero-card-waves .hero-card-wave:nth-child(2) { animation-delay: 0.1s; height: 20px; }
-.hero-card-waves .hero-card-wave:nth-child(3) { animation-delay: 0.2s; height: 38px; }
-.hero-card-waves .hero-card-wave:nth-child(4) { animation-delay: 0.3s; height: 14px; }
-.hero-card-waves .hero-card-wave:nth-child(5) { animation-delay: 0.4s; height: 42px; }
-.hero-card-waves .hero-card-wave:nth-child(6) { animation-delay: 0.15s; height: 26px; }
-.hero-card-waves .hero-card-wave:nth-child(7) { animation-delay: 0.25s; height: 18px; }
-.hero-card-waves .hero-card-wave:nth-child(8) { animation-delay: 0.35s; height: 36px; }
-.hero-card-waves .hero-card-wave:nth-child(9) { animation-delay: 0.05s; height: 22px; }
-.hero-card-waves .hero-card-wave:nth-child(10) { animation-delay: 0.45s; height: 32px; }
-.hero-card-waves .hero-card-wave:nth-child(11) { animation-delay: 0.2s; height: 16px; }
-.hero-card-waves .hero-card-wave:nth-child(12) { animation-delay: 0.3s; height: 40px; }
-.hero-card-waves .hero-card-wave:nth-child(13) { animation-delay: 0.1s; height: 24px; }
-.hero-card-waves .hero-card-wave:nth-child(14) { animation-delay: 0.4s; height: 28px; }
-.hero-card-waves .hero-card-wave:nth-child(15) { animation-delay: 0.25s; height: 12px; }
-.hero-card-waves .hero-card-wave:nth-child(16) { animation-delay: 0.35s; height: 34px; }
-
-.hero-card-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(116,195,101,0.1); color: var(--book-green);
-  font-size: 0.8rem; font-weight: 600;
-  padding: 8px 16px; border-radius: var(--radius-full);
-}
-.hero-card-badge svg { width: 16px; height: 16px; }
+.hero-card-waves .hero-card-wave:nth-child(1) { height: 30px; animation-delay: 0s; }
+.hero-card-waves .hero-card-wave:nth-child(2) { height: 20px; animation-delay: 0.08s; }
+.hero-card-waves .hero-card-wave:nth-child(3) { height: 38px; animation-delay: 0.14s; }
+.hero-card-waves .hero-card-wave:nth-child(4) { height: 14px; animation-delay: 0.2s; }
+.hero-card-waves .hero-card-wave:nth-child(5) { height: 42px; animation-delay: 0.26s; }
+.hero-card-waves .hero-card-wave:nth-child(6) { height: 26px; animation-delay: 0.12s; }
+.hero-card-waves .hero-card-wave:nth-child(7) { height: 18px; animation-delay: 0.22s; }
+.hero-card-waves .hero-card-wave:nth-child(8) { height: 36px; animation-delay: 0.3s; }
+.hero-card-waves .hero-card-wave:nth-child(9) { height: 22px; animation-delay: 0.05s; }
+.hero-card-waves .hero-card-wave:nth-child(10) { height: 32px; animation-delay: 0.36s; }
+.hero-card-waves .hero-card-wave:nth-child(11) { height: 16px; animation-delay: 0.18s; }
+.hero-card-waves .hero-card-wave:nth-child(12) { height: 40px; animation-delay: 0.28s; }
+.hero-card-waves .hero-card-wave:nth-child(13) { height: 24px; animation-delay: 0.1s; }
+.hero-card-waves .hero-card-wave:nth-child(14) { height: 28px; animation-delay: 0.34s; }
+.hero-card-waves .hero-card-wave:nth-child(15) { height: 12px; animation-delay: 0.24s; }
+.hero-card-waves .hero-card-wave:nth-child(16) { height: 34px; animation-delay: 0.32s; }
 
 @media (max-width: 768px) {
   .hero { padding: 40px 0 60px; min-height: auto; }
   .hero-grid { grid-template-columns: 1fr; gap: 48px; }
   .hero-visual { order: -1; }
-  .hero-card { max-width: 360px; }
+  .hero-card { max-width: 360px; padding: 24px; }
 }
 
 /* ================================================
@@ -737,7 +769,10 @@ footer.footer::before {
       <div class="hero-visual fade-in" style="transition-delay: 0.15s;">
         <div class="hero-card">
           <div class="hero-card-header">
-            <div class="hero-card-avatar">Ц</div>
+            <div class="hero-card-avatar-wrap">
+              <div class="hero-card-avatar">Ц</div>
+              <div class="hero-card-orbit"></div>
+            </div>
             <div class="hero-card-meta">
               <strong>Цезарь</strong>
               <span>Говорит...</span>
@@ -752,10 +787,6 @@ footer.footer::before {
             <div class="hero-card-wave"></div><div class="hero-card-wave"></div>
             <div class="hero-card-wave"></div><div class="hero-card-wave"></div>
             <div class="hero-card-wave"></div><div class="hero-card-wave"></div>
-          </div>
-          <div class="hero-card-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
-            Записывается
           </div>
         </div>
       </div>
