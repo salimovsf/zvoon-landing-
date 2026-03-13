@@ -329,6 +329,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   padding: 28px 32px;
   width: 100%; max-width: 420px;
   position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
 }
 .hero-card::before {
   content: ''; position: absolute;
@@ -414,11 +415,78 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .hero-card-waves .hero-card-wave:nth-child(15) { height: 12px; animation-delay: 0.24s; }
 .hero-card-waves .hero-card-wave:nth-child(16) { height: 34px; animation-delay: 0.32s; }
 
+/* Phone illustration inside hero card */
+.hero-card-phones {
+  position: relative;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  z-index: 2;
+}
+.hero-phone {
+  position: absolute;
+  top: 50%;
+  width: 32px;
+  opacity: 0.85;
+}
+.hero-phone svg { width: 100%; height: auto; display: block; }
+.hero-phone-left {
+  left: 40px;
+  transform: translateY(-50%) rotate(-15deg);
+  animation: hero-phone-bob 3s ease-in-out infinite;
+}
+.hero-phone-right {
+  right: 40px;
+  transform: translateY(-50%) rotate(15deg) scaleX(-1);
+  animation: hero-phone-bob 3s ease-in-out 0.5s infinite;
+}
+@keyframes hero-phone-bob {
+  0%, 100% { transform: translateY(-50%) rotate(-15deg) translateY(0); }
+  50% { transform: translateY(-50%) rotate(-15deg) translateY(-4px); }
+}
+.hero-phone-right {
+  animation-name: hero-phone-bob-r;
+}
+@keyframes hero-phone-bob-r {
+  0%, 100% { transform: translateY(-50%) rotate(15deg) scaleX(-1) translateY(0); }
+  50% { transform: translateY(-50%) rotate(15deg) scaleX(-1) translateY(-4px); }
+}
+.hero-phone-waves {
+  display: flex;
+  align-items: center;
+  gap: 2.5px;
+  height: 44px;
+}
+.hero-phone-waves .pw {
+  width: 3px; border-radius: 3px;
+  background: var(--spring); opacity: 0.6;
+  animation: hero-pw 1s ease-in-out infinite;
+}
+.hero-phone-waves .pw:nth-child(1) { height: 8px; animation-delay: 0s; }
+.hero-phone-waves .pw:nth-child(2) { height: 18px; animation-delay: 0.1s; }
+.hero-phone-waves .pw:nth-child(3) { height: 28px; animation-delay: 0.15s; }
+.hero-phone-waves .pw:nth-child(4) { height: 14px; animation-delay: 0.2s; }
+.hero-phone-waves .pw:nth-child(5) { height: 32px; animation-delay: 0.25s; }
+.hero-phone-waves .pw:nth-child(6) { height: 20px; animation-delay: 0.3s; }
+.hero-phone-waves .pw:nth-child(7) { height: 12px; animation-delay: 0.35s; }
+.hero-phone-waves .pw:nth-child(8) { height: 24px; animation-delay: 0.4s; }
+.hero-phone-waves .pw:nth-child(9) { height: 10px; animation-delay: 0.45s; }
+@keyframes hero-pw {
+  0%, 100% { transform: scaleY(0.35); opacity: 0.3; }
+  50% { transform: scaleY(1); opacity: 0.7; }
+}
+
 @media (max-width: 768px) {
   .hero { padding: 40px 0 60px; min-height: auto; }
   .hero-grid { grid-template-columns: 1fr; gap: 48px; }
   .hero-visual { order: -1; }
   .hero-card { max-width: 360px; padding: 24px; }
+  .hero-card-phones { height: 80px; }
+  .hero-phone { width: 26px; }
+  .hero-phone-left { left: 24px; }
+  .hero-phone-right { right: 24px; }
 }
 
 /* ================================================
@@ -843,6 +911,31 @@ footer.footer::before {
             <div class="hero-card-wave"></div><div class="hero-card-wave"></div>
             <div class="hero-card-wave"></div><div class="hero-card-wave"></div>
             <div class="hero-card-wave"></div><div class="hero-card-wave"></div>
+          </div>
+          <div class="hero-card-phones">
+            <div class="hero-phone hero-phone-left">
+              <svg viewBox="0 0 640 1280" preserveAspectRatio="xMidYMid meet">
+                <g transform="translate(0,1280) scale(0.1,-0.1)" fill="#DBE64C" stroke="none">
+                  <path d="M3682 12784 c-255 -56 -574 -222 -852 -444 -144 -115 -384 -358 -511 -517 -751 -941 -1208 -2354 -1348 -4178 -39 -498 -45 -683 -45 -1300 0 -574 5 -740 35 -1165 166 -2353 910 -4114 2064 -4885 243 -163 547 -284 713 -285 l42 0 0 1795 0 1795 -38 0 c-21 0 -64 7 -97 15 -269 71 -405 346 -504 1020 -46 313 -97 834 -123 1255 -15 257 -15 1132 0 1370 38 561 86 960 148 1202 101 402 277 617 534 652 l80 10 0 1838 c0 1744 -1 1838 -17 1837 -10 -1 -46 -7 -81 -15z"/>
+                  <path d="M4060 10960 l0 -1841 553 3 c551 3 552 3 609 26 67 27 155 103 191 165 61 103 58 9 55 1673 l-3 1519 -33 67 c-41 84 -128 167 -209 200 l-58 23 -552 3 -553 3 0 -1841z"/>
+                  <path d="M4060 1800 l0 -1800 528 0 c565 0 598 3 681 52 87 51 158 143 185 239 15 49 16 205 14 1535 l-3 1479 -27 57 c-31 67 -103 147 -163 183 -92 53 -115 55 -687 55 l-528 0 0 -1800z"/>
+                </g>
+              </svg>
+            </div>
+            <div class="hero-phone-waves">
+              <div class="pw"></div><div class="pw"></div><div class="pw"></div>
+              <div class="pw"></div><div class="pw"></div><div class="pw"></div>
+              <div class="pw"></div><div class="pw"></div><div class="pw"></div>
+            </div>
+            <div class="hero-phone hero-phone-right">
+              <svg viewBox="0 0 640 1280" preserveAspectRatio="xMidYMid meet">
+                <g transform="translate(0,1280) scale(0.1,-0.1)" fill="#DBE64C" stroke="none">
+                  <path d="M3682 12784 c-255 -56 -574 -222 -852 -444 -144 -115 -384 -358 -511 -517 -751 -941 -1208 -2354 -1348 -4178 -39 -498 -45 -683 -45 -1300 0 -574 5 -740 35 -1165 166 -2353 910 -4114 2064 -4885 243 -163 547 -284 713 -285 l42 0 0 1795 0 1795 -38 0 c-21 0 -64 7 -97 15 -269 71 -405 346 -504 1020 -46 313 -97 834 -123 1255 -15 257 -15 1132 0 1370 38 561 86 960 148 1202 101 402 277 617 534 652 l80 10 0 1838 c0 1744 -1 1838 -17 1837 -10 -1 -46 -7 -81 -15z"/>
+                  <path d="M4060 10960 l0 -1841 553 3 c551 3 552 3 609 26 67 27 155 103 191 165 61 103 58 9 55 1673 l-3 1519 -33 67 c-41 84 -128 167 -209 200 l-58 23 -552 3 -553 3 0 -1841z"/>
+                  <path d="M4060 1800 l0 -1800 528 0 c565 0 598 3 681 52 87 51 158 143 185 239 15 49 16 205 14 1535 l-3 1479 -27 57 c-31 67 -103 147 -163 183 -92 53 -115 55 -687 55 l-528 0 0 -1800z"/>
+                </g>
+              </svg>
+            </div>
           </div>
         </div>
       </div>
