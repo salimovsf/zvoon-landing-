@@ -493,55 +493,53 @@ body {
   50% { transform: scaleY(1); opacity: 1; }
 }
 
-/* Mobile: compact cards positioned right, no scroll */
+/* Mobile: centered vertical stack between illustration and controls, fits 5 */
 @media (max-width: 480px) {
   .call-participants {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 0;
-    z-index: 5;
-    pointer-events: none;
+    padding: 4px 12px 0;
   }
 
   .participants-grid {
     flex-direction: column;
-    gap: 6px;
-    padding: 0;
-    pointer-events: auto;
+    gap: 4px;
+    padding: 2px 0;
+    overflow-y: auto;
+    max-height: calc(5 * 40px + 4 * 4px);
   }
 
   .participant {
-    padding: 6px 10px;
+    padding: 4px 10px;
     gap: 8px;
-    border-radius: 14px;
+    border-radius: 12px;
     background: rgba(255,255,255,0.06);
     border-color: rgba(219,230,76,0.06);
     backdrop-filter: blur(12px);
+    min-height: 36px;
   }
 
   .participant-avatar-wrap {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
   }
 
   .participant-avatar {
-    width: 32px;
-    height: 32px;
-    font-size: 12px;
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
   }
 
-  .participant-orbit { inset: -5px; }
+  .participant-orbit { inset: -4px; }
 
   .participant-orbit::after {
     width: 3px;
     height: 3px;
   }
 
+  .participant-info { gap: 0; }
+
   .participant-name {
     font-size: 11px;
-    max-width: 56px;
+    max-width: 80px;
   }
 
   .participant-status { display: none; }
