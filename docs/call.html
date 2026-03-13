@@ -12,15 +12,17 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg: #0a0a0a;
-  --surface: #161616;
-  --surface2: #222;
-  --accent: #e8734a;
-  --green: #22c55e;
+  --bg: #001F3F;
+  --surface: #0a2d54;
+  --surface2: #133b63;
+  --accent: #DBE64C;
+  --green: #74C365;
+  --book-green: #00804C;
   --red: #ef4444;
   --yellow: #eab308;
   --text: #f5f5f5;
-  --muted: #888;
+  --muted: #8a9ab5;
+  --spring: #DBE64C;
 }
 
 body {
@@ -87,15 +89,16 @@ body {
   transition: border-color 0.2s;
   margin-bottom: 14px;
 }
-.input:focus { border-color: var(--accent); }
+.input { border-color: rgba(255,255,255,0.1); }
+.input:focus { border-color: var(--spring); }
 
 .btn {
   width: 100%;
   padding: 14px;
   border-radius: 14px;
   border: none;
-  background: var(--accent);
-  color: #fff;
+  background: var(--spring);
+  color: var(--bg);
   font-family: inherit;
   font-weight: 700;
   font-size: 16px;
@@ -105,8 +108,9 @@ body {
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn:not(:disabled):hover { opacity: 0.9; }
 .btn-secondary {
-  background: var(--surface2);
-  color: var(--muted);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--text);
   margin-top: 10px;
 }
 
@@ -122,7 +126,7 @@ body {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: rgba(232, 115, 74, 0.12);
+  background: rgba(219, 230, 76, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -355,8 +359,8 @@ body {
 }
 
 .participant-avatar.speaking {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(232, 115, 74, 0.15);
+  border-color: var(--spring);
+  box-shadow: 0 0 0 4px rgba(219, 230, 76, 0.2);
   transform: scale(1.08);
 }
 
@@ -424,17 +428,17 @@ body {
   box-shadow: 0 2px 12px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
-.ctrl-mute { background: #2a2a2a; color: #fff; }
+.ctrl-mute { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.15); color: #fff; }
 .ctrl-mute.muted { background: rgba(239, 68, 68, 0.2); color: var(--red); box-shadow: 0 2px 10px rgba(239,68,68,0.25); }
 .ctrl-mute.no-mic { background: rgba(239, 68, 68, 0.1); color: #888; cursor: not-allowed; }
 
-.ctrl-copy { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
-.ctrl-copy:hover { background: rgba(34, 197, 94, 0.3); }
-.ctrl-copy:active { background: rgba(34, 197, 94, 0.35); }
+.ctrl-copy { background: var(--book-green); color: var(--white, #fff); }
+.ctrl-copy:hover { background: #006d40; }
+.ctrl-copy:active { background: #005a35; }
 
 /* More button wrapper */
 .more-wrapper { position: relative; flex-shrink: 0; }
-.ctrl-more { background: #2a2a2a; color: #bbb; }
+.ctrl-more { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); }
 
 /* More menu dropdown */
 .more-menu {
@@ -442,8 +446,8 @@ body {
   position: absolute;
   bottom: calc(100% + 10px);
   right: -8px;
-  background: #1c1c22;
-  border: 1px solid rgba(255,255,255,0.08);
+  background: #0d2f52;
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 16px;
   padding: 6px;
   min-width: 210px;
@@ -528,9 +532,9 @@ body {
 
 /* ─── Pulse animation for mic icon ─── */
 @keyframes pulse-ring {
-  0% { box-shadow: 0 0 0 0 rgba(232, 115, 74, 0.4); }
-  70% { box-shadow: 0 0 0 15px rgba(232, 115, 74, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(232, 115, 74, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(219, 230, 76, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(219, 230, 76, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(219, 230, 76, 0); }
 }
 .mic-icon-big.pulsing { animation: pulse-ring 1.5s infinite; }
 </style>
@@ -551,7 +555,7 @@ body {
         <rect width="512" height="512" rx="112" fill="url(#cLogoGrad)"/>
         <path d="M152 148h208l-208 216h208" fill="none" stroke="#fff" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M388 200q32 56 0 112" fill="none" stroke="#fff" stroke-width="28" stroke-linecap="round" opacity="0.6"/>
-        <defs><linearGradient id="cLogoGrad" x1="0" y1="0" x2="512" y2="512"><stop stop-color="#e8734a"/><stop offset="1" stop-color="#c74f2e"/></linearGradient></defs>
+        <defs><linearGradient id="cLogoGrad" x1="0" y1="0" x2="512" y2="512"><stop stop-color="#DBE64C"/><stop offset="1" stop-color="#00804C"/></linearGradient></defs>
       </svg>
       Zvoon
     </div>
@@ -560,12 +564,12 @@ body {
     <!-- Recording notice for guests (shown when host enabled recording) -->
     <div id="recNotice" style="display:none;background:rgba(239,68,68,0.08);border-radius:12px;padding:12px 16px;margin-bottom:16px;text-align:left;font-size:13px;color:var(--muted);line-height:1.5;">
       <span style="color:var(--red);font-weight:600;" id="recNoticeTitle">Звонок записывается</span><br>
-      <span id="recNoticeText">Организатор включил запись для создания ИИ-сводки</span>
+      <span id="recNoticeText">Организатор включил запись для создания ИИ-саммари</span>
     </div>
     <input class="input" id="nameInput" type="text" placeholder="Ваше имя" maxlength="30" autofocus>
     <div id="emailBlock">
-      <input class="input" id="emailInput" type="email" placeholder="Email — для получения сводки звонка" style="margin-bottom:4px;">
-      <p class="email-hint" id="emailHint" style="font-size:12px;color:#666;margin-bottom:14px;line-height:1.4;text-align:left;">Укажите email, чтобы получить ИИ-сводку после звонка. Без email звонок не записывается.</p>
+      <input class="input" id="emailInput" type="email" placeholder="Email — для получения саммари звонка" style="margin-bottom:4px;">
+      <p class="email-hint" id="emailHint" style="font-size:12px;color:#666;margin-bottom:14px;line-height:1.4;text-align:left;">Укажите email, чтобы получить ИИ-саммари после звонка. Без email звонок не записывается.</p>
     </div>
     <button class="btn" id="nameBtn" disabled>Далее</button>
     <div class="error-text" id="nameError"></div>
@@ -576,7 +580,7 @@ body {
 <div class="screen" id="screenMic">
   <div class="screen-box">
     <div class="mic-icon-big pulsing" id="micIconBig">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#e8734a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#DBE64C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="9" y="1" width="6" height="12" rx="3"/>
         <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
         <line x1="12" y1="19" x2="12" y2="23"/>
@@ -603,7 +607,7 @@ body {
   <div class="mic-banner" id="micBanner"></div>
   <div class="rec-banner" id="recBanner">
     <div class="rec-dot"></div>
-    <span id="recText">Звонок записывается для создания сводки</span>
+    <span id="recText">Звонок записывается для создания саммари</span>
   </div>
   <div class="call-header">
     <div class="call-timer" id="timer">00:00</div>
@@ -616,7 +620,7 @@ body {
       <div class="call-illustration">
         <div class="phone-left">
           <svg viewBox="0 0 640 1280" preserveAspectRatio="xMidYMid meet">
-            <g transform="translate(0,1280) scale(0.1,-0.1)" fill="#e8734a" stroke="none">
+            <g transform="translate(0,1280) scale(0.1,-0.1)" fill="#DBE64C" stroke="none">
               <path d="M3682 12784 c-255 -56 -574 -222 -852 -444 -144 -115 -384 -358 -511 -517 -751 -941 -1208 -2354 -1348 -4178 -39 -498 -45 -683 -45 -1300 0 -574 5 -740 35 -1165 166 -2353 910 -4114 2064 -4885 243 -163 547 -284 713 -285 l42 0 0 1795 0 1795 -38 0 c-21 0 -64 7 -97 15 -269 71 -405 346 -504 1020 -46 313 -97 834 -123 1255 -15 257 -15 1132 0 1370 38 561 86 960 148 1202 101 402 277 617 534 652 l80 10 0 1838 c0 1744 -1 1838 -17 1837 -10 -1 -46 -7 -81 -15z"/>
               <path d="M4060 10960 l0 -1841 553 3 c551 3 552 3 609 26 67 27 155 103 191 165 61 103 58 9 55 1673 l-3 1519 -33 67 c-41 84 -128 167 -209 200 l-58 23 -552 3 -553 3 0 -1841z"/>
               <path d="M4060 1800 l0 -1800 528 0 c565 0 598 3 681 52 87 51 158 143 185 239 15 49 16 205 14 1535 l-3 1479 -27 57 c-31 67 -103 147 -163 183 -92 53 -115 55 -687 55 l-528 0 0 -1800z"/>
@@ -631,7 +635,7 @@ body {
         </div>
         <div class="phone-right">
           <svg viewBox="0 0 640 1280" preserveAspectRatio="xMidYMid meet">
-            <g transform="translate(0,1280) scale(0.1,-0.1)" fill="#e8734a" stroke="none">
+            <g transform="translate(0,1280) scale(0.1,-0.1)" fill="#DBE64C" stroke="none">
               <path d="M3682 12784 c-255 -56 -574 -222 -852 -444 -144 -115 -384 -358 -511 -517 -751 -941 -1208 -2354 -1348 -4178 -39 -498 -45 -683 -45 -1300 0 -574 5 -740 35 -1165 166 -2353 910 -4114 2064 -4885 243 -163 547 -284 713 -285 l42 0 0 1795 0 1795 -38 0 c-21 0 -64 7 -97 15 -269 71 -405 346 -504 1020 -46 313 -97 834 -123 1255 -15 257 -15 1132 0 1370 38 561 86 960 148 1202 101 402 277 617 534 652 l80 10 0 1838 c0 1744 -1 1838 -17 1837 -10 -1 -46 -7 -81 -15z"/>
               <path d="M4060 10960 l0 -1841 553 3 c551 3 552 3 609 26 67 27 155 103 191 165 61 103 58 9 55 1673 l-3 1519 -33 67 c-41 84 -128 167 -209 200 l-58 23 -552 3 -553 3 0 -1841z"/>
               <path d="M4060 1800 l0 -1800 528 0 c565 0 598 3 681 52 87 51 158 143 185 239 15 49 16 205 14 1535 l-3 1479 -27 57 c-31 67 -103 147 -163 183 -92 53 -115 55 -687 55 l-528 0 0 -1800z"/>
@@ -688,15 +692,15 @@ body {
 <!-- SCREEN 4: Call ended -->
 <div class="screen" id="screenEnd">
   <div class="screen-box">
-    <div style="width:64px;height:64px;border-radius:50%;background:rgba(34,197,94,0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <div style="width:64px;height:64px;border-radius:50%;background:rgba(116,195,101,0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#74C365" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 6 9 17 4 12"/>
       </svg>
     </div>
     <h1 class="screen-title" id="endTitle">Звонок завершён</h1>
     <p class="screen-subtitle" id="endSubtitle">Вы можете закрыть эту страницу</p>
-    <div id="endSummaryInfo" style="display:none;background:var(--surface);border:1px solid #333;border-radius:14px;padding:16px;margin-bottom:16px;text-align:left;">
-      <div style="font-size:14px;font-weight:600;margin-bottom:6px;" id="endSummaryTitle">Сводка будет отправлена</div>
+    <div id="endSummaryInfo" style="display:none;background:var(--surface);border:1px solid var(--surface2);border-radius:14px;padding:16px;margin-bottom:16px;text-align:left;">
+      <div style="font-size:14px;font-weight:600;margin-bottom:6px;" id="endSummaryTitle">Саммари будет отправлено</div>
       <div style="font-size:13px;color:var(--muted);line-height:1.5;" id="endSummaryText"></div>
     </div>
     <a href="https://zvoon.me" class="btn" style="display:block;text-decoration:none;text-align:center;" id="endHomeBtn">На главную</a>
@@ -1396,14 +1400,14 @@ const callI18n = {
     host_title: 'Создать звонок',
     host_subtitle: 'Введите имя, чтобы начать',
     host_btn: 'Создать',
-    host_email_placeholder: 'Ваш email — для получения ИИ-сводки',
-    host_email_hint: 'Укажите email, чтобы записать звонок и получить ИИ-сводку. Без email звонок не записывается.',
+    host_email_placeholder: 'Ваш email — для получения ИИ-саммари',
+    host_email_hint: 'Укажите email, чтобы записать звонок и получить ИИ-саммари. Без email звонок не записывается.',
     guest_title: 'Присоединиться к звонку',
     guest_subtitle: 'Введите имя, чтобы войти',
-    guest_email_placeholder: 'Ваш email — тоже получить сводку',
-    guest_email_hint: 'Укажите email, чтобы тоже получить ИИ-сводку.',
+    guest_email_placeholder: 'Ваш email — тоже получить саммари',
+    guest_email_hint: 'Укажите email, чтобы тоже получить ИИ-саммари.',
     rec_notice_title: 'Звонок записывается',
-    rec_notice_text: 'Организатор включил запись для создания ИИ-сводки',
+    rec_notice_text: 'Организатор включил запись для создания ИИ-саммари',
     name_title: 'Введите имя',
     name_subtitle: 'Вы присоединитесь к звонку',
     name_placeholder: 'Ваше имя',
@@ -1438,12 +1442,12 @@ const callI18n = {
     participant_2_4: 'участника',
     participant_5: 'участников',
     guest: 'Гость',
-    email_placeholder: 'Email — для получения сводки звонка',
-    email_hint: 'Укажите email, чтобы получить ИИ-сводку после звонка. Без email звонок не записывается.',
+    email_placeholder: 'Email — для получения саммари звонка',
+    email_hint: 'Укажите email, чтобы получить ИИ-саммари после звонка. Без email звонок не записывается.',
     end_home_btn: 'На главную',
-    end_summary_title: 'Сводка будет отправлена',
-    end_summary_text: 'ИИ-сводка будет отправлена на {email} в течение нескольких минут.',
-    rec_recording: 'Звонок записывается для создания сводки',
+    end_summary_title: 'Саммари будет отправлено',
+    end_summary_text: 'ИИ-саммари будет отправлено на {email} в течение нескольких минут.',
+    rec_recording: 'Звонок записывается для создания саммари',
     speaking_label: 'Говорит: {name}',
     speaking_prefix: 'Говорит',
     leave_call: 'Выйти из звонка',
