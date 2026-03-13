@@ -206,22 +206,53 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .btn-outline-white:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.5); }
 .btn-lg { padding: 16px 36px; font-size: 1rem; }
 
-/* Language switcher */
+/* Language switcher — dual button */
 .lang-switch {
-  background: rgba(0,31,63,0.06);
-  border: 1px solid rgba(0,31,63,0.1);
-  border-radius: var(--radius-full);
-  padding: 6px 14px; font-size: 0.8rem; font-weight: 700;
-  color: var(--midnight); cursor: pointer;
-  transition: all 0.2s; letter-spacing: 0.02em;
+  display: inline-flex; border-radius: var(--radius-full);
+  overflow: hidden; border: 1px solid rgba(0,31,63,0.12);
+  background: rgba(0,31,63,0.04);
 }
-.lang-switch:hover { background: rgba(0,31,63,0.1); }
-.lang-switch-mobile { display: none; }
+.lang-switch button {
+  padding: 6px 14px; font-size: 0.75rem; font-weight: 700;
+  color: var(--gray-600); cursor: pointer;
+  transition: all 0.2s; letter-spacing: 0.04em;
+  border: none; background: none;
+}
+.lang-switch button.active {
+  background: var(--midnight); color: var(--white);
+}
+
+/* Mobile nav bar below header */
+.mobile-nav {
+  display: none;
+  position: fixed; top: 60px; left: 0; right: 0; z-index: 99;
+  background: rgba(246,247,237,0.92);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0,31,63,0.06);
+  padding: 0 16px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.mobile-nav::-webkit-scrollbar { display: none; }
+.mobile-nav-inner {
+  display: flex; gap: 4px; padding: 8px 0;
+  white-space: nowrap;
+}
+.mobile-nav a {
+  font-size: 0.75rem; font-weight: 600;
+  color: var(--gray-600); padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(0,31,63,0.04);
+  transition: all 0.2s; flex-shrink: 0;
+}
+.mobile-nav a:hover, .mobile-nav a:active {
+  background: rgba(0,31,63,0.08); color: var(--midnight);
+}
 
 @media (max-width: 768px) {
   .nav { display: none; }
-  .lang-switch-mobile { display: block; }
+  .mobile-nav { display: block; }
   .header .btn { font-size: 0.8rem; padding: 10px 20px; }
+  #landing { padding-top: 108px; }
 }
 
 /* ================================================
@@ -621,7 +652,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 @media (max-width: 768px) {
   .pricing { padding: 60px 0; }
-  .pricing-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
+  .pricing-grid {
+    display: flex; gap: 16px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding: 0 24px 16px; margin: 0 -24px;
+    max-width: none;
+  }
+  .pricing-grid::-webkit-scrollbar { display: none; }
+  .pricing-card {
+    flex: 0 0 280px; scroll-snap-align: center;
+  }
   .pricing-card.featured { transform: scale(1); }
   .pricing-card.featured:hover { transform: translateY(-2px); }
 }
@@ -737,14 +778,29 @@ footer.footer::before {
       <a href="#how-it-works" data-i18n="nav_how">Как это работает</a>
       <a href="#pricing" data-i18n="nav_pricing">Цены</a>
       <a href="#faq">FAQ</a>
-      <button class="lang-switch" id="langSwitch" onclick="toggleLang()">EN</button>
+      <div class="lang-switch" id="langSwitch">
+        <button onclick="setLang('ru')" class="active">RU</button>
+        <button onclick="setLang('en')">EN</button>
+      </div>
     </nav>
     <div style="display:flex;align-items:center;gap:12px;">
-      <button class="lang-switch lang-switch-mobile" id="langSwitchMobile" onclick="toggleLang()">EN</button>
+      <div class="lang-switch" id="langSwitchMobile">
+        <button onclick="setLang('ru')" class="active">RU</button>
+        <button onclick="setLang('en')">EN</button>
+      </div>
       <a href="call.html?host=1" class="btn btn-primary" data-i18n="nav_cta">Создать звонок</a>
     </div>
   </div>
 </header>
+<nav class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-inner">
+    <a href="#how-it-works" data-i18n="nav_how">Как это работает</a>
+    <a href="#ai-summary">ИИ-саммари</a>
+    <a href="#security" data-i18n="nav_security_link">Безопасность</a>
+    <a href="#pricing" data-i18n="nav_pricing">Цены</a>
+    <a href="#faq">FAQ</a>
+  </div>
+</nav>
 
 <!-- ============================================
      HERO
@@ -1210,7 +1266,7 @@ document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
 // === i18n ===
 const translations = {
   en: {
-    nav_how: 'How it works', nav_pricing: 'Pricing', nav_cta: 'Create a call',
+    nav_how: 'How it works', nav_pricing: 'Pricing', nav_cta: 'Create a call', nav_security_link: 'Security',
     hero_badge: 'Best offer on the market',
     hero_title_1: 'Calls with', hero_title_2: 'AI summary', hero_title_3: 'by link',
     hero_desc: 'Create a call in a second, invite by link. After the call, get a full transcript and AI summary by email.',
@@ -1256,7 +1312,7 @@ const translations = {
     footer_rights: 'All rights reserved.',
   },
   ru: {
-    nav_how: 'Как это работает', nav_pricing: 'Цены', nav_cta: 'Создать звонок',
+    nav_how: 'Как это работает', nav_pricing: 'Цены', nav_cta: 'Создать звонок', nav_security_link: 'Безопасность',
     hero_badge: 'Лучшее предложение на рынке',
     hero_title_1: 'Звонки с', hero_title_2: 'ИИ-саммари', hero_title_3: 'по ссылке',
     hero_desc: 'Создайте звонок за секунду, пригласите по ссылке. После звонка получите транскрипцию и саммари на email.',
@@ -1305,15 +1361,19 @@ const translations = {
 
 let currentLang = 'ru';
 
-function toggleLang() {
-  currentLang = currentLang === 'ru' ? 'en' : 'ru';
+function setLang(lang) {
+  currentLang = lang;
   applyLang();
 }
 
 function applyLang() {
   const t = translations[currentLang];
-  const switchLabel = currentLang === 'ru' ? 'EN' : 'RU';
-  document.querySelectorAll('.lang-switch').forEach(b => b.textContent = switchLabel);
+  // Update dual-button lang switches
+  document.querySelectorAll('.lang-switch').forEach(sw => {
+    sw.querySelectorAll('button').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === currentLang);
+    });
+  });
   document.documentElement.lang = currentLang;
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
