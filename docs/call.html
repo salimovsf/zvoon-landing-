@@ -218,6 +218,7 @@ body {
   flex-direction: column;
   height: 100vh;
   height: 100dvh;
+  position: relative;
 }
 .call-screen.active { display: flex; }
 
@@ -314,7 +315,7 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── Participants: horizontal row above controls ─── */
+/* ─── Participants: Glass Orbit cards ─── */
 .call-participants {
   display: flex;
   justify-content: center;
@@ -323,7 +324,7 @@ body {
 
 .participants-grid {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   justify-content: center;
   overflow-x: auto;
   overflow-y: visible;
@@ -335,57 +336,221 @@ body {
 
 .participant {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 12px 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(219,230,76,0.08);
+  border-radius: 18px;
+  backdrop-filter: blur(16px);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.participant::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 50%, rgba(219,230,76,0.04) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+
+.participant.speaking-card::before { opacity: 1; }
+
+.participant-avatar-wrap {
+  position: relative;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
 }
 
 .participant-avatar {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: var(--surface2);
+  background: linear-gradient(135deg, var(--green), var(--book-green));
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 16px;
   font-weight: 700;
-  color: #ccc;
-  transition: all 0.2s;
+  color: #fff;
   position: relative;
-  border: 2px solid transparent;
-  overflow: visible;
+  z-index: 2;
+  transition: all 0.3s;
 }
 
-.participant-avatar.speaking {
-  border-color: var(--spring);
-  box-shadow: 0 0 0 4px rgba(219, 230, 76, 0.2);
-  transform: scale(1.08);
+.participant-orbit {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  border-top-color: var(--spring);
+  opacity: 0;
+  transition: opacity 0.3s;
+  animation: orbit-spin 2s linear infinite;
 }
+
+.participant-orbit::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--spring);
+  box-shadow: 0 0 8px var(--spring);
+}
+
+.participant.speaking-card .participant-orbit { opacity: 1; }
+
+@keyframes orbit-spin { to { transform: rotate(360deg); } }
 
 .participant-avatar .muted-badge {
   position: absolute;
   bottom: -2px;
   right: -2px;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: var(--red);
   border: 2px solid var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 3;
+}
+
+.participant-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .participant-name {
-  font-size: 11px;
-  color: #999;
-  max-width: 64px;
-  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  max-width: 100px;
+}
+
+.participant-status {
+  font-size: 11px;
+  color: var(--muted);
+  transition: color 0.3s;
+}
+
+.participant.speaking-card .participant-status {
+  color: var(--spring);
+  animation: status-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.participant-wave {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  height: 20px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.participant.speaking-card .participant-wave { opacity: 1; }
+
+.participant-wave span {
+  width: 2px;
+  border-radius: 2px;
+  background: var(--spring);
+  animation: p-bar 0.8s ease-in-out infinite;
+}
+
+.participant-wave span:nth-child(1) { height: 4px; animation-delay: 0s; }
+.participant-wave span:nth-child(2) { height: 10px; animation-delay: 0.1s; }
+.participant-wave span:nth-child(3) { height: 16px; animation-delay: 0.15s; }
+.participant-wave span:nth-child(4) { height: 8px; animation-delay: 0.2s; }
+.participant-wave span:nth-child(5) { height: 18px; animation-delay: 0.25s; }
+.participant-wave span:nth-child(6) { height: 12px; animation-delay: 0.3s; }
+.participant-wave span:nth-child(7) { height: 6px; animation-delay: 0.35s; }
+
+@keyframes p-bar {
+  0%, 100% { transform: scaleY(0.4); opacity: 0.5; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+/* Mobile: compact cards positioned right, no scroll */
+@media (max-width: 480px) {
+  .call-participants {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .participants-grid {
+    flex-direction: column;
+    gap: 6px;
+    padding: 0;
+    pointer-events: auto;
+  }
+
+  .participant {
+    padding: 6px 10px;
+    gap: 8px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(219,230,76,0.06);
+    backdrop-filter: blur(12px);
+  }
+
+  .participant-avatar-wrap {
+    width: 32px;
+    height: 32px;
+  }
+
+  .participant-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .participant-orbit { inset: -5px; }
+
+  .participant-orbit::after {
+    width: 3px;
+    height: 3px;
+  }
+
+  .participant-name {
+    font-size: 11px;
+    max-width: 56px;
+  }
+
+  .participant-status { display: none; }
+
+  .participant-wave {
+    height: 14px;
+  }
+
+  .participant-wave span { width: 1.5px; }
 }
 
 /* ─── Controls: redesigned ─── */
@@ -1143,18 +1308,28 @@ function updateParticipants() {
     const micOff = !p.isMicrophoneEnabled;
     const speaking = p.isSpeaking;
     const isLocal = p === room.localParticipant;
+    const displayName = isLocal ? `${name} (${esc(t('you'))})` : name;
 
     return `
-      <div class="participant" data-sid="${esc(p.sid)}">
-        <div class="participant-avatar ${speaking ? 'speaking' : ''}">
-          ${initials}
-          ${micOff ? `<div class="muted-badge">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round">
-              <line x1="1" y1="1" x2="23" y2="23"/>
-            </svg>
-          </div>` : ''}
+      <div class="participant ${speaking ? 'speaking-card' : ''}" data-sid="${esc(p.sid)}">
+        <div class="participant-avatar-wrap">
+          <div class="participant-avatar">
+            ${initials}
+            ${micOff ? `<div class="muted-badge">
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round">
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </div>` : ''}
+          </div>
+          <div class="participant-orbit"></div>
         </div>
-        <div class="participant-name">${name}${isLocal ? ` (${esc(t('you'))})` : ''}</div>
+        <div class="participant-info">
+          <div class="participant-name">${displayName}</div>
+          <div class="participant-status">${speaking ? t('speaking_prefix') + '...' : ''}</div>
+        </div>
+        <div class="participant-wave">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
       </div>
     `;
   }).join('');
@@ -1162,12 +1337,13 @@ function updateParticipants() {
 
 function updateSpeakers(speakers) {
   if (!room) return;
-  document.querySelectorAll('.participant-avatar').forEach(el => el.classList.remove('speaking'));
+  document.querySelectorAll('.participant').forEach(el => el.classList.remove('speaking-card'));
   const sids = new Set(speakers.map(s => s.sid));
   document.querySelectorAll('.participant').forEach(el => {
-    if (sids.has(el.dataset.sid)) {
-      el.querySelector('.participant-avatar').classList.add('speaking');
-    }
+    const isSpeaking = sids.has(el.dataset.sid);
+    el.classList.toggle('speaking-card', isSpeaking);
+    const status = el.querySelector('.participant-status');
+    if (status) status.textContent = isSpeaking ? t('speaking_prefix') + '...' : '';
   });
 }
 
