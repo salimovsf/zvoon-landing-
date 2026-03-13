@@ -221,6 +221,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .lang-switch button.active {
   background: var(--midnight); color: var(--white);
 }
+.lang-switch-mobile { display: none; }
 
 /* Mobile nav bar below header */
 .mobile-nav {
@@ -251,10 +252,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @media (max-width: 768px) {
   .header { padding: 12px 0; }
   .nav { display: none; }
-  .mobile-nav { display: block; }
+  .lang-switch-mobile { display: inline-flex; }
+  .mobile-nav { display: block; top: 52px; }
   .header .btn { font-size: 0.78rem; padding: 8px 16px; }
   .header .lang-switch button { padding: 5px 10px; font-size: 0.7rem; }
-  .mobile-nav { top: 52px; }
   #landing { padding-top: 100px; }
 }
 
@@ -809,7 +810,7 @@ footer.footer::before {
       </div>
     </nav>
     <div style="display:flex;align-items:center;gap:12px;">
-      <div class="lang-switch" id="langSwitchMobile">
+      <div class="lang-switch lang-switch-mobile" id="langSwitchMobile">
         <button onclick="setLang('ru')" class="active">RU</button>
         <button onclick="setLang('en')">EN</button>
       </div>
